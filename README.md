@@ -25,15 +25,13 @@ You need
     mvn test
 
 # Getting started guide
-##Installation
-You need to connect to our feed on [VSTS](https://slb-swt.visualstudio.com/data-at-rest/ProdOps%20-%20Production%20Engineer/_packaging?feed=slb-dps&_a=feed) and add the artifact dps-service-utils as a dependency to your Maven or Gradle build.
-    
+
 ##DpsHeaders
  
 This class helps with managing the headers required by the Data Ecosystem services e.g.
     
-    Slb-On-Behalf-Of
-    Slb-Correlation-Id
+    On-Behalf-Of
+    Correlation-Id
     Authorization
 
 It works directly with the client library and can be used to help generate requests to the Data Ecosystem services.  It has options to generate the values yourself or simply take the values fromm an incoming request to forward onto another.
@@ -76,7 +74,7 @@ Below are integration tests showing usage of the entitlement client wrapper
    
    
            //add a new member to the group
-           String groupMember = "tsiqueira2@slb.com";
+           String groupMember = "new-osdu-memember@osdu-test.com";
            MemberInfo memberInfo = sut.addMember(newGroupEmail, MemberInfo.builder().email(groupMember).role(Roles.MEMBER).build());
            System.out.println("Added member to group: " + memberInfo);
            assertEquals(groupMember, memberInfo.getEmail());
@@ -88,7 +86,7 @@ Below are integration tests showing usage of the entitlement client wrapper
            List<GroupInfo> items = groups.getGroups();
            System.out.println("Get groups: " + items);
            assertTrue(items.size() > 0);
-           assertEquals("akelham@slb.com", groups.getMemberEmail());
+           assertEquals("osdu-user@osdutest.com", groups.getMemberEmail());
            assertTrue("Could not find group matching " + info.getEmail(), items.stream().anyMatch( (i) -> i.getEmail().equals(info.getEmail())));
    
    
@@ -97,7 +95,7 @@ Below are integration tests showing usage of the entitlement client wrapper
            System.out.println("Got members in group: " + info);
            assertEquals(2, members.getMembers().size());
            assertFalse(members.isMoreToRetrieve());
-           assertEquals("akelham@slb.com", members.getMembers().get(0).getEmail());
+           assertEquals("osdu-user@osdutest.com", members.getMembers().get(0).getEmail());
            assertEquals(Roles.OWNER, members.getMembers().get(0).getRole());
            assertEquals(groupMember, members.getMembers().get(1).getEmail());
            assertEquals(Roles.MEMBER, members.getMembers().get(1).getRole());
@@ -117,7 +115,7 @@ You can configure the environment and credentials used on Entitlements requests 
        EntitlementsFactory sutFactory = new EntitlementsFactory(
                 EntitlementsAPIConfig
                         .builder()
-                        .rootUrl("https://entitlements-dot-evt-ddl-us-services.appspot.com/entitlements/v1") //configure to use entitlements in evt
+                        .rootUrl("https://entitlements-com/entitlements/v1") //configure to use entitlements in evt
                         .build());
      
 ##Legal Client wrapper
@@ -166,7 +164,7 @@ You can configure the environment and credentials used on Entitlements requests 
     private final static String ordc = "US";
     private final static String kind = tenant + ":integration:test:1.0.0"; //kind needs to exist if you want it indexing in search - we don't for this test and so use non-existing kind value
     private final static String legaltag = "tenant1-sli-service-test-67try";  //this legaltag needs to actually exist
-    private final static String dataGroup = "data.test1@tenant1.evd.cloud.slb-ds.com"; //this group needs to actually exist
+    private final static String dataGroup = "data.test1@tenant1.osdu-test.com"; //this group needs to actually exist
     private final static String id = "tenant1:clientlib:" + System.currentTimeMillis();
 
     @Test

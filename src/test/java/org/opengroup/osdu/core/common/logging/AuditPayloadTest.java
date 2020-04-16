@@ -33,7 +33,7 @@ public class AuditPayloadTest {
         Map<String, Object> auditLogMap = new HashMap<>();
         auditLogMap.put("actionId", "10001");
         auditLogMap.put("action", AuditAction.CREATE);
-        auditLogMap.put("user", "abc@slb.com");
+        auditLogMap.put("user", "abc@test.com");
         auditLogMap.put("status", AuditStatus.SUCCESS);
         auditLogMap.put("message", "Legal tag created");
         auditLogMap.put("resources", singletonList("resource"));
@@ -44,7 +44,7 @@ public class AuditPayloadTest {
                 .action(AuditAction.CREATE)
                 .status(AuditStatus.SUCCESS)
                 .actionId("10001")
-                .user("abc@slb.com")
+                .user("abc@test.com")
                 .message("Legal tag created")
                 .resources(singletonList("resource"))
                 .build();
