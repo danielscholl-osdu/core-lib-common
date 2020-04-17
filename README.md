@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 # Introduction 
-This project provides client libraries for using data ecosystem core services.
+This project provides client libraries for using OSDU core services.
 
 # Pre-requisites
 You need
@@ -28,7 +28,7 @@ You need
 
 ##DpsHeaders
  
-This class helps with managing the headers required by the Data Ecosystem services e.g.
+This class helps with managing the headers required by the OSDU services e.g.
     
     On-Behalf-Of
     Correlation-Id
