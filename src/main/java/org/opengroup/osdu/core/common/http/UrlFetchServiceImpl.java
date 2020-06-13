@@ -39,7 +39,12 @@ public class UrlFetchServiceImpl implements IUrlFetchService {
     @Autowired
     private HttpClientHandler httpClientHandler;
 
-    public HttpResponse sendRequest(String httpMethod, String address, DpsHeaders headers, Map<String, String> queryParams, String body) throws URISyntaxException {
+    @Override
+    public HttpResponse sendRequest(FetchServiceHttpRequest httpRequest) throws URISyntaxException {
+        return sendRequest(httpRequest.getHttpMethod(), httpRequest.getUrl(), httpRequest.getHeaders(), httpRequest.getQueryParams(), httpRequest.getBody());
+    }
+
+    private HttpResponse sendRequest(String httpMethod, String address, DpsHeaders headers, Map<String, String> queryParams, String body) throws URISyntaxException {
 
         URIBuilder builder = new URIBuilder(address);
         if (queryParams != null && !queryParams.isEmpty()) {

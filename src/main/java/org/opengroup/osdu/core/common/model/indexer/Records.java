@@ -17,12 +17,14 @@ package org.opengroup.osdu.core.common.model.indexer;
 import org.opengroup.osdu.core.common.model.legal.Legal;
 import org.opengroup.osdu.core.common.model.storage.ConversionStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.opengroup.osdu.core.common.model.entitlements.Acl;
 import org.opengroup.osdu.core.common.model.storage.RecordAncestry;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,11 +36,21 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Records {
 
-    @Singular
-    private List<Entity> records;
-    private List<String> notFound;
-    @Singular
-    private List<ConversionStatus> conversionStatuses;
+    @Builder.Default
+    private List<Entity> records = new ArrayList<>();
+    @Builder.Default
+    private List<String> notFound = new ArrayList<>();
+    @Builder.Default
+    private List<ConversionStatus> conversionStatuses = new ArrayList<>();
+
+    // missing records ids -- mismatch in requested records and storage response
+    @JsonIgnore
+    @Builder.Default
+    private List<String> missingRetryRecords = new ArrayList<>();
+
+    public int getTotalRecordCount() {
+        return this.getRecords().size() + this.getNotFound().size();
+    }
 
     @Data
     @Builder
@@ -62,4 +74,12 @@ public class Records {
     public static class Type {
         private String type;
     }
+
+    @Data
+    @Builder
+    public static class Analyzer {
+        private String type;
+        private String analyzer;
+        private String search_analyzer;
+}
 }

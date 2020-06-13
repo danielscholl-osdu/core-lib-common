@@ -22,18 +22,15 @@ import static org.opengroup.osdu.core.common.model.units.ItemFactory.createModel
  * Factory to create {@link IUnit} instances given a persistable reference {@link String}.
  */
 public final class ReferenceConverter {
+    private ReferenceConverter() {}
     private static final String V2_START = "{";
     private static final String V1_START = "%7B";
     private static final String V2_STOP = "}";
     private static final String V1_STOP = "%7D";
 
-    private ReferenceConverter() {
-    }
-
     /**
      * Factory method to create a {@link IUnit} instance given a persistable reference {@link String}.
-     *
-     * @param reference the persitable reference {@link String}.
+     * @param reference the persistable reference {@link String}.
      * @return the created {@link IUnit} instance, which is always non-null. To test whether the instance is valid, check IUnit.isValid().
      */
     public static IUnit parseUnitReference(String reference) {
@@ -50,6 +47,23 @@ public final class ReferenceConverter {
                 raw = createModel(instance);
                 if (raw instanceof IUnit) result = (IUnit) raw;
             }
+        }
+        return result;
+    }
+
+    /**
+     * Factory method to create a {@link IDateTime} instance given a persistable reference {@link String}.
+     * @param reference the persistable reference {@link String}.
+     * @return the created {@link IDateTime} instance, which is always non-null. To test whether the instance is valid, check IDateTime.isValid().
+     */
+    public static IDateTime parseDateTimeReference(String reference){
+        IItem raw;
+        IDateTime result = new DateTimeItem();
+        if (reference != null) {
+            String cleaned = reference.trim();
+            PersistableReference instance = PersistableReference.createInstance(cleaned);
+            raw = createModel(instance);
+            if (raw instanceof IDateTime) result = (IDateTime) raw;
         }
         return result;
     }

@@ -14,13 +14,11 @@
 
 package org.opengroup.osdu.core.common.http;
 
-import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.http.HttpResponse;
 
 import java.net.URISyntaxException;
-import java.util.Map;
 
 public interface IUrlFetchService {
 
-    HttpResponse sendRequest(String httpMethod, String address, DpsHeaders headers, Map<String, String> queryParams, String body) throws URISyntaxException;
+    HttpResponse sendRequest(FetchServiceHttpRequest httpRequest) throws URISyntaxException;
 }

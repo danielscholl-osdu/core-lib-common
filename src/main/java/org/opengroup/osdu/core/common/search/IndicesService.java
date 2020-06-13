@@ -14,9 +14,11 @@
 
 package org.opengroup.osdu.core.common.search;
 
+import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.ElasticsearchStatusException;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.settings.Settings;
+import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.search.IndexInfo;
 
 import java.io.IOException;
@@ -29,9 +31,9 @@ public interface IndicesService {
 
     boolean isIndexExist(RestHighLevelClient client, String index) throws IOException;
 
-    boolean deleteIndex(RestHighLevelClient client, String index) throws Exception;
+    boolean deleteIndex(RestHighLevelClient client, String index) throws ElasticsearchException, IOException, AppException;
 
-    boolean deleteIndex(String index) throws Exception;
+    boolean deleteIndex(String index) throws ElasticsearchException, IOException, AppException;
 
     List<IndexInfo> getIndexInfo(RestHighLevelClient client, String indexPattern) throws IOException;
 }

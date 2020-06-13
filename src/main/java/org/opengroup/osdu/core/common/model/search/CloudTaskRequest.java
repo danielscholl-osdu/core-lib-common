@@ -18,7 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.web.context.annotation.RequestScope;
 
 import javax.validation.constraints.NotEmpty;
@@ -34,4 +33,6 @@ public class CloudTaskRequest {
     private String url;
     @NotEmpty(message = "message can not be null or empty")
     private String message;
+    @Builder.Default
+    private Long initialDelayMillis = 0l;
 }

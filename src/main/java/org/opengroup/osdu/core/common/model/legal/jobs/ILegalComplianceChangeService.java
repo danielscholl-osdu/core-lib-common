@@ -21,5 +21,5 @@ import java.util.Map;
 
 public interface ILegalComplianceChangeService {
     Map<String, LegalCompliance> updateComplianceOnRecords(LegalTagChangedCollection legalTagsChanged,
-                                                           DpsHeaders headers);
+                                                           DpsHeaders headers) throws ComplianceUpdateStoppedException;
 }

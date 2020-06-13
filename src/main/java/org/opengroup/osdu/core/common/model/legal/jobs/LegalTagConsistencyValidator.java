@@ -55,12 +55,12 @@ public class LegalTagConsistencyValidator {
 			LegalTagChanged lt = statusChangedTags.get(i);
 			if (lt.getChangedTagStatus().equalsIgnoreCase("incompliant")
 					&& !invalidLegalTagsNames.contains(lt.getChangedTagName())) {
-				this.logger.warning("Inconsistency between pubsub message and legal: " + lt.getChangedTagName());
+				this.logger.warning(String.format("Inconsistency between pubsub message and legal: %s. Expected incompliant.", lt.getChangedTagName()));
 				statusChangedTags.remove(lt);
 			}
 			if (lt.getChangedTagStatus().equalsIgnoreCase("compliant")
 					&& invalidLegalTagsNames.contains(lt.getChangedTagName())) {
-				this.logger.warning("Inconsistency between pubsub message and legal: " + lt.getChangedTagName());
+				this.logger.warning(String.format("Inconsistency between pubsub message and legal: %s. Expected compliant.", lt.getChangedTagName()));
 				statusChangedTags.remove(lt);
 			}
 		}

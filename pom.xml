@@ -6,7 +6,7 @@
 
   <groupId>org.opengroup.osdu</groupId>
   <artifactId>os-core-common</artifactId>
-  <version>0.0.13</version>
+  <version>0.0.18</version>
   <packaging>jar</packaging>
 
   <properties>

@@ -32,6 +32,7 @@ public class UnitParseTests {
 
     private static final String DEG_K_S_2 = "{\"scaleOffset\":{\"scale\":1.0,\"offset\":0.0},\"symbol\":\"K\",\"baseMeasurement\":{\"ancestry\":\"Temperature\",\"type\":\"UM\"},\"type\":\"USO\"}";
     private static final String M = "{\"scaleOffset\":{\"scale\":1.0,\"offset\":0},\"symbol\":\"m\",\"baseMeasurement\":{\"ancestry\":\"Length\",\"type\":\"UM\"},\"type\":\"USO\"}";
+    private static final String FT = "%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D";
 
     private static final String CUSTOM_1 = "{\"scaleOffset\":{\"scale\":1000000.0,\"offset\":0.0},\"symbol\":\"MMUSD\",\"baseMeasurement\":{\"ancestry\":\"CurrencyUSD\",\"type\":\"UM\"},\"type\":\"USO\"}";
 
@@ -241,5 +242,16 @@ public class UnitParseTests {
         double si_v = custom.convertToSI(1234.5);
         double cu_v = custom_bu.convertToUnit(custom, si_v);
         assertEquals(1234.5, cu_v, 1.0e-10);
+    }
+
+    @Test
+    public void testGetBaseSymbol(){
+        IUnit unit = ReferenceConverter.parseUnitReference(FT);
+        String symbol = unit.getBaseSymbol();
+        assertEquals("m", symbol);
+        IUnit unit2 = ReferenceConverter.parseUnitReference(DEG_C_S_1);
+        String symbol2 = unit2.getBaseSymbol();
+        System.out.println(unit2.getBaseUnit());
+        assertEquals("K", symbol2);
     }
 }

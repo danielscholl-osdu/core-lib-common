@@ -22,10 +22,11 @@ public class AllowedLegaltagPropertyValues {
     private static Set<String> securityClassifications = Stream.of(PUBLIC,PRIVATE,CONFIDENTIAL)
             .collect(Collectors.toSet());
 
-    public static final String EAR99 = "EAR99";
+    public static final String ECCN_EAR99 = "EAR99";
+    public static final String ECCN_0A998 = "0A998";
     public static final String NOT_TECHNICAL_DATA = "Not - Technical Data";
     public static final String NO_LICENSE_REQUIRED = "No License Required";
-    private static Set<String> eccns = Stream.of(EAR99, NOT_TECHNICAL_DATA, NO_LICENSE_REQUIRED)
+    private static Set<String> eccns = Stream.of(ECCN_0A998, ECCN_EAR99, NOT_TECHNICAL_DATA, NO_LICENSE_REQUIRED)
             .collect(Collectors.toSet());
 
     public static final String PERSONALLY_IDENTIFIABLE = "Personally Identifiable";

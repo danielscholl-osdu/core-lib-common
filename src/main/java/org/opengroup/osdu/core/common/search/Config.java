@@ -93,6 +93,9 @@ public class Config {
     @Value("${GOOGLE_CLOUD_PROJECT}")
     private static String GOOGLE_CLOUD_PROJECT;
 
+    @Value("${GOOGLE_CLOUD_PROJECT_REGION}")
+    private static String GOOGLE_CLOUD_PROJECT_REGION;
+
     @Value("${GAE_SERVICE}")
     private static String GAE_SERVICE;
 
@@ -258,6 +261,10 @@ public class Config {
     // google cloud project
     public static String getGoogleCloudProjectId() {
         return !Strings.isNullOrEmpty(GOOGLE_CLOUD_PROJECT) ? GOOGLE_CLOUD_PROJECT : getEnvironmentVariable("GOOGLE_CLOUD_PROJECT");
+    }
+
+    public static String getDeploymentLocation() {
+        return !Strings.isNullOrEmpty(GOOGLE_CLOUD_PROJECT_REGION) ? GOOGLE_CLOUD_PROJECT_REGION : getEnvironmentVariable("GOOGLE_CLOUD_PROJECT_REGION");
     }
 
     public static String getDeployedServiceId() {

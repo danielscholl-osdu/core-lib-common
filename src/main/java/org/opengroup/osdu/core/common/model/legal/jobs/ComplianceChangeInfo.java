@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.core.common.model.legal.jobs;
 
+import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.legal.LegalCompliance;
 import org.opengroup.osdu.core.common.model.indexer.OperationType;
 import org.opengroup.osdu.core.common.model.storage.RecordState;
@@ -32,6 +33,17 @@ public class ComplianceChangeInfo {
 
 	public LegalCompliance getNewState() {
 		return this.newState;
+	}
+
+	public LegalCompliance getCurrent() {
+		switch (getNewState()){
+			case compliant:
+				return LegalCompliance.incompliant;
+			case incompliant:
+				return LegalCompliance.compliant;
+			default:
+				throw new AppException(400, "Bad request", "Unknown compliance state: " + getNewState());
+		}
 	}
 
 	public OperationType getPubSubEvent() {

@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.core.common.storage;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -25,8 +26,11 @@ import org.opengroup.osdu.core.common.model.legal.Legal;
 import org.opengroup.osdu.core.common.model.storage.RecordAncestry;
 import org.opengroup.osdu.core.common.model.storage.RecordMetadata;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class PersistenceHelper {
 
@@ -82,29 +86,15 @@ public class PersistenceHelper {
 
 	public static String combineRecordMetaDataAndRecordData(JsonElement jsonRecord, RecordMetadata recordMetadata,
 			Long version) {
-		JsonObject jsonRecordObject = jsonRecord.getAsJsonObject();
-		jsonRecordObject.addProperty("id", recordMetadata.getId());
-		jsonRecordObject.addProperty("version", version);
-		jsonRecordObject.addProperty("kind", recordMetadata.getKind());
-
-		Gson gson = new GsonBuilder().create();
-		JsonElement json = gson.toJsonTree(recordMetadata.getAcl(), Acl.class);
-		jsonRecordObject.add("acl", json);
-
-		json = gson.toJsonTree(recordMetadata.getLegal(), Legal.class);
-		jsonRecordObject.add("legal", json);
-
-		if (recordMetadata.getAncestry() != null && !Collections.isEmpty(recordMetadata.getAncestry().getParents())) {
-			json = gson.toJsonTree(recordMetadata.getAncestry(), RecordAncestry.class);
-			jsonRecordObject.add("ancestry", json);
+		JsonObject json = combineRecordMetaDataAndRecord(jsonRecord, recordMetadata, version);
+		return json.toString();
 		}
 
-		return jsonRecordObject.toString();
+	public static JsonObject combineRecordMetaDataAndRecordDataIntoJsonObject(JsonElement jsonRecord, RecordMetadata recordMetadata, Long version) {
+		return combineRecordMetaDataAndRecord(jsonRecord, recordMetadata, version);
 	}
 
-	public static JsonObject combineRecordMetaDataAndRecordDataIntoJsonObject(JsonElement jsonRecord,
-			RecordMetadata recordMetadata,
-			Long version) {
+	public static JsonObject combineRecordMetaDataAndRecord(JsonElement jsonRecord, RecordMetadata recordMetadata, Long version) {
 		JsonObject jsonRecordObject = jsonRecord.getAsJsonObject();
 		jsonRecordObject.addProperty("id", recordMetadata.getId());
 		jsonRecordObject.addProperty("version", version);
@@ -121,8 +111,30 @@ public class PersistenceHelper {
 			json = gson.toJsonTree(recordMetadata.getAncestry(), RecordAncestry.class);
 			jsonRecordObject.add("ancestry", json);
 		}
-
+		if (!Strings.isNullOrEmpty(recordMetadata.getUser())) {
+			jsonRecordObject.addProperty("createUser", recordMetadata.getUser());
+		}
+		if(recordMetadata.getCreateTime() != 0) {
+			jsonRecordObject.addProperty("createTime", formatDateTime(new Date(recordMetadata.getCreateTime())));
+		}
+		if (!Strings.isNullOrEmpty(recordMetadata.getModifyUser())) {
+			jsonRecordObject.addProperty("modifyUser", recordMetadata.getModifyUser());
+		}
+		if(recordMetadata.getModifyTime() != 0) {
+			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(recordMetadata.getModifyTime())));
+		}
 		return jsonRecordObject;
+	}
+
+	private static String formatDateTime(Date date) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			String time = sdf.format(date);
+			return time;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	private static JsonElement getDataSubProperty(String field, JsonObject data) {

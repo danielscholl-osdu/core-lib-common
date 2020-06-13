@@ -220,4 +220,16 @@ public class Unit implements IUnit {
         }
         return pr;
     }
+
+    public String getBaseSymbol(){
+        String baseSymbol = null;
+        String basePersistableReference = this.getBaseUnit();
+        String symbol = "\"symbol\":\"";
+
+        int startSymbolIndex = basePersistableReference.indexOf(symbol) + symbol.length();
+        int endSymbolIndex = basePersistableReference.indexOf("\"", startSymbolIndex);
+        baseSymbol = basePersistableReference.substring(startSymbolIndex, endSymbolIndex);
+
+        return baseSymbol;
+    }
 }

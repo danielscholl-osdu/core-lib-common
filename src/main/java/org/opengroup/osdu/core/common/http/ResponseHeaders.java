@@ -30,7 +30,7 @@ public class ResponseHeaders {
         });
         STANDARD_RESPONSE_HEADERS.put("Access-Control-Allow-Headers", new ArrayList<Object>() {
             {
-                add("origin, content-type, accept, authorization, account-id, data-partition-id, correlation-id, on-behalf-of, appkey");
+                add("origin, content-type, accept, authorization, data-partition-id, correlation-id, appkey");
             }
         });
         STANDARD_RESPONSE_HEADERS.put("Access-Control-Allow-Methods", new ArrayList<Object>() {

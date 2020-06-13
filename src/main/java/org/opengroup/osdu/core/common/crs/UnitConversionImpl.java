@@ -31,10 +31,11 @@ public class UnitConversionImpl {
     private static final String UNIT = "unit";
     private static final String META = "meta";
     private static final String DATA = "data";
+    private static final String NAME = "name";
+
     private static final String PROPERTY_NAMES = "propertyNames";
     private static final String PERSISTABLE_REFERENCE = "persistableReference";
 
-    public static final String NO_META_BLOCK = "Unit conversion: missing meta block.";
     public static final String MISSING_META_KIND = "Unit conversion: kind in meta block missing";
     public static final String MISSING_PROPERTY_NAMES = "Unit conversion: propertyNames missing";
     public static final String ILLEGAL_PROPERTY_NAMES = "Unit conversion: propertyNames illegal";
@@ -43,9 +44,6 @@ public class UnitConversionImpl {
     public static final String MISSING_PROPERTY = "Unit conversion: property %s missing";
     public static final String PROPERTY_VALUE_CAST_ERROR = "Unit conversion: cannot cast the value of property %s to double";
     public static final String ILLEGAL_PROPERTY_VALUE = "Unit conversion: illegal value for property %s";
-    public static final String UNIT_CONVERSION_SUCCESS = "Unit conversion: success";
-    public static final String UNIT_CONVERSION_FAILURE = "Unit conversion: failure";
-    public static final String NO_UNIT_CONVERSION = "No unit conversion";
 
     public void convertUnitsToSI(List<ConversionRecord> conversionRecords) {
         for (int i = 0; i < conversionRecords.size(); i++) {
@@ -68,7 +66,6 @@ public class UnitConversionImpl {
             return;
         }
         boolean hasFailure = false;
-        boolean isRecordUpdated = false;
         Iterator<JsonElement> metaIterator = metaArray.iterator();
         while(metaIterator.hasNext()){
             JsonObject meta = (JsonObject)metaIterator.next();
@@ -117,9 +114,8 @@ public class UnitConversionImpl {
                 JsonObject data = record.getAsJsonObject(DATA);
                 for(int i = 0; i < propertyArray.size(); i++) {
                     String name = propertyArray.get(i).getAsString();
-                    JsonElement valueElement = data.get(name);
+                    JsonElement valueElement = this.getPropertyValueFromData(name, data);
                     if((null == valueElement) || (valueElement instanceof JsonNull)) {
-                        hasFailure = true;
                         String message = String.format(MISSING_PROPERTY, name);
                         conversionMessages.add(message);
                         continue;
@@ -127,46 +123,78 @@ public class UnitConversionImpl {
                     try {
                         double value = valueElement.getAsDouble();
                         value = unit.convertToSI(value);
-                        data.remove(name);
-                        data.addProperty(name, value);
+                        this.overwritePropertyToData(name, value, data);
                         unitConverted = true;
-                        isRecordUpdated = true;
                     }
                     catch(ClassCastException ccEx){
                         hasFailure = true;
                         String message = String.format(PROPERTY_VALUE_CAST_ERROR, name);
                         conversionMessages.add(message);
+                        break;
                     }
                     catch(IllegalStateException isEx) {
                         hasFailure = true;
                         String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
                         conversionMessages.add(message);
+                        break;
                     }
-                    catch(NumberFormatException ccEx){
+                    catch(NumberFormatException nfEx){
                         hasFailure = true;
                         String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
                         conversionMessages.add(message);
+                        break;
+                    }
+                    catch(Exception ex){
+                        hasFailure = true;
+                        String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
+                        conversionMessages.add(message);
+                        break;
                     }
                 }
                 if(unitConverted && !hasFailure){
                     String basePersistableReference = unit.getBaseUnit();
                     meta.remove(PERSISTABLE_REFERENCE);
                     meta.addProperty(PERSISTABLE_REFERENCE, basePersistableReference);
+
+                    String baseName = unit.getBaseSymbol();
+                    meta.remove(NAME);
+                    meta.addProperty(NAME, baseName);
                 }
             }
         }
         if(hasFailure) {
-            conversionMessages.add(UNIT_CONVERSION_FAILURE);
             conversionRecord.setConvertStatus(ConvertStatus.ERROR);
         }
-        else {
-            if(isRecordUpdated) {
-                conversionRecord.setConvertStatus(ConvertStatus.SUCCESS);
-            }
-            else {
-                conversionRecord.setConvertStatus(ConvertStatus.NO_FRAME_OF_REFERENCE);
-            }
-        }
         conversionRecord.setConversionMessages(conversionMessages);
+    }
+
+    private JsonElement getPropertyValueFromData(String name, JsonObject data) {
+        String[] nestedNames = name.split("\\.");
+        JsonObject outer = data;
+        JsonObject inner = data;
+        // This loop is to help get nested properties from data block, outer would be datablock itself, and get updated to next level each turn.
+        try {
+            for (int i = 0; i < nestedNames.length - 1; i++) {
+                inner = outer.getAsJsonObject(nestedNames[i]);
+                outer = inner;
+            }
+            // return the very last nested property value, e.g, x.y.z, it should return the value of z
+            return inner.get(nestedNames[nestedNames.length - 1]);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private void overwritePropertyToData(String name, double value, JsonObject data) {
+        String[] nestedNames = name.split("\\.");
+        JsonObject outter = data;
+        JsonObject inner = data;
+
+        for (int i = 0; i < nestedNames.length - 1; i++) {
+            inner = outter.getAsJsonObject(nestedNames[i]);
+            outter = inner;
+        }
+
+        inner.addProperty(nestedNames[nestedNames.length - 1], value);
     }
 }
