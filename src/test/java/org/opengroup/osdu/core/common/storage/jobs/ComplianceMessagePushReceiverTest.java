@@ -20,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
+import org.opengroup.osdu.core.common.model.legal.jobs.ComplianceUpdateStoppedException;
 import org.opengroup.osdu.core.common.model.storage.MessageContent;
 import org.opengroup.osdu.core.common.model.legal.jobs.ComplianceMessagePushReceiver;
 import org.opengroup.osdu.core.common.model.legal.jobs.ILegalComplianceChangeService;
@@ -50,7 +51,7 @@ public class ComplianceMessagePushReceiverTest {
     private ILegalComplianceChangeService legalComplianceChangeService;
 
     @Test
-    public void shouldThrowException_whenNoAccountIDInRequest() {
+    public void shouldThrowException_whenNoAccountIDInRequest()  throws ComplianceUpdateStoppedException {
         MessageContent messageContent = new MessageContent();
         messageContent.setMessageId("testId");
         String decoded = new String(Base64.getDecoder().decode(this.DATA_ENCODED));

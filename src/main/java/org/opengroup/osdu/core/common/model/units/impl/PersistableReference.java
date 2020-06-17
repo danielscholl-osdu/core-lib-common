@@ -39,6 +39,8 @@ import java.io.IOException;
         @JsonSubTypes.Type(value = Measurement.class, name = "UM"),
         @JsonSubTypes.Type(value = UnitScaleOffset.class, name = "USO"),
         @JsonSubTypes.Type(value = UnitEnergistics.class, name = "UAD"),
+        @JsonSubTypes.Type(value = Date.class, name = "DAT"),
+        @JsonSubTypes.Type(value = DateTime.class, name = "DTM"),
 })
 public class PersistableReference {
 

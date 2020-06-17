@@ -18,14 +18,18 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.http.AppException;
@@ -35,6 +39,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.*;
@@ -62,6 +67,9 @@ public class UrlFetchServiceImplTest {
 
     @Mock
     private static DpsHeaders HEADERS;
+
+    @Captor
+    private ArgumentCaptor<HttpGet> httpGetArgumentCaptor;
 
     @Before
     public void setup() {
@@ -95,16 +103,31 @@ public class UrlFetchServiceImplTest {
 
         when(httpClientHandler.sendRequest(any(), any())).thenReturn(httpResponse);
 
-        HttpResponse result = this.sut.sendRequest(GET, ADDRESS, HEADERS, null, null);
+        FetchServiceHttpRequest request = FetchServiceHttpRequest.builder().httpMethod(GET).url(ADDRESS).headers(HEADERS).build();
+        HttpResponse result = this.sut.sendRequest(request);
         assertEquals(HttpStatus.SC_OK, result.getResponseCode());
         assertEquals(RESPONSE, result.getBody());
+    }
+
+    @Test
+    public void shouldReturnResponseSuccessfullyWhenRequestIsValid() throws URISyntaxException {
+        final FetchServiceHttpRequest httpRequest = FetchServiceHttpRequest.builder().httpMethod(GET).url(ADDRESS).headers(HEADERS).build();
+        final HttpResponse expectedHttpResponse = new HttpResponse();
+        when(httpClientHandler.sendRequest(Mockito.any(HttpGet.class), Mockito.eq(HEADERS))).thenReturn(expectedHttpResponse);
+
+        final HttpResponse httpResponse = sut.sendRequest(httpRequest);
+
+        assertEquals(expectedHttpResponse, httpResponse);
+        verify(httpClientHandler).sendRequest(httpGetArgumentCaptor.capture(), Mockito.eq(HEADERS));
+        assertEquals(httpGetArgumentCaptor.getValue().getURI().toString(), ADDRESS);
     }
 
     @Test
     public void should_returnHttp404_when_httpMethodIsInvalid() {
 
         try {
-            this.sut.sendRequest("DELETE", ADDRESS, HEADERS, null, BODY);
+            FetchServiceHttpRequest request = FetchServiceHttpRequest.builder().httpMethod("DELETE").url(ADDRESS).headers(HEADERS).body(BODY).build();
+            this.sut.sendRequest(request);
 
             fail("Should not succeed");
         } catch (AppException e) {
@@ -142,7 +165,8 @@ public class UrlFetchServiceImplTest {
 
         when(httpClientHandler.sendRequest(any(), any())).thenReturn(httpResponse);
 
-        HttpResponse result = this.sut.sendRequest(POST, ADDRESS, HEADERS, null, BODY);
+        FetchServiceHttpRequest request = FetchServiceHttpRequest.builder().httpMethod(POST).url(ADDRESS).headers(HEADERS).body(BODY).build();
+        HttpResponse result = this.sut.sendRequest(request);
         assertEquals(HttpStatus.SC_OK, result.getResponseCode());
         assertEquals(RESPONSE, result.getBody());
     }
@@ -228,7 +252,8 @@ public class UrlFetchServiceImplTest {
 
         when(httpClientHandler.sendRequest(any(), any())).thenReturn(httpResponse);
 
-        HttpResponse result = this.sut.sendRequest(PUT, ADDRESS, HEADERS, null, BODY);
+        FetchServiceHttpRequest request = FetchServiceHttpRequest.builder().httpMethod(PUT).url(ADDRESS).headers(HEADERS).body(BODY).build();
+        HttpResponse result = this.sut.sendRequest(request);
         assertEquals(HttpStatus.SC_OK, result.getResponseCode());
         assertEquals(RESPONSE, result.getBody());
     }

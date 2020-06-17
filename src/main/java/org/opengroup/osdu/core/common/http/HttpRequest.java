@@ -33,6 +33,7 @@ public class HttpRequest {
     String httpMethod;
     String url;
     String body;
+    Map<String, String> queryParams;
 
     @Builder.Default
     Map<String, String> headers = new HashMap<>();

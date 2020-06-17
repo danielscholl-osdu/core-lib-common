@@ -14,8 +14,7 @@
 
 package org.opengroup.osdu.core.common.model.units;
 
-import org.opengroup.osdu.core.common.model.units.impl.UnitEnergistics;
-import org.opengroup.osdu.core.common.model.units.impl.UnitScaleOffset;
+import org.opengroup.osdu.core.common.model.units.impl.*;
 
 public class ItemFactory {
     private ItemFactory() {
@@ -29,7 +28,13 @@ public class ItemFactory {
             result = new Unit((UnitScaleOffset) parsedRaw);
         } else if (parsedRaw instanceof UnitEnergistics) {
             result = new Unit((UnitEnergistics) parsedRaw);
+        } else if (parsedRaw instanceof Date) {
+            result = new DateTimeItem((Date) parsedRaw);
         }
+        else if (parsedRaw instanceof DateTime) {
+            result = new DateTimeItem((DateTime) parsedRaw);
+        }
+
         return result;
     }
 }

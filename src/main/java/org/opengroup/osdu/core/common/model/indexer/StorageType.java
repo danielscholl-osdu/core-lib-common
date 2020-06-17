@@ -22,11 +22,19 @@ public enum StorageType {
 
     BOOLEAN("boolean"),
 
+    BOOLEAN_ARRAY("[]boolean"),
+
     STRING("string"),
+
+    STRING_ARRAY("[]string"),
 
     INT("int"),
 
+    INT_ARRAY("[]int"),
+
     FLOAT("float"),
+
+    FLOAT_ARRAY("[]float"),
 
     DOUBLE("double"),
 
@@ -34,7 +42,11 @@ public enum StorageType {
 
     LONG("long"),
 
+    LONG_ARRAY("[]long"),
+
     DATETIME("datetime"),
+
+    DATETIME_ARRAY("[]datetime"),
 
     GEO_POINT("core:dl:geopoint:1.0.0"),
 

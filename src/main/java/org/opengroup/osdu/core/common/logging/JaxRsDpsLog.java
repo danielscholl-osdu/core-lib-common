@@ -14,6 +14,9 @@
 
 package org.opengroup.osdu.core.common.logging;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHeaders;
+import org.opengroup.osdu.core.common.model.AppEngineHeaders;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.http.HeadersToLog;
 import org.opengroup.osdu.core.common.model.http.Request;
@@ -88,6 +91,14 @@ public class JaxRsDpsLog implements AutoCloseable {
 	}
 
 	private Map<String, String> getLabels() {
-		return new HeadersToLog(Collections.emptyList()).createStandardLabelsFromMap(this.headers.getHeaders());
+		Map<String, String> out;
+		if (headers != null) {
+			out = LogUtils.createStandardLabelsFromMap(headers.getHeaders());
+			if (out.containsKey(AppEngineHeaders.TASK_RETRY_COUNT)) {
+				out.put(AppEngineHeaders.TASK_RETRY_COUNT, StringUtils.join(out.get(AppEngineHeaders.TASK_RETRY_COUNT), ','));
+			}
+			return out;
 	}
+		return Collections.emptyMap();
+}
 }

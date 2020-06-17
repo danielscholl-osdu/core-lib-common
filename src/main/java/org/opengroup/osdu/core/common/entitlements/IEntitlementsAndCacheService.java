@@ -15,11 +15,14 @@
 package org.opengroup.osdu.core.common.entitlements;
 
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
+import org.opengroup.osdu.core.common.model.storage.RecordMetadata;
 
+import java.util.List;
 import java.util.Set;
 
 public interface IEntitlementsAndCacheService {
 
 	String authorize(DpsHeaders headers, String... roles);
 	boolean isValidAcl(DpsHeaders headers, Set<String> acls);
+	List<RecordMetadata> hasValidAccess(List<RecordMetadata> recordsMetadata, DpsHeaders headers);
 }

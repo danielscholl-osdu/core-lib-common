@@ -17,6 +17,7 @@ package org.opengroup.osdu.core.common.model.crs;
 import com.google.gson.JsonObject;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.opengroup.osdu.core.common.model.storage.ConversionStatus;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ import java.util.List;
 public class PointConversionInfo {
    private String recordId;
    private int recordIndex;
-   private List<String> conversionStatus;
+   ConversionStatus.ConversionStatusBuilder statusBuilder;
    private String xFieldName;
    private String yFieldName;
    private String zFieldName;
@@ -34,5 +35,4 @@ public class PointConversionInfo {
    private Double zValue;
    private int metaItemIndex;
    private List<JsonObject> metaItems;
-   private boolean hasError;
 }

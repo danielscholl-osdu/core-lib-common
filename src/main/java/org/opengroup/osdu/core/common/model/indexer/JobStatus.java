@@ -101,6 +101,12 @@ public class JobStatus {
                 .collect(Collectors.toList());
     }
 
+    public List<String> getIdsByValidUpsertIndexingStatus() {
+
+        return this.statusesList.stream().filter(s -> (s.getStatus() == IndexingStatus.PROCESSING) || (s.getStatus() == IndexingStatus.SKIP) || (s.getStatus() == IndexingStatus.WARN)).map(RecordStatus::getId)
+                                .collect(Collectors.toList());
+    }
+
     public String getRecordKindById(String id) {
         Optional<RecordStatus> optionalRecordStatus = this.statusesList.stream().filter(s -> s.getId()
                 .equalsIgnoreCase(id)).findFirst();

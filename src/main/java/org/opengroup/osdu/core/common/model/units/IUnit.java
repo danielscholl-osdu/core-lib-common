@@ -123,4 +123,10 @@ public interface IUnit extends IItem {
      * @return the persistableReference string for the base unit; invalid units return null
      */
     String getBaseUnit();
+
+    /**
+     * Extracts the base symbol for the current unit's measurement from getBaseUnit() String
+     * @return the symbol string for the base unit; invalid units return null
+     */
+    String getBaseSymbol();
 }

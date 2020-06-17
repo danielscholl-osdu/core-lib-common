@@ -37,7 +37,7 @@ public class ComplianceMessagePushReceiver {
 	@Autowired
 	private ILegalComplianceChangeService legalComplianceChangeService;
 
-	public void receiveMessageFromHttpRequest() {
+	public void receiveMessageFromHttpRequest() throws ComplianceUpdateStoppedException {
 		LegalTagChangedCollection dto = new Gson().fromJson(this.requestBodyExtractor.extractDataFromRequestBody(),
 				LegalTagChangedCollection.class);
 		LegalTagChangedCollection validDto = this.legalTagConsistencyValidator.checkLegalTagStatusWithLegalService(dto);

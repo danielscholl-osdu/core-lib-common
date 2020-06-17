@@ -25,57 +25,9 @@ import java.util.Set;
 @Data
 @Component
 public class CrsPropertySet {
-	private Set<String> xPropertyNames;
-	private Set<String> yPropertyNames;
-	private Set<String> zPropertyNames;
+
 	private Set<String> nestedPropertyNames;
 	private Map<String, String> propertyPairing;
-
-	public Set<String> getxPropertyNames() {
-		if (this.xPropertyNames == null) {
-			this.xPropertyNames = new HashSet<>();
-		}
-
-		this.xPropertyNames.add("X");
-		this.xPropertyNames.add("LON");
-		this.xPropertyNames.add("Longitude");
-		this.xPropertyNames.add("wlbEwUtm");
-		this.xPropertyNames.add("wlbEwDesDeg");
-		this.xPropertyNames.add("TOPHOLEXNG");
-		this.xPropertyNames.add("TOPHOLEXDD");
-		this.xPropertyNames.add("BHLongitude");
-		this.xPropertyNames.add("Utm_X");
-
-		return this.xPropertyNames;
-	}
-
-	public Set<String> getyPropertyNames() {
-		if (this.yPropertyNames == null) {
-			this.yPropertyNames = new HashSet<>();
-		}
-
-		this.yPropertyNames.add("Y");
-		this.yPropertyNames.add("LAT");
-		this.yPropertyNames.add("Latitude");
-		this.yPropertyNames.add("wlbNsUtm");
-		this.yPropertyNames.add("wlbNsDecDeg");
-		this.yPropertyNames.add("TOPHOLEYNG");
-		this.yPropertyNames.add("TOPHOLEYDD");
-		this.yPropertyNames.add("BHLatitude");
-		this.yPropertyNames.add("Utm_Y");
-
-		return this.yPropertyNames;
-	}
-
-	public Set<String> getzPropertyNames() {
-		if (this.zPropertyNames == null) {
-			this.zPropertyNames = new HashSet<>();
-		}
-
-		this.zPropertyNames.add("Z");
-
-		return this.zPropertyNames;
-	}
 
 	public Set<String> getNestedPropertyNames() {
 		if (this.nestedPropertyNames == null) {

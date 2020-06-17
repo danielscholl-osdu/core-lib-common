@@ -42,6 +42,23 @@ public enum ElasticType {
 
     BOOLEAN("boolean"),
 
+    // arrays only used for validations, elastic supports this out of the box
+    KEYWORD_ARRAY("keyword_array"),
+
+    TEXT_ARRAY("text_array"),
+
+    INTEGER_ARRAY("integer_array"),
+
+    LONG_ARRAY("long_array"),
+
+    FLOAT_ARRAY("float_array"),
+
+    DOUBLE_ARRAY("double_array"),
+
+    BOOLEAN_ARRAY("boolean_array"),
+
+    DATE_ARRAY("date_array"),
+
     UNDEFINED("undefined");
 
     private final String value;

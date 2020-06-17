@@ -65,6 +65,17 @@ public class DpsHeaders {
         return output;
     }
 
+    public static DpsHeaders createFromEntrySetSimple(Set<Map.Entry<String, String>> input) {
+        DpsHeaders output = new DpsHeaders();
+        input.forEach((k) -> {
+            String key = k.getKey().toLowerCase();
+            if (headerKeys.contains(key)) {
+                output.headers.put(key, k.getValue());
+            }
+        });
+        return output;
+    }
+
     public static DpsHeaders createFromMap(Map<String, String> input) {
         DpsHeaders output = new DpsHeaders();
         output.addFromMap(input);

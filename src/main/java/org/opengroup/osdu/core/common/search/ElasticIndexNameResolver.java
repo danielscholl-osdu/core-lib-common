@@ -42,7 +42,7 @@ public class ElasticIndexNameResolver {
         if (KIND_INDEX_MAP.containsKey(kind)) {
             return KIND_INDEX_MAP.get(kind);
         }
-        if (!KIND_INDEX_MAP.containsKey(kind)) {
+        else {
             KIND_INDEX_MAP.putIfAbsent(kind, index);
             INDEX_KIND_MAP.putIfAbsent(index, kind);
         }

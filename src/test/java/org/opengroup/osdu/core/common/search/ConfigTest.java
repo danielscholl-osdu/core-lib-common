@@ -31,6 +31,7 @@ public class ConfigTest {
         System.setProperty("ELASTIC_HOST", "DDD");
         System.setProperty("ELASTIC_CLUSTER_NAME", "FFF");
         System.setProperty("GOOGLE_CLOUD_PROJECT", "GGG");
+        System.setProperty("GOOGLE_CLOUD_PROJECT_REGION", "us-central1");
         System.setProperty("STORAGE_SCHEMA_HOST", "KKK");
         System.setProperty("STORAGE_QUERY_RECORD_HOST", "LLL");
         System.setProperty("STORAGE_QUERY_RECORD_FOR_CONVERSION_HOST", "For");
@@ -67,6 +68,7 @@ public class ConfigTest {
         assertEquals("DDD", Config.getElasticServerAddress());
         assertEquals("FFF", Config.getElasticClusterName());
         assertEquals("GGG", Config.getGoogleCloudProjectId());
+        assertEquals("us-central1", Config.getDeploymentLocation());
         assertEquals("KKK", Config.getStorageSchemaHostUrl());
         assertEquals("LLL", Config.getStorageQueryRecordHostUrl());
         assertEquals("For", Config.getStorageQueryRecordFoRConversionHostUrl());

@@ -16,7 +16,6 @@ package org.opengroup.osdu.core.common.model.indexer;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.ToString;
 
 @Data
 @Builder
@@ -28,7 +27,15 @@ public class RecordStatus {
 
     private IndexingStatus status;
 
-    @ToString.Exclude private IndexProgress indexProgress;
+    private IndexProgress indexProgress;
+
+    public String succeededAuditLogMessage() {
+        return "RecordStatus(id=" + this.id + ", kind=" + this.kind + ", operationType=" + this.operationType + ", status=" + this.status.toString() + ")";
+    }
+
+    public String failedAuditLogMessage() {
+        return "RecordStatus(id=" + this.id + ", kind=" + this.kind + ", operationType=" + this.operationType + ", status=" + this.status.toString() + ", message=" + this.getLatestTrace() + ")";
+    }
 
     public String getLatestTrace() {
         if (indexProgress != null && indexProgress.getTrace() != null && indexProgress.getTrace().size() > 0) {

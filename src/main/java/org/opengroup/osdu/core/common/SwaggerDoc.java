@@ -111,6 +111,14 @@ public final class SwaggerDoc {
     public static final String LATITUDE = "Latitude of point.";
     public static final String LONGITUDE = "Longitude of point.";
 
+    // FILTER CACHE SYNC
+    public static final String FILTER_CACHE_CRON_TAG = "Synchronize Attribute Filter Cache";
+    public static final String FILTER_CACHE_CRON_GET_TITLE = "Synchronize attribute filter cache";
+    public static final String FILTER_CACHE_CRON_OPERATION_ID = "Synchronize Attribute Filter Cache";
+    public static final String FILTER_CACHE_CRON_GET_NOTES = "API for synchronizing cache with filter attribute values";
+    public static final String FILTER_CACHE_CRON_GET_RESPONSE_OK = "Success";
+    public static final String FILTER_CACHE_CRON_GET_RESPONSE_INTERNAL_SERVER_ERROR = "Error occurred during attribute filter cache update";
+
     // INDEXER
     public static final String INDEXER_TAG = "Indexer";
     public static final String INDEXER_DESCRIPTION = "Indexer endpoints to index data in Data Ecosystem";
@@ -118,6 +126,7 @@ public final class SwaggerDoc {
     // REINDEX
     public static final String REINDEX_POST_TITLE = "Re-index given 'kind'.";
     public static final String REINDEX_OPERATION_ID = "Reindex kind";
+    public static final String REINDEX_PARAMETER_FORCE_CLEAN = "Delete index before starting re-index.";
     public static final String REINDEX_POST_NOTES = "The API triggers re-indexing of 'kind'. Required roles: 'users.datalake.admins' or 'users.datalake.ops'";
     public static final String REINDEX_POST_RESPONSE_OK = "Success";
     public static final String REINDEX_POST_RESPONSE_BAD_REQUEST = "Invalid parameters were given on request";
