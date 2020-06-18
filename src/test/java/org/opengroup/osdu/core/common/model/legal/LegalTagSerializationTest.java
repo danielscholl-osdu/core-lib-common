@@ -91,4 +91,18 @@ public class LegalTagSerializationTest {
 
         Assert.assertEquals(Date.valueOf("9999-12-31"), legalTag.getProperties().getExpirationDate());
     }
+
+    @Test
+    public void shouldParseDateInOldFormat() throws IOException {
+        final String input = "{\"id\":123,\"name\":\"name\",\"description\":\"desc\"," +
+                "\"properties\":{\"countryOfOrigin\":[\"US\",\"BY\"],\"contractId\":\"contrId\"," +
+                "\"expirationDate\": 1570863500000,\"originator\":\"company\"," +
+                "\"dataType\":\"dataType\",\"securityClassification\":\"securityClassification\"," +
+                "\"personalData\":\"data\",\"exportClassification\":\"exportClassification\"}," +
+                "\"isValid\":false}";
+
+        LegalTag legalTag = objectMapper.readValue(input, LegalTag.class);
+
+        Assert.assertEquals(Date.valueOf("2019-10-12").toLocalDate(), legalTag.getProperties().getExpirationDate().toLocalDate());
+    }
 }

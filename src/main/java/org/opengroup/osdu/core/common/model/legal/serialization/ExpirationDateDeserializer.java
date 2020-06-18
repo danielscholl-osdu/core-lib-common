@@ -23,6 +23,9 @@ public class ExpirationDateDeserializer extends StdDeserializer<Date> {
         if (expirationDate == null || StringUtils.isBlank(expirationDate.asText())) {
             return Properties.DEFAULT_EXPIRATIONDATE;
         }
+        if (expirationDate.isLong()) {
+            return new Date(expirationDate.asLong());
+        }
         return Date.valueOf(LocalDate.parse(expirationDate.asText()));
     }
 }
