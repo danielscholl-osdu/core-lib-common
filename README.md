@@ -110,7 +110,7 @@ Below are integration tests showing usage of the entitlement client wrapper
            assertFalse( groups.getGroups().stream().anyMatch( (i) -> i.getEmail() == newGroupEmail.getGroupEmail()));
 
 
-You can configure the environment and credentials used on Entitlements requests using the config. By default it is configured to work in the P4D environment.
+You can configure the environment and credentials used on Entitlements requests using the config. By default, it is configured to work in the Opendes environment.
 
        EntitlementsFactory sutFactory = new EntitlementsFactory(
                 EntitlementsAPIConfig
