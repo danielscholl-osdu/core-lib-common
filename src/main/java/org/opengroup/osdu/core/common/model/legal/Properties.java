@@ -1,20 +1,24 @@
 package org.opengroup.osdu.core.common.model.legal;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.Strings;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.opengroup.osdu.core.common.model.legal.serialization.ExpirationDateDeserializer;
 import org.opengroup.osdu.core.common.model.legal.validation.ValidDataType;
 import org.opengroup.osdu.core.common.model.legal.validation.ValidExportClassification;
 import org.opengroup.osdu.core.common.model.legal.validation.ValidLegalTagProperties;
 import org.opengroup.osdu.core.common.model.legal.validation.ValidOriginator;
 import org.opengroup.osdu.core.common.model.legal.validation.ValidPersonalData;
 import org.opengroup.osdu.core.common.model.legal.validation.ValidSecurityClassification;
-import lombok.*;
 
-import  java.sql.Date;
-
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -38,6 +42,8 @@ public class Properties {
 
     private String contractId;
 
+    @JsonDeserialize(using = ExpirationDateDeserializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date expirationDate;
 
     @Getter(AccessLevel.NONE)
@@ -57,11 +63,11 @@ public class Properties {
     private String exportClassification;
 
 
-    public Properties(){
+    public Properties() {
         countryOfOrigin = new ArrayList<>();
         dataType = "";
         securityClassification = "";
-        personalData= "";
+        personalData = "";
         exportClassification = "";
         originator = "";
         contractId = "";
@@ -71,7 +77,8 @@ public class Properties {
     public void setCountryOfOrigin(List<String> countryOfOrigin) {
         this.countryOfOrigin = countryOfOrigin == null ? null : countryOfOrigin.stream().map(name -> name.toUpperCase()).collect(Collectors.toList()); //expect iso country code so we will enforce uppercase
     }
-    public String getOriginator(){
+
+    public String getOriginator() {
         return originator == null ? "" : originator;
     }
 
@@ -80,32 +87,37 @@ public class Properties {
     }
 
     @JsonIgnore
-    public boolean hasExpired(){
+    public boolean hasExpired() {
         return expirationDate.before(new Date(System.currentTimeMillis()));
     }
+
     @JsonIgnore
-    public boolean isDefaultExpirationDate(){
+    public boolean isDefaultExpirationDate() {
         return expirationDate.equals(DEFAULT_EXPIRATIONDATE);
     }
+
     @JsonIgnore
-    public boolean hasThirdPartyDataType(){
+    public boolean hasThirdPartyDataType() {
         return dataType.equalsIgnoreCase(DataTypeValues.THIRD_PARTY_DATA);
     }
+
     @JsonIgnore
-    public boolean hasSecondPartyDataType(){
+    public boolean hasSecondPartyDataType() {
         return dataType.equalsIgnoreCase(DataTypeValues.SECOND_PARTY_DATA);
     }
+
     @JsonIgnore
-    public boolean hasContractId(){
-        if(Strings.isNullOrEmpty(contractId))
+    public boolean hasContractId() {
+        if (Strings.isNullOrEmpty(contractId))
             return false;
-        else if(isUnknownOrNonExistantContractId())
+        else if (isUnknownOrNonExistantContractId())
             return false;
         else { //validate it has a properties id
             Pattern p = Pattern.compile("^[-.A-Za-z0-9]{3,40}+$");
             return p.matcher(contractId).matches();
         }
     }
+
     @JsonIgnore
     public boolean isUnknownOrNonExistantContractId() {
         return !Strings.isNullOrEmpty(contractId) && (contractId.equalsIgnoreCase(UNKNOWN_CONTRACT_ID) ||

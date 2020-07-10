@@ -21,7 +21,7 @@ import lombok.Data;
 @Data
 public class EntitlementsAPIConfig {
     @Builder.Default
-    String rootUrl = "https://entitlements-dot-p4d-ddl-eu-services.appspot.com/entitlements/v1";
+    String rootUrl = "https://entitlements-dot-opendes.appspot.com/entitlements/v1";
 
     String apiKey;
 
