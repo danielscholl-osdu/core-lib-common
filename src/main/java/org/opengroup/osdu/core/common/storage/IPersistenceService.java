@@ -14,9 +14,15 @@
 
 package org.opengroup.osdu.core.common.storage;
 
+import java.util.List;
+import java.util.Map;
+
+import org.opengroup.osdu.core.common.model.storage.RecordMetadata;
 import org.opengroup.osdu.core.common.model.storage.TransferBatch;
 
 public interface IPersistenceService {
 
 	void persistRecordBatch(TransferBatch transfer);
+
+	List<String> updateMetadata(List<RecordMetadata> recordMetadata, List<String> recordsId, Map<String, String> recordsIdMap);
 }

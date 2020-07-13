@@ -24,5 +24,6 @@ public interface IEntitlementsAndCacheService {
 
 	String authorize(DpsHeaders headers, String... roles);
 	boolean isValidAcl(DpsHeaders headers, Set<String> acls);
+	boolean hasOwnerAccess(DpsHeaders headers, String[] ownerList);
 	List<RecordMetadata> hasValidAccess(List<RecordMetadata> recordsMetadata, DpsHeaders headers);
 }
