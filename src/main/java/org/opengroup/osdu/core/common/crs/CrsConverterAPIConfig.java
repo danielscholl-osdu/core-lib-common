@@ -21,7 +21,7 @@ import lombok.Data;
 @Data
 public class CrsConverterAPIConfig {
     @Builder.Default
-    String rootUrl = "https://crs-converter-dot-p4d-ddl-eu-services.appspot.com/api/crs/v1";
+    String rootUrl = "https://os-crs-converter-gae-dot-opendes.appspot.com/api/crs/v1";
 
     String apiKey;
 

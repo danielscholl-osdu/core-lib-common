@@ -21,7 +21,7 @@ import lombok.Data;
 @Data
 public class LegalAPIConfig {
     @Builder.Default
-    String rootUrl = "https://legal-dot-p4d-ddl-eu-services.appspot.com/api/legal/v1";
+    String rootUrl = "https://os-legal-dot-opendes.appspot.com/api/legal/v1";
 
     String apiKey;
 
