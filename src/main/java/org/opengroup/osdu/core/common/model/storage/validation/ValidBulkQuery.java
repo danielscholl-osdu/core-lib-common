@@ -12,17 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.opengroup.osdu.core.common.storage;
+package org.opengroup.osdu.core.common.model.storage.validation;
 
-import java.util.List;
-import java.util.Map;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.*;
 
-import org.opengroup.osdu.core.common.model.storage.RecordMetadata;
-import org.opengroup.osdu.core.common.model.storage.TransferBatch;
+@Target({ ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.PARAMETER })
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = {BulkQueryValidator.class})
+@Documented
+public @interface ValidBulkQuery {
+    String message() default "";
 
-public interface IPersistenceService {
+    Class<?>[] groups() default {};
 
-	void persistRecordBatch(TransferBatch transfer);
-
-	List<String> updateMetadata(List<RecordMetadata> recordMetadata, List<String> recordsId, Map<String, String> recordsIdMap);
+    Class<? extends Payload>[] payload() default {};
 }

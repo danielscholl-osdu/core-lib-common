@@ -12,17 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.opengroup.osdu.core.common.storage;
+package org.opengroup.osdu.core.common.model.storage.validation;
 
-import java.util.List;
-import java.util.Map;
+import java.lang.annotation.*;
 
-import org.opengroup.osdu.core.common.model.storage.RecordMetadata;
-import org.opengroup.osdu.core.common.model.storage.TransferBatch;
+import javax.validation.Constraint;
+import javax.validation.Payload;
 
-public interface IPersistenceService {
+@Target({ ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.PARAMETER })
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = {PatchOpValidator.class})
+@Documented
+public @interface ValidPatchOp {
+    String message() default "";
 
-	void persistRecordBatch(TransferBatch transfer);
+    Class<?>[] groups() default {};
 
-	List<String> updateMetadata(List<RecordMetadata> recordMetadata, List<String> recordsId, Map<String, String> recordsIdMap);
+    Class<? extends Payload>[] payload() default {};
 }

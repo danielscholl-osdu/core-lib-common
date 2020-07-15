@@ -90,6 +90,28 @@ public final class SwaggerDoc {
     public static final String CREATE_UPDATE_RECORD_RESPONSE_NOT_AUTHORIZED = "User not authorized to perform the action.";
     public static final String CREATE_UPDATE_RECORD_RESPONSE_GROUPS_NOT_FOUND = "Invalid acl group.";
 
+    // RECORD BULK UPDATE RESPONSE
+    public static final String BULK_UPDATE_RECORD_RESPONSE_DESCRIPTION = "Result of the bulk update request.";
+    public static final String BULK_UPDATE_RECORD_COUNT_DESCRIPTION = "Number of records ingested successfully.";
+    public static final String BULK_UPDATE_RECORD_IDS_DESCRIPTION = "List of updated record id.";
+    public static final String BULK_UPDATE_RECORD_IDS_NOTFOUND = "List of not found record id.";
+    public static final String BULK_UPDATE_RECORD_IDS_UNAUTHORIZED = "List of record id that caller does not have proper permission to update.";
+    public static final String BULK_UPDATE_RECORD_IDS_LOCK = "List of record id which can not be updated due to  optimistic locking.";
+
+    // RECORD BULK UPDATE
+    public static final String BULK_UPDATE_RECORD = "Update records' metadata";
+    public static final String BULK_UPDATE_RECORD_DESCRIPTION = "The API allows updating metadata of list of records. It will keep the original content of the record and overwrite the metadata of the latest version. "
+            + "Required roles: 'users.datalake.editors' or 'users.datalake.admins'.";
+    public static final String BULK_UPDATE_RECORD_RESPONSE_OK = "Records' metadata updated successfully.";
+    public static final String BULK_UPDATE_RECORD_RESPONSE_BAD_REQUEST = "Invalid bulk update parameter.";
+    public static final String RECORD_QUERY_CONDITION = "Record query condition.";
+    public static final String RECORD_METADATA_OPERATIONS = "Record metadata operations.";
+    public static final String BULK_UPDATE_RECORD_RESPONSE_PARTIAL_SUCCESS = "Records' metadata update partially succeeded.";
+    public static final String BULK_UPDATE_RECORD_OP = "Bulk update record operation.";
+    public static final String BULK_UPDATE_RECORD_OP_EXAMPLE = "replace";
+    public static final String BULK_UPDATE_RECORD_PATH = "Bulk update record path.";
+    public static final String BULK_UPDATE_RECORD_PATH_EXAMPLE = "/acl/owners";
+
     // GET RECORD VERSION
     public static final String GET_RECORD_VERSION = "Get all record versions";
     public static final String GET_RECORD_VERSION_DESCRIPTION = "The API returns a list containing all versions for the given record id. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.";
