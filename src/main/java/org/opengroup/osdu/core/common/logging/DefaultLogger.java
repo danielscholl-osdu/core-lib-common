@@ -44,34 +44,34 @@ public class DefaultLogger implements ILogger {
     }
 
     @Override
-    public void audit(String logname, AuditPayload payload, Map<String, String> headers){
-        logWriter.writeJsonEntry(logname, payload, headersToLog.createStandardLabelsFromMap(headers));
+    public void audit(String logPrefix, AuditPayload payload, Map<String, String> headers){
+        logWriter.writeJsonEntry(logPrefix, payload, headersToLog.createStandardLabelsFromMap(headers));
     }
     @Override
-    public void request(String logname, Request request, Map<String, String> labels){
-        logWriter.writeRequestEntry(logname,"#RequestLog", request, headersToLog.createStandardLabelsFromMap(labels));
+    public void request(String logPrefix, Request request, Map<String, String> labels){
+        logWriter.writeRequestEntry(logPrefix,"#RequestLog", request, headersToLog.createStandardLabelsFromMap(labels));
     }
     @Override
-    public void info(String logname, String message, Map<String, String> labels){
-        logWriter.writeEntry(logname, Level.INFO, message, headersToLog.createStandardLabelsFromMap(labels));
+    public void info(String logPrefix, String message, Map<String, String> labels){
+        logWriter.writeEntry(logPrefix, Level.INFO, message, headersToLog.createStandardLabelsFromMap(labels));
     }
     @Override
-    public void warning(String logname, String message, Map<String, String> labels){
-        logWriter.writeEntry(logname, Level.WARNING, message, headersToLog.createStandardLabelsFromMap(labels));
+    public void warning(String logPrefix, String message, Map<String, String> labels){
+        logWriter.writeEntry(logPrefix, Level.WARNING, message, headersToLog.createStandardLabelsFromMap(labels));
     }
     @Override
-    public void warning(String logname, String message, Exception ex, Map<String, String> labels){
+    public void warning(String logPrefix, String message, Exception ex, Map<String, String> labels){
         String exString = Throwables.getStackTraceAsString(ex);
-        logWriter.writeEntry(logname, Level.WARNING, String.format("%s\n%s", message, exString), headersToLog.createStandardLabelsFromMap(labels));
+        logWriter.writeEntry(logPrefix, Level.WARNING, String.format("%s\n%s", message, exString), headersToLog.createStandardLabelsFromMap(labels));
     }
     @Override
-    public void error(String logname, String message, Map<String, String> labels){
-        logWriter.writeEntry(logname, Level.SEVERE, message, headersToLog.createStandardLabelsFromMap(labels));
+    public void error(String logPrefix, String message, Map<String, String> labels){
+        logWriter.writeEntry(logPrefix, Level.SEVERE, message, headersToLog.createStandardLabelsFromMap(labels));
     }
     @Override
-    public void error(String logname, String message, Exception ex, Map<String, String> labels){
+    public void error(String logPrefix, String message, Exception ex, Map<String, String> labels){
         String exString = Throwables.getStackTraceAsString(ex);
-        logWriter.writeEntry(logname, Level.SEVERE, String.format("%s\n%s", message, exString), headersToLog.createStandardLabelsFromMap(labels));
+        logWriter.writeEntry(logPrefix, Level.SEVERE, String.format("%s\n%s", message, exString), headersToLog.createStandardLabelsFromMap(labels));
     }
     @Override
     public void close() throws Exception {

@@ -20,17 +20,52 @@ import org.opengroup.osdu.core.common.logging.audit.AuditPayload;
 import java.util.Map;
 
 public interface ILogger extends AutoCloseable {
-    void audit(String logname, AuditPayload payload, Map<String, String> headers);
+    void audit(String logPrefix, AuditPayload payload, Map<String, String> headers);
 
-    void request(String logname, Request request, Map<String, String> headers);
+    default void audit(final String loggerName, final String logPrefix, final AuditPayload payload,
+                       final Map<String, String> headers) {
+        this.audit(logPrefix, payload, headers);
+    }
 
-    void info(String logname, String message, Map<String, String> headers);
+    void request(String logPrefix, Request request, Map<String, String> headers);
 
-    void warning(String logname, String message, Map<String, String> headers);
+    default void request(final String loggerName, final String logPrefix, final Request request,
+                         final Map<String, String> headers) {
+        this.request(logPrefix, request, headers);
+    }
 
-    void warning(String logname, String message, Exception ex, Map<String, String> headers);
+    void info(String logPrefix, String message, Map<String, String> headers);
 
-    void error(String logname, String message, Map<String, String> headers);
+    default void info(final String loggerName, final String logPrefix, final String message,
+                      final Map<String, String> headers) {
+        this.info(logPrefix, message, headers);
+    }
 
-    void error(String logname, String message, Exception ex, Map<String, String> headers);
+    void warning(String logPrefix, String message, Map<String, String> headers);
+
+    default void warning(final String loggerName, final String logPrefix, final String message,
+                         final Map<String, String> headers) {
+        this.warning(logPrefix, message, headers);
+    }
+
+    void warning(String logPrefix, String message, Exception ex, Map<String, String> headers);
+
+    default void warning(final String loggerName, final String logPrefix, final String message, final Exception ex,
+                         final Map<String, String> headers) {
+        this.warning(logPrefix, message, ex, headers);
+    }
+
+    void error(String logPrefix, String message, Map<String, String> headers);
+
+    default void error(final String loggerName, final String logPrefix, final String message,
+                       final Map<String, String> headers) {
+        this.error(logPrefix, message, headers);
+    }
+
+    void error(String logPrefix, String message, Exception ex, Map<String, String> headers);
+
+    default void error(final String loggerName, final String logPrefix, final String message, final Exception ex,
+                       final Map<String, String> headers) {
+        this.error(logPrefix, message, ex, headers);
+    }
 }
