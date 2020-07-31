@@ -116,6 +116,28 @@ public class DpsHeadersTest {
         assertEquals("abc@xyz.com", sut.getUserEmail());
     }
 
+    @Test
+    public void should_returnKindVersion_from_givenMap() {
+        DpsHeaders sut = DpsHeaders.createFromMap(this.getMap());
+        assertEquals("0.2.1", sut.getKindVersion());
+    }
+
+    @Test
+    public void should_returnLegalTags_from_givenMap() {
+        DpsHeaders sut = DpsHeaders.createFromMap(this.getMap());
+        assertEquals("{\"legal\":{\"legaltags\":[\"public-usa-dataset-1\"],"
+                + "\"otherRelevantDataCountries\":[\"US\"]}}",
+            sut.getLegalTags());
+    }
+
+    @Test
+    public void should_returnAclHeader_from_givenMap() {
+        DpsHeaders sut = DpsHeaders.createFromMap(this.getMap());
+        assertEquals("{\"acl\":{\"owners\":[\"data.default.owners@test.com\"],"
+                + "\"viewers\":[\"data.default.viewers@test.com\"]}}",
+            sut.getAcl());
+    }
+
     public Map<String, String> getMap() {
         Map<String, String> map = new HashMap<>();
         map.put(DpsHeaders.ON_BEHALF_OF, "abc@xyz.com");
@@ -123,6 +145,9 @@ public class DpsHeadersTest {
         map.put(DpsHeaders.ACCOUNT_ID, "common");
         map.put(DpsHeaders.CORRELATION_ID, "corId");
         map.put(DpsHeaders.DATA_PARTITION_ID, "partitionId");
+        map.put(DpsHeaders.KIND_VERSION, "0.2.1");
+        map.put(DpsHeaders.LEGAL_TAGS, "{\"legal\":{\"legaltags\":[\"public-usa-dataset-1\"],\"otherRelevantDataCountries\":[\"US\"]}}");
+        map.put(DpsHeaders.ACL_HEADER, "{\"acl\":{\"owners\":[\"data.default.owners@test.com\"],\"viewers\":[\"data.default.viewers@test.com\"]}}");
         return map;
     }
 

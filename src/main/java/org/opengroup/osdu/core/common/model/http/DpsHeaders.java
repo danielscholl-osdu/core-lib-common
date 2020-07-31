@@ -32,6 +32,9 @@ public class DpsHeaders {
     public static final String USER_EMAIL = "user";
     public static final String AUTHORIZATION = "authorization";
     public static final String CONTENT_TYPE = "content-type";
+    public static final String LEGAL_TAGS = "legal-tags";
+    public static final String ACL_HEADER = "acl";
+    public static final String KIND_VERSION = "kind_version";
 
     public static final String PRIMARY_PARTITION_ID = "primary-account-id";
     public static final String FRAME_OF_REFERENCE = "frame-of-reference";
@@ -46,6 +49,9 @@ public class DpsHeaders {
         headerKeys.add(AUTHORIZATION);
         headerKeys.add(USER_EMAIL);
         headerKeys.add(CONTENT_TYPE);
+        headerKeys.add(LEGAL_TAGS);
+        headerKeys.add(ACL_HEADER);
+        headerKeys.add(KIND_VERSION);
     }
 
     private final Map<String, String> headers = new HashMap<>();
@@ -56,10 +62,10 @@ public class DpsHeaders {
 
     public static DpsHeaders createFromEntrySet(Set<Map.Entry<String, List<String>>> input) {
         DpsHeaders output = new DpsHeaders();
-        input.forEach((k) -> {
-            String key = k.getKey().toLowerCase();
+        input.forEach(entry -> {
+            String key = entry.getKey().toLowerCase();
             if (headerKeys.contains(key)) {
-                output.headers.put(key, StringUtils.join(k.getValue(), ','));
+                output.headers.put(key, StringUtils.join(entry.getValue(), ','));
             }
         });
         return output;
@@ -130,6 +136,12 @@ public class DpsHeaders {
     public String getContentType() {
         return this.getHeader(CONTENT_TYPE);
     }
+    
+    public String getLegalTags() { return this.getHeader(LEGAL_TAGS); }
+
+    public String getAcl() { return this.getHeader(ACL_HEADER); }
+
+    public String getKindVersion(){ return this.getHeader(KIND_VERSION); }
 
     public void put(String key, String value) {
         this.headers.put(key, value);
@@ -142,7 +154,6 @@ public class DpsHeaders {
     }
 
     private String getHeader(String key) {
-        String output = this.headers.get(key.toLowerCase());
-        return output;
+        return this.headers.get(key.toLowerCase());
     }
 }

@@ -15,6 +15,7 @@
 package org.opengroup.osdu.core.common.model.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,7 @@ public class QueryRequest extends Query {
 
     @Min(value = 0, message = SwaggerDoc.OFFSET_VALIDATION_MIN_MSG)
     @JsonProperty("offset")
+    @SerializedName("offset")
     @ApiModelProperty(value = SwaggerDoc.OFFSET_DESCRIPTION, dataType = "java.lang.Integer", example = "0")
     private int from;
 
