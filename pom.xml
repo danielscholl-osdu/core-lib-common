@@ -6,7 +6,7 @@
 
   <groupId>org.opengroup.osdu</groupId>
   <artifactId>os-core-common</artifactId>
-  <version>0.3.4</version>
+  <version>0.3.5</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -14,6 +14,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.main.basedir>${project.basedir}</project.main.basedir>
+    <spring-boot.version>2.1.7.RELEASE</spring-boot.version>
   </properties>
 
   <licenses>
@@ -29,7 +30,7 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>2.1.7.RELEASE</version>
+        <version>${spring-boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -46,6 +47,7 @@
           <groupId>org.projectlombok</groupId>
           <artifactId>lombok</artifactId>
           <version>1.18.2</version>
+          <optional>true</optional>
       </dependency>
 
       <dependency>
@@ -66,14 +68,27 @@
       </dependency>
 
       <dependency>
-          <groupId>com.auth0</groupId>
-          <artifactId>java-jwt</artifactId>
-          <version>3.8.1</version>
-      </dependency>
-      <dependency>
           <groupId>com.fasterxml.jackson.core</groupId>
           <artifactId>jackson-databind</artifactId>
           <version>2.9.9.3</version>
+      </dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.module</groupId>
+          <artifactId>jackson-module-parameter-names</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jdk8</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jsr310</artifactId>
+      </dependency>
+
+      <dependency>
+          <groupId>com.auth0</groupId>
+          <artifactId>java-jwt</artifactId>
+          <version>3.8.1</version>
       </dependency>
       <dependency>
           <groupId>io.jsonwebtoken</groupId>
@@ -170,20 +185,21 @@
           <version>6.6.2</version>
       </dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <id>${gitlab-server}</id>
-      <url>https://community.opengroup.org/api/v4/groups/17/-/packages/maven</url>
-    </repository>
+	<repositories>
+		<repository>
+			<id>${repo.releases.id}</id>
+			<url>${repo.releases.url}</url>
+		</repository>
 	</repositories>
+
 	<distributionManagement>
 		<repository>
-			<id>${gitlab-server}</id>
-			<url>https://community.opengroup.org/api/v4/projects/67/packages/maven</url>
+			<id>${publish.releases.id}</id>
+			<url>${publish.releases.url}</url>
 		</repository>
 		<snapshotRepository>
-			<id>${gitlab-server}</id>
-			<url>https://community.opengroup.org/api/v4/projects/67/packages/maven</url>
+			<id>${publish.snapshots.id}</id>
+			<url>${publish.snapshots.url}</url>
 		</snapshotRepository>
 	</distributionManagement>
   <build>

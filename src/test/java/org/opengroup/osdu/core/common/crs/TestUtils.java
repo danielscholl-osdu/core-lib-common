@@ -27,21 +27,6 @@ public class TestUtils {
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static String token = "";
 
-    // public static String getAuthToken() {
-    // 	if (Strings.isNullOrEmpty(token)) {
-    // 		String creds = System.getProperty("INT_TESTER_CREDS", System.getenv("INT_TESTER_CREDS"));
-    // 		if (StringUtils.isBlank(creds)) {
-    // 			throw new RuntimeException("Could not find INT_TESTER_CREDS. Needs to be in env variable or system property");
-    // 		}
-    // 		try {
-    // 			GoogleServiceAccount gsa = new GoogleServiceAccount(creds);
-    // 			token = "Bearer " + gsa.getAuthToken("245464679631-ktfdfpl147m1mjpbutl00b3cmffissgq.apps.googleusercontent.com");
-    // 		} catch (IOException e) {
-    // 			throw new RuntimeException("Error generating service account credentials", e);
-    // 		}
-    // 	}
-    // 	return token;
-    // }
 
     public static DpsHeaders getStandardHeaders(String tenant) {
         DpsHeaders headers = new DpsHeaders();
