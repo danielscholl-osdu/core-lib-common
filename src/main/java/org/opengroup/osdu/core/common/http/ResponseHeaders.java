@@ -35,7 +35,7 @@ public class ResponseHeaders {
         });
         STANDARD_RESPONSE_HEADERS.put("Access-Control-Allow-Methods", new ArrayList<Object>() {
             {
-                add("GET, POST, PUT, DELETE, OPTIONS, HEAD");
+                add("GET, POST, PUT, DELETE, OPTIONS, HEAD, PATCH");
             }
         });
         STANDARD_RESPONSE_HEADERS.put("Access-Control-Allow-Credentials", new ArrayList<Object>() {
