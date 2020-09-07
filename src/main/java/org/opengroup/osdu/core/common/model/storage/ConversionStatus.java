@@ -28,6 +28,8 @@ import org.opengroup.osdu.core.common.search.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.opengroup.osdu.core.common.util.JsonUtils.jsonElementToString;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -123,7 +125,7 @@ public class ConversionStatus {
                     addToValidMetaItems = false;
                 }
                 JsonElement persistableReferenceElement = metaItem.get(PERSISTABLE_REFERENCE);
-                if (persistableReferenceElement == null || persistableReferenceElement.getAsString().isEmpty()) {
+                if (persistableReferenceElement == null || jsonElementToString(persistableReferenceElement).isEmpty()) {
                     this.errors.add(CrsConversionServiceErrorMessages.MISSING_REFERENCE + affectedProperties);
                     addToValidMetaItems = false;
                 }

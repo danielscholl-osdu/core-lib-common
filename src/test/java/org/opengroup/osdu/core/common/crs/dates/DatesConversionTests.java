@@ -363,4 +363,26 @@ public class DatesConversionTests {
         String resultPersistableReference = resultMeta.get("persistableReference").getAsString();
         Assert.assertEquals(BASE_DATETIME_DTM, resultPersistableReference);
     }
+
+    @Test
+    public void shouldReturnUpdatedRecordWithConvertedTimezone_WhenPersistableReferenceIsJsonObject() {
+        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"acl\": {\"viewers\": [\"viewers@unittest.com\"],\"owners\": [\"owners@unittest.com\"]},\"legal\": {\"legaltags\": [\"unit-test-legal\"],\"otherRelevantDataCountries\": [\"US\"]},\"data\": {\"msg\": \"test record\",\"creationDate\": \"2019-08-03T13:56:22Z\"},\"meta\": [{\"path\": \"\",\"kind\": \"DateTime\", \"persistableReference\": {\"format\": \"yyyy-MM-ddTHH:mm:ssZ\", \"timeZone\": \"UTC\", \"type\": \"DTM\"} ,\"propertyNames\": [\"creationDate\"],\"name\": \"GCS_WGS_1984\"}]}";
+        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        List<ConversionRecord> conversionRecords = new ArrayList<>();
+        ConversionRecord conversionRecord = new ConversionRecord();
+        conversionRecord.setRecordJsonObject(record);
+        conversionRecords.add(conversionRecord);
+        this.datesConversion.convertDatesToISO(conversionRecords);
+        Assert.assertEquals(1, conversionRecords.size());
+        Assert.assertTrue(conversionRecords.get(0).getConversionMessages().size() == 0);
+        JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
+        JsonElement data = resultRecord.get("data");
+        String actualCreationDateValue = data.getAsJsonObject().get("creationDate").getAsString();
+        Assert.assertEquals("2019-08-03T13:56:22.000Z", actualCreationDateValue);
+        JsonArray resultMetaArray = resultRecord.getAsJsonArray("meta");
+        Assert.assertEquals(1, resultMetaArray.size());
+        JsonObject resultMeta = (JsonObject) resultMetaArray.get(0);
+        String resultPersistableReference = resultMeta.get("persistableReference").getAsString();
+        Assert.assertEquals(BASE_DATETIME_DTM, resultPersistableReference);
+    }
 }

@@ -11,7 +11,7 @@ import org.opengroup.osdu.core.common.crs.CrsConversionServiceErrorMessages;
 @RunWith(MockitoJUnitRunner.class)
 public class ConversionStatusTest {
     private JsonParser jsonParser = new JsonParser();
-    private static final String METAITEM_GOOD = "{\"path\":\"\",\"kind\":\"CRS\",\"persistableReference\":\"reference\",\"propertyNames\":[\"X\",\"Y\",\"Z\"],\"name\":\"GCS_WGS_1984\"}";
+    private static final String METAITEM_GOOD = "{\"path\":\"\",\"kind\":\"CRS\",\"persistableReference\": { \"scaleOffset\": {\"scale\": 0.3048, \"offset\": 0 }, \"symbol\": \"ft/s\", \"baseMeasurement\": { \"type\": \"UM\", \"ancestry\": \"Velocity\" }, \"type\": \"USO\" },\"propertyNames\":[\"X\",\"Y\",\"Z\"],\"name\":\"GCS_WGS_1984\"}";
     private static final String METAITEM_MISSING_KIND = "{\"path\":\"\",\"persistableReference\":\"reference\",\"propertyNames\":[\"X\",\"Y\",\"Z\"],\"name\":\"GCS_WGS_1984\"}";
     private static final String METAITEM_MISSING_PERSISTABLE = "{\"path\":\"\",\"kind\":\"CRS\",\"propertyNames\":[\"X\",\"Y\",\"Z\"],\"name\":\"GCS_WGS_1984\"}";
     private static final String METAITEM_MISSING_PROPERTY = "{\"path\":\"\",\"kind\":\"CRS\",\"persistableReference\":\"reference\",\"name\":\"GCS_WGS_1984\"}";
