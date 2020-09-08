@@ -6,7 +6,7 @@
 
   <groupId>org.opengroup.osdu</groupId>
   <artifactId>os-core-common</artifactId>
-  <version>0.3.7</version>
+  <version>0.3.8</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -14,7 +14,12 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.main.basedir>${project.basedir}</project.main.basedir>
-    <spring-boot.version>2.1.7.RELEASE</spring-boot.version>
+    <spring-boot.version>2.1.16.RELEASE</spring-boot.version>
+    <elasticsearch.version>6.8.1</elasticsearch.version>
+    <jackson-bom.version>2.11.2</jackson-bom.version>
+    <netty-bom.version>4.1.51.Final</netty-bom.version>
+    <snakeyaml.version>1.26</snakeyaml.version>
+    <commons-codec.version>1.14</commons-codec.version>
   </properties>
 
   <licenses>
@@ -28,11 +33,36 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-bom</artifactId>
+        <version>${netty-bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
+        <version>${jackson-bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${spring-boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${commons-codec.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>${snakeyaml.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -70,7 +100,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.9.9.3</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
@@ -177,17 +206,17 @@
     <dependency>
       <groupId>org.elasticsearch</groupId>
       <artifactId>elasticsearch</artifactId>
-      <version>6.6.2</version>
+      <version>${elasticsearch.version}</version>
     </dependency>
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>6.6.2</version>
+      <version>${elasticsearch.version}</version>
     </dependency>
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-high-level-client</artifactId>
-      <version>6.6.2</version>
+      <version>${elasticsearch.version}</version>
     </dependency>
   </dependencies>
   <repositories>
