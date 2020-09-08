@@ -6,7 +6,7 @@
 
   <groupId>org.opengroup.osdu</groupId>
   <artifactId>os-core-common</artifactId>
-  <version>0.3.6</version>
+  <version>0.3.7</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -127,6 +127,11 @@
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.5.9</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient-cache</artifactId>
+      <version>4.5.12</version>
     </dependency>
 
     <dependency>
