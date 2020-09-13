@@ -1,4 +1,4 @@
-// Copyright 2017-2019, Schlumberger
+// Copyright 2017-2020, Schlumberger
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ public class PartitionFactory implements IPartitionFactory {
 
         RequestConfig REQUEST_CONFIG = RequestConfig.custom()
                 .setConnectTimeout(config.getConnectTimeout())
-                .setConnectionRequestTimeout(config.getConnectionRquestTimeout())
+                .setConnectionRequestTimeout(config.getConnectionRequestTimeout())
                 .setSocketTimeout(config.getSocketTimeout()).build();
 
         this.cacheHttpClient = CachingHttpClientBuilder

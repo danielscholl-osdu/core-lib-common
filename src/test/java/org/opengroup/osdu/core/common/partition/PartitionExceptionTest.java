@@ -14,7 +14,9 @@
 
 package org.opengroup.osdu.core.common.partition;
 
+import org.apache.http.HttpStatus;
 import org.junit.Test;
+import org.opengroup.osdu.core.common.http.HttpResponse;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -23,7 +25,7 @@ public class PartitionExceptionTest {
 
     @Test
     public void constructorTest() {
-        PartitionException exception = new PartitionException("unknown error");
+        PartitionException exception = new PartitionException("unknown error", new HttpResponse());
         assertNotNull(exception);
 
         String errorMessage = exception.getMessage();
@@ -33,13 +35,15 @@ public class PartitionExceptionTest {
 
     @Test
     public void constructorExceptionTest() {
-        PartitionException partitionException = new PartitionException("unknown error", new Exception("exception"));
+        HttpResponse httpResponse = new HttpResponse();
+        httpResponse.setResponseCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        httpResponse.setException(new Exception("exception"));
+        PartitionException partitionException = new PartitionException("unknown error", httpResponse);
         assertNotNull(partitionException);
 
         String errorMessage = partitionException.getMessage();
-        Throwable exception = partitionException.getCause();
         assertNotNull(errorMessage);
         assertEquals("unknown error", errorMessage);
-        assertEquals("exception", exception.getMessage());
+        assertEquals("exception", partitionException.getHttpResponse().getException().getMessage());
     }
 }

@@ -72,7 +72,7 @@ public class PartitionServiceTest {
             fail("should not be here");
         } catch (PartitionException e) {
             assertNotNull(e);
-            assertEquals(PARTITION_NOT_FOUND, e.getMessage());
+            assertEquals(PARTITION_NOT_FOUND, e.getHttpResponse().getBody());
         }
     }
 
@@ -107,7 +107,7 @@ public class PartitionServiceTest {
             fail("should not be here");
         } catch (PartitionException e) {
             assertNotNull(e);
-            assertEquals(BAD_REQUEST, e.getMessage());
+            assertEquals(BAD_REQUEST, e.getHttpResponse().getBody());
         }
     }
 
@@ -135,10 +135,9 @@ public class PartitionServiceTest {
             fail("should not be here");
         } catch (PartitionException e) {
             assertNotNull(e);
-            assertEquals(PARTITION_NOT_FOUND, e.getMessage());
+            assertEquals(PARTITION_NOT_FOUND, e.getHttpResponse().getBody());
         }
     }
-
 
     private CloseableHttpResponse getResponse(int status, String body) throws IOException {
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);

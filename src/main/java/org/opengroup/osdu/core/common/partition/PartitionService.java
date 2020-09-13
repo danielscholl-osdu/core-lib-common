@@ -1,4 +1,4 @@
-// Copyright 2017-2019, Schlumberger
+// Copyright 2017-2020, Schlumberger
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
-import org.opengroup.osdu.core.common.model.http.HttpResponse;
 import org.opengroup.osdu.core.common.model.http.RequestStatus;
 
 import java.io.BufferedReader;
@@ -53,29 +53,28 @@ public class PartitionService implements IPartitionProvider {
     public PartitionInfo get(String name) throws PartitionException {
         String url = this.createUrl(String.format("/partitions/%s", name));
         HttpGet httpGetRequest = new HttpGet(url);
-        HttpResponse response = send(httpGetRequest, url);
+        HttpResponse response = send(httpGetRequest);
         Map<String, Object> properties = getResult(response, Map.class);
         return PartitionInfo
                 .builder()
                 .properties(properties)
                 .build();
-
     }
 
     @Override
     public PartitionInfo create(String partitionId, PartitionInfo partitionInfo) throws PartitionException {
         String url = this.createUrl(String.format("/partitions/%s", partitionId));
         HttpPost httpPost = new HttpPost(url);
-        StringEntity entity = null;
+        StringEntity entity;
         try {
             String jsonString = this.gson.toJson(partitionInfo);
             entity = new StringEntity(jsonString);
         } catch (UnsupportedEncodingException e) {
             throw new PartitionException(
-                    "Error making request to Partition service.", e);
+                    String.format("Error making request to Partition service, error: %s", e.getMessage()), null);
         }
         httpPost.setEntity(entity);
-        HttpResponse response = send(httpPost, url);
+        HttpResponse response = send(httpPost);
         Map<String, Object> properties = getResult(response, Map.class);
         return PartitionInfo
                 .builder()
@@ -87,20 +86,20 @@ public class PartitionService implements IPartitionProvider {
     public void delete(String partitionId) throws PartitionException {
         String url = this.createUrl(String.format("/partitions/%s", partitionId));
         HttpDelete httpDelete = new HttpDelete(url);
-        HttpResponse response = send(httpDelete, url);
+        HttpResponse response = send(httpDelete);
         getResult(response, String.class);
     }
 
-    private HttpResponse send(HttpRequestBase request, String url) throws PartitionException {
+    private HttpResponse send(HttpRequestBase request) throws PartitionException {
         Map<String, String> dpsHeader = this.headers.getHeaders();
         request.addHeader(DpsHeaders.AUTHORIZATION, dpsHeader.get(DpsHeaders.AUTHORIZATION));
         request.addHeader(DpsHeaders.CONTENT_TYPE, dpsHeader.get(DpsHeaders.CONTENT_TYPE));
+
         try {
             try (CloseableHttpResponse response = cacheHttpClient.execute(request)) {
-
                 HttpResponse output = new HttpResponse();
                 output.setResponseCode(response.getStatusLine().getStatusCode());
-                if(response.getStatusLine().getStatusCode()==204){
+                if (response.getStatusLine().getStatusCode() == 204) {
                     return output;
                 }
                 StringBuilder responseBuilder = new StringBuilder();
@@ -122,21 +121,26 @@ public class PartitionService implements IPartitionProvider {
     }
 
     private <T> T getResult(HttpResponse result, Class<T> type) throws PartitionException {
-        if (result.isSuccessCode()) {
-            try {
-                if (StringUtils.isBlank(result.getBody())) {
-                    return null;
-                }
-                return gson.fromJson(result.getBody(), type);
-            } catch (JsonSyntaxException e) {
-                throw new PartitionException("Error parsing response. Check the inner HttpResponse for more info.", result.getException());
+        if (!result.isSuccessCode()) {
+            throw this.generatePartitionException(result);
+        }
+
+        try {
+            if (StringUtils.isBlank(result.getBody())) {
+                return null;
             }
-        } else {
-            throw new PartitionException(result.getBody().replaceAll("\"", ""));
+            return gson.fromJson(result.getBody(), type);
+        } catch (JsonSyntaxException e) {
+            throw new PartitionException("Error parsing response. Check the inner HttpResponse for more info.", result);
         }
     }
 
     private String createUrl(String pathAndQuery) {
         return StringUtils.join(this.rootUrl, pathAndQuery);
+    }
+
+    private PartitionException generatePartitionException(HttpResponse result) {
+        return new PartitionException(
+                "Error making request to Partition service. Check the inner HttpResponse for more info.", result);
     }
 }
