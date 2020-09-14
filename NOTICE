@@ -9,8 +9,10 @@ The following software have components provided under the terms of this license:
 
 - Apache Commons Codec (from http://commons.apache.org/proper/commons-codec/)
 - Apache Commons Lang (from http://commons.apache.org/proper/commons-lang/)
+- Apache Commons Logging (from http://commons.apache.org/proper/commons-logging/)
 - Apache HttpAsyncClient (from http://hc.apache.org/httpcomponents-asyncclient)
 - Apache HttpClient (from http://hc.apache.org/httpcomponents-client)
+- Apache HttpClient Cache (from http://hc.apache.org/httpcomponents-client)
 - Apache HttpCore (from http://hc.apache.org/httpcomponents-core-ga)
 - Apache HttpCore NIO (from http://hc.apache.org/httpcomponents-core-ga)
 - Apache Log4j API (from )
@@ -204,7 +206,6 @@ GPL-3.0-only
 The following software have components provided under the terms of this license:
 
 - Project Lombok (from https://projectlombok.org)
-- SnakeYAML (from http://www.snakeyaml.org)
 
 ========================================================================
 LGPL-2.1-only
@@ -236,7 +237,6 @@ MIT
 The following software have components provided under the terms of this license:
 
 - Checker Qual (from https://checkerframework.org)
-- Elasticsearch: 5.0.0-alpha5 (from https://github.com/elastic/elasticsearch)
 - JOpt Simple (from http://pholser.github.io/jopt-simple)
 - JUL to SLF4J bridge (from http://www.slf4j.org)
 - Java JWT (from http://www.jwt.io)
