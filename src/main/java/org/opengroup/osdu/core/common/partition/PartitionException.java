@@ -27,7 +27,6 @@ public class PartitionException extends DpsException {
 
     /**
      * Exception defined for PartitionService.
-     * It is is not a DPS Exception since it is only used for cacheHttpClient
      *
      * @param message
      * @param httpResponse
