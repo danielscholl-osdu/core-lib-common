@@ -2,6 +2,9 @@ package org.opengroup.osdu.core.common.util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import static java.util.Optional.ofNullable;
 
 public class JsonUtils {
 
@@ -19,5 +22,101 @@ public class JsonUtils {
         }
 
         return jsonElement.toString();
+    }
+
+    /**
+     * @param propertyName - property name with path split by dots e.g. depth.value
+     * @param jsonObject   - JsonObject which presumably contains the property
+     * @return JsonElement with property, if it found and null if not
+     */
+    public static JsonElement getJsonPropertyValueFromJsonObject(String propertyName, JsonObject jsonObject) {
+        String[] propertiesHierarchy = splitJsonPropertiesByDots(propertyName);
+        JsonObject json = jsonObject;
+
+        for (int i = 0; i < propertiesHierarchy.length; i++) {
+            if (i == propertiesHierarchy.length - 1) {
+                return json.get(propertiesHierarchy[i]);
+            } else {
+                JsonElement element = json.get(propertiesHierarchy[i]);
+                if (element == null || !element.isJsonObject()) {
+                    return null;
+                }
+                json = element.getAsJsonObject();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param propertyName - property name with path split by dots e.g. depth.value
+     * @param jsonObject   - JsonObject which presumably contains the property
+     * @return true if property found and false if not
+     */
+    public static boolean isJsonPropertyPresentedInJsonObject(String propertyName, JsonObject jsonObject) {
+        String[] propertiesHierarchy = splitJsonPropertiesByDots(propertyName);
+        JsonObject json = jsonObject;
+        for (int i = 0; i < propertiesHierarchy.length; i++) {
+            if (i == propertiesHierarchy.length - 1) {
+                return !(json.get(propertiesHierarchy[i]) == null);
+            } else {
+                JsonElement element = json.get(propertiesHierarchy[i]);
+                if (element == null || !element.isJsonObject()) {
+                    return false;
+                }
+                json = element.getAsJsonObject();
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param propertyName - property name with path split by dots e.g. depth.value
+     * @param value        - the value of the property with Number type
+     * @param jsonObject   - JsonObject which presumably contains the property
+     */
+    public static void overrideNumberPropertyOfJsonObject(String propertyName, Number value, JsonObject jsonObject) {
+        String[] nestedNames = splitJsonPropertiesByDots(propertyName);
+
+        JsonObject targetJsonObject = buildNewJsonObject(nestedNames, jsonObject);
+
+        ofNullable(targetJsonObject)
+            .ifPresent(json -> json.addProperty(nestedNames[nestedNames.length - 1], value));
+    }
+
+    /**
+     * @param propertyName - property name with path split by dots e.g. depth.value
+     * @param value        - the value of the property with String type
+     * @param jsonObject   - JsonObject which presumably contains the property
+     */
+    public static void overrideStringPropertyOfJsonObject(String propertyName, String value, JsonObject jsonObject) {
+        String[] nestedNames = splitJsonPropertiesByDots(propertyName);
+
+        JsonObject targetJsonObject = buildNewJsonObject(nestedNames, jsonObject);
+
+        ofNullable(targetJsonObject)
+            .ifPresent(json -> json.addProperty(nestedNames[nestedNames.length - 1], value));
+    }
+
+    private static JsonObject buildNewJsonObject(String[] nestedNames, JsonObject jsonObject) {
+        JsonObject proceedJsonObject = jsonObject;
+        for (int i = 0; i < nestedNames.length - 1; i++) {
+            JsonElement nestedElement = proceedJsonObject.get(nestedNames[i]);
+            if (nestedElement != null && nestedElement.isJsonObject()) {
+                proceedJsonObject = nestedElement.getAsJsonObject();
+            } else {
+                return null;
+            }
+        }
+        return proceedJsonObject;
+    }
+
+    /**
+     *
+     * @param name - property name with path split by dots e.g. depth.value
+     * @return  a String array which is split by delimiter "."
+     */
+    public static String[] splitJsonPropertiesByDots(String name) {
+        if(name == null) return null;
+        return name.split("\\.");
     }
 }

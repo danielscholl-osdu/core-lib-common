@@ -23,10 +23,11 @@ import org.opengroup.osdu.core.common.model.units.ReferenceConverter;
 import org.opengroup.osdu.core.common.model.crs.ConversionRecord;
 import org.opengroup.osdu.core.common.model.crs.ConvertStatus;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.opengroup.osdu.core.common.util.JsonUtils.jsonElementToString;
+import static org.opengroup.osdu.core.common.util.JsonUtils.*;
 
 public class UnitConversionImpl {
     private static final String KIND = "kind";
@@ -37,6 +38,8 @@ public class UnitConversionImpl {
 
     private static final String PROPERTY_NAMES = "propertyNames";
     private static final String PERSISTABLE_REFERENCE = "persistableReference";
+    private static final String PROPERTY_NAME_VALUE = "value";
+    private static final String PROPERTY_POSTFIX_UNIT_KEY = "unitKey";
 
     public static final String MISSING_META_KIND = "Unit conversion: kind in meta block missing";
     public static final String MISSING_PROPERTY_NAMES = "Unit conversion: propertyNames missing";
@@ -116,7 +119,7 @@ public class UnitConversionImpl {
                 JsonObject data = record.getAsJsonObject(DATA);
                 for(int i = 0; i < propertyArray.size(); i++) {
                     String name = propertyArray.get(i).getAsString();
-                    JsonElement valueElement = this.getPropertyValueFromData(name, data);
+                    JsonElement valueElement = getJsonPropertyValueFromJsonObject(name, data);
                     if((null == valueElement) || (valueElement instanceof JsonNull)) {
                         String message = String.format(MISSING_PROPERTY, name);
                         conversionMessages.add(message);
@@ -125,7 +128,14 @@ public class UnitConversionImpl {
                     try {
                         double value = valueElement.getAsDouble();
                         value = unit.convertToSI(value);
-                        this.overwritePropertyToData(name, value, data);
+                        overrideNumberPropertyOfJsonObject(name, value, data);
+                        String[] nameArray = splitJsonPropertiesByDots(name);
+                        if (nameArray.length > 0 && PROPERTY_NAME_VALUE.equals(nameArray[nameArray.length - 1])) {
+                            String unitKeyProperty = createUnitKeyPropertyName(nameArray);
+                            if (isJsonPropertyPresentedInJsonObject(unitKeyProperty, data)) {
+                                overrideStringPropertyOfJsonObject(unitKeyProperty, unit.getBaseSymbol(), data);
+                            }
+                        }
                         unitConverted = true;
                     }
                     catch(ClassCastException ccEx){
@@ -170,33 +180,9 @@ public class UnitConversionImpl {
         conversionRecord.setConversionMessages(conversionMessages);
     }
 
-    private JsonElement getPropertyValueFromData(String name, JsonObject data) {
-        String[] nestedNames = name.split("\\.");
-        JsonObject outer = data;
-        JsonObject inner = data;
-        // This loop is to help get nested properties from data block, outer would be datablock itself, and get updated to next level each turn.
-        try {
-            for (int i = 0; i < nestedNames.length - 1; i++) {
-                inner = outer.getAsJsonObject(nestedNames[i]);
-                outer = inner;
-            }
-            // return the very last nested property value, e.g, x.y.z, it should return the value of z
-            return inner.get(nestedNames[nestedNames.length - 1]);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private void overwritePropertyToData(String name, double value, JsonObject data) {
-        String[] nestedNames = name.split("\\.");
-        JsonObject outter = data;
-        JsonObject inner = data;
-
-        for (int i = 0; i < nestedNames.length - 1; i++) {
-            inner = outter.getAsJsonObject(nestedNames[i]);
-            outter = inner;
-        }
-
-        inner.addProperty(nestedNames[nestedNames.length - 1], value);
+    private String createUnitKeyPropertyName(String[] array) {
+        String[] unitKeyPropertyArray = Arrays.copyOf(array, array.length);
+        unitKeyPropertyArray[unitKeyPropertyArray.length - 1] = PROPERTY_POSTFIX_UNIT_KEY;
+        return String.join(".", unitKeyPropertyArray);
     }
 }
