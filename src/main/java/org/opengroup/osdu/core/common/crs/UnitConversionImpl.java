@@ -26,6 +26,8 @@ import org.opengroup.osdu.core.common.model.crs.ConvertStatus;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.opengroup.osdu.core.common.util.JsonUtils.jsonElementToString;
+
 public class UnitConversionImpl {
     private static final String KIND = "kind";
     private static final String UNIT = "unit";
@@ -103,7 +105,7 @@ public class UnitConversionImpl {
                     conversionMessages.add(MISSING_REFERENCE);
                     continue;
                 }
-                String persistableReference = referenceElement.getAsString();
+                String persistableReference = jsonElementToString(referenceElement);
                 IUnit unit = ReferenceConverter.parseUnitReference(persistableReference);
                 if((null == unit) || (!unit.isValid())){
                     hasFailure = true;

@@ -7,12 +7,14 @@ import com.google.gson.JsonObject;
 import org.opengroup.osdu.core.common.model.crs.ConversionRecord;
 import org.opengroup.osdu.core.common.model.crs.ConvertStatus;
 import org.opengroup.osdu.core.common.model.units.IDateTime;
-import org.opengroup.osdu.core.common.model.units.ReferenceConverter;
+import org.opengroup.osdu.core.common.util.JsonUtils;
 
 import java.time.DateTimeException;
 import java.time.format.DateTimeParseException;
 import java.util.Iterator;
 import java.util.List;
+
+import static org.opengroup.osdu.core.common.model.units.ReferenceConverter.parseDateTimeReference;
 
 public class DatesConversionImpl {
     private static final String KIND = "kind";
@@ -95,14 +97,14 @@ public class DatesConversionImpl {
                 }
 
                 JsonElement referenceElement = meta.get(PERSISTABLE_REFERENCE);
-                if (referenceElement == null || referenceElement.getAsString().isEmpty()) {
+                if (referenceElement == null || referenceElement.toString().isEmpty()) {
                     hasFailure = true;
                     conversionMessages.add(DatesConversionServiceErrorMessages.MISSING_REFERENCE);
                     continue;
                 }
 
-                String reference = referenceElement.getAsString();
-                IDateTime dateTime = ReferenceConverter.parseDateTimeReference(reference);
+                String reference = JsonUtils.jsonElementToString(referenceElement);
+                IDateTime dateTime = parseDateTimeReference(reference);
                 if (dateTime == null || !dateTime.isValid()) {
                     hasFailure = true;
                     conversionMessages.add(DatesConversionServiceErrorMessages.INVALID_REFERENCE);
