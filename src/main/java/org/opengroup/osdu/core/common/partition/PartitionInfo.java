@@ -29,5 +29,5 @@ import java.util.Map;
 @NoArgsConstructor
 public class PartitionInfo {
 
-    Map<String, Object> properties = new HashMap<>();
+    Map<String, Property> properties = new HashMap<>();
 }

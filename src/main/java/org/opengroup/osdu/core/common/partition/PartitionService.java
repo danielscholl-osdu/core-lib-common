@@ -54,7 +54,7 @@ public class PartitionService implements IPartitionProvider {
         String url = this.createUrl(String.format("/partitions/%s", name));
         HttpGet httpGetRequest = new HttpGet(url);
         HttpResponse response = send(httpGetRequest);
-        Map<String, Object> properties = getResult(response, Map.class);
+        Map<String, Property> properties = getResult(response, Map.class);
         return PartitionInfo
                 .builder()
                 .properties(properties)
@@ -75,7 +75,7 @@ public class PartitionService implements IPartitionProvider {
         }
         httpPost.setEntity(entity);
         HttpResponse response = send(httpPost);
-        Map<String, Object> properties = getResult(response, Map.class);
+        Map<String, Property> properties = getResult(response, Map.class);
         return PartitionInfo
                 .builder()
                 .properties(properties)
