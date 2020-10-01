@@ -1,4 +1,4 @@
-// Copyright 2017-2019, Schlumberger
+// Copyright 2017-2020, Schlumberger
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,25 +16,22 @@ package org.opengroup.osdu.core.common.partition;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.opengroup.osdu.core.common.http.HttpResponse;
+import org.opengroup.osdu.core.common.model.http.DpsException;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class PartitionException extends Exception {
+public class PartitionException extends DpsException {
 
     private static final long serialVersionUID = 9094949225576291097L;
 
-    public PartitionException(String message) {
-        super(message);
-    }
-
     /**
      * Exception defined for PartitionService.
-     * It is is not a DPS Exception since it is only used for cacheHttpClient
      *
      * @param message
-     * @param cause
+     * @param httpResponse
      */
-    public PartitionException(String message, Throwable cause) {
-        super(message, cause);
+    public PartitionException(String message, HttpResponse httpResponse) {
+        super(message, httpResponse);
     }
 }

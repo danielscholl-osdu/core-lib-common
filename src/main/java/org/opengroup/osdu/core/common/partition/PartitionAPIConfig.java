@@ -1,4 +1,4 @@
-// Copyright 2017-2019, Schlumberger
+// Copyright 2017-2020, Schlumberger
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ public class PartitionAPIConfig {
     private int connectTimeout = 60000;
 
     @Builder.Default
-    private int connectionRquestTimeout = 60000;
+    private int connectionRequestTimeout = 60000;
 
     @Builder.Default
     private int socketTimeout = 60000;
