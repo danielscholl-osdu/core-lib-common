@@ -1,9 +1,6 @@
 package org.opengroup.osdu.core.common.model.units;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,8 +8,9 @@ import org.opengroup.osdu.core.common.util.JsonUtils;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.opengroup.osdu.core.common.util.JsonUtils.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({JsonObject.class, JsonArray.class, JsonPrimitive.class, JsonNull.class})
@@ -89,6 +87,184 @@ public class JsonUtilsTest {
         verify(mockJsonNull, never()).getAsString();
     }
 
+    // ---- JsonUtils.getJsonPropertyValueFromJsonObject tests ----
+
+    @Test
+    public void getJsonPropertyValueFromJsonObjectProperty_shouldReturnProperty_whenItPresented() {
+        String propertyName = "depth.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+
+        setupMocksForJsonPropertyTests(internalJsonObject);
+        when(internalJsonObject.get("value")).thenReturn(mockJsonPrimitive);
+
+        JsonElement jsonElement = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
+        assertSame(mockJsonPrimitive, jsonElement);
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, times(1)).get("value");
+    }
+
+    @Test
+    public void getJsonPropertyValueFromJsonObject_shouldReturnNull_whenPropertyNotPresented() {
+        String propertyName = "depth.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+
+        setupMocksForJsonPropertyTests(internalJsonObject);
+        when(internalJsonObject.get("value")).thenReturn(null);
+
+        assertNull(getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject));
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, times(1)).get("value");
+    }
+
+    @Test
+    public void getJsonPropertyValueFromJsonObject_shouldReturnNull_whenJsonObjectHierarchyNotMatchWithPropertyNamePath() {
+        String propertyName = "depth.deeper.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+
+        setupMocksForJsonPropertyTests(internalJsonObject);
+
+        assertNull(getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject));
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, times(1)).get("deeper");
+    }
+
+    // ---- JsonUtils.isJsonPropertyPresentedInJsonObject tests ----
+
+    @Test
+    public void isJsonPropertyPresentedInJsonObject_shouldReturnTrue_IfPropertyFound() {
+        String propertyName = "depth.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+
+        setupMocksForJsonPropertyTests(internalJsonObject);
+        when(internalJsonObject.get("value")).thenReturn(mockJsonPrimitive);
+
+        assertTrue(isJsonPropertyPresentedInJsonObject(propertyName, mockJsonObject));
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, times(1)).get("value");
+    }
+
+    @Test
+    public void isJsonPropertyPresentedInJsonObject_shouldReturnFalse_IfPropertyNotFound() {
+        String propertyName = "depth.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+
+        setupMocksForJsonPropertyTests(internalJsonObject);
+        when(internalJsonObject.get("value")).thenReturn(null);
+
+        assertFalse(isJsonPropertyPresentedInJsonObject(propertyName, mockJsonObject));
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, times(1)).get("value");
+    }
+
+    @Test
+    public void isJsonPropertyPresentedInJsonObject_shouldReturnFalse_whenJsonObjectHierarchyNotMatchWithPropertyNamePath() {
+        String propertyName = "depth.deeper.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+
+        setupMocksForJsonPropertyTests(internalJsonObject);
+
+        assertFalse(isJsonPropertyPresentedInJsonObject(propertyName, mockJsonObject));
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, times(1)).get("deeper");
+    }
+
+    // ---- JsonUtils.overrideNumberPropertyOfJsonObject tests ----
+
+    @Test
+    public void overrideNumberPropertyOfJsonObject_succeed_whenJsonObjectPresentedInPath() {
+        String propertyName = "depth.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+        Integer value = 42;
+
+        setupMocksForJsonPropertyTests(internalJsonObject);
+
+        overrideNumberPropertyOfJsonObject(propertyName, value, mockJsonObject);
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, times(1)).addProperty("value", value);
+    }
+
+    @Test
+    public void overrideNumberPropertyOfJsonObject_notHappened_whenJsonObjectContainsNonJsonObjectElement() {
+        String propertyName = "depth.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+        Integer value = 42;
+
+        when(mockJsonObject.get("depth")).thenReturn(mockJsonPrimitive);
+        when(mockJsonPrimitive.isJsonObject()).thenReturn(false);
+
+        overrideNumberPropertyOfJsonObject(propertyName, value, mockJsonObject);
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, never()).addProperty(anyString(), any(Number.class));
+        verify(mockJsonObject, never()).addProperty(anyString(), any(Number.class));
+    }
+
+    // ---- JsonUtils.overrideStringPropertyOfJsonObject tests ----
+
+    @Test
+    public void overrideStringPropertyOfJsonObject_succeed_whenJsonObjectPresentedInPath() {
+        String propertyName = "depth.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+        String value = "new value";
+
+        setupMocksForJsonPropertyTests(internalJsonObject);
+
+        overrideStringPropertyOfJsonObject(propertyName, value, mockJsonObject);
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, times(1)).addProperty("value", value);
+    }
+
+    @Test
+    public void overrideStringPropertyOfJsonObject_notHappened_whenJsonObjectContainsNonJsonObjectElement() {
+        String propertyName = "depth.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+        String value = "new value";
+
+        when(mockJsonObject.get("depth")).thenReturn(mockJsonPrimitive);
+        when(mockJsonPrimitive.isJsonObject()).thenReturn(false);
+
+        overrideStringPropertyOfJsonObject(propertyName, value, mockJsonObject);
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, never()).addProperty(anyString(), any(Number.class));
+        verify(mockJsonObject, never()).addProperty(anyString(), any(Number.class));
+    }
+
+    // ---- JsonUtils.splitJsonPropertiesByDots tests ----
+
+    @Test
+    public void splitJsonPropertiesByDots_shouldSplitString_ForPropertyWithMultipleElements() {
+        String propertyName = "depth.value";
+        String[] expectedArray = {"depth", "value"};
+
+        String[] actualArray = splitJsonPropertiesByDots(propertyName);
+
+        assertArrayEquals(expectedArray, actualArray);
+    }
+
+    @Test
+    public void splitJsonPropertiesByDots_shouldSplitString_ForPropertyWithSingleElement() {
+        String propertyName = "depth#value";
+        String[] expectedArray = {"depth#value"};
+
+        String[] actualArray = splitJsonPropertiesByDots(propertyName);
+
+        assertArrayEquals(expectedArray, actualArray);
+    }
+
+    @Test
+    public void splitJsonPropertiesByDots_shouldReturnNull_ForNullInputParam() {
+        assertNull(splitJsonPropertiesByDots(null));
+    }
+
     private void setupJsonObjectMock() {
         when(mockJsonObject.toString()).thenReturn(JSON_TO_STRING_VALUE);
     }
@@ -107,5 +283,11 @@ public class JsonUtilsTest {
 
     private void setupJsonNullMock() {
         when(mockJsonNull.toString()).thenReturn(JSON_TO_STRING_VALUE);
+    }
+
+    private void setupMocksForJsonPropertyTests(JsonObject internalJsonObject) {
+        when(mockJsonObject.get("depth")).thenReturn(internalJsonObject);
+        when(internalJsonObject.getAsJsonObject()).thenReturn(internalJsonObject);
+        when(internalJsonObject.isJsonObject()).thenReturn(true);
     }
 }
