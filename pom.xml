@@ -6,7 +6,7 @@
 
   <groupId>org.opengroup.osdu</groupId>
   <artifactId>os-core-common</artifactId>
-  <version>0.3.13</version>
+  <version>0.3.14</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -97,6 +97,10 @@
       <scope>provided</scope>
     </dependency>
 
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>            
+    </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
