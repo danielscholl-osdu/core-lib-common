@@ -1,0 +1,67 @@
+package org.opengroup.osdu.core.common.storage;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.opengroup.osdu.core.common.http.HttpClient;
+import org.opengroup.osdu.core.common.http.HttpRequest;
+import org.opengroup.osdu.core.common.http.HttpResponse;
+import org.opengroup.osdu.core.common.http.IHttpClient;
+import org.opengroup.osdu.core.common.model.http.DpsHeaders;
+import org.opengroup.osdu.core.common.model.storage.Record;
+import org.opengroup.osdu.core.common.model.storage.StorageException;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+public class StorageServiceTest {
+    private IHttpClient httpClient;
+
+    private StorageAPIConfig config;
+
+    private DpsHeaders dpsHeaders;
+
+    @Before
+    public void setup() {
+        config = new StorageAPIConfig("url", "any key");
+        dpsHeaders = new DpsHeaders();
+        httpClient = mock(HttpClient.class);
+    }
+
+    @Test
+    public void constructorTest() {
+        StorageService storageService = new StorageService(config, httpClient, dpsHeaders);
+        assertNotNull(storageService);
+    }
+
+    @Test(expected = StorageException.class)
+    public void should_throw_Exception_when_response_is_empty() throws StorageException {
+        HttpResponse httpResponse = new HttpResponse();
+        StorageService storageService = new StorageService(config, httpClient, dpsHeaders);
+        when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
+        storageService.getRecord("AnyRecord");
+    }
+
+    @Test
+    public void should_return_null_when_response_is_invalid() throws StorageException {
+        HttpResponse httpResponse = mock(HttpResponse.class);
+        StorageService storageService = new StorageService(config, httpClient, dpsHeaders);
+        when(httpResponse.isSuccessCode()).thenReturn(true);
+        when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
+        Record record = storageService.getRecord("AnyRecord");
+        assertNull(record);
+    }
+
+    @Test
+    public void should_return_valid_response_when_response_is_valid() throws StorageException {
+        HttpResponse httpResponse = mock(HttpResponse.class);
+        StorageService storageService = new StorageService(config, httpClient, dpsHeaders);
+        when(httpResponse.isSuccessCode()).thenReturn(true);
+        when(httpResponse.parseBody(Record.class)).thenReturn(new Record());
+        when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
+        Record record = storageService.getRecord("AnyRecord");
+        assertNotNull(record);
+    }
+}
