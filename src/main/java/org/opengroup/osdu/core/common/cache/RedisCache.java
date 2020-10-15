@@ -41,8 +41,22 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
         expireLengthSeconds = expTimeSeconds;
     }
 
+    public RedisCache(String host, int port, String password, int expTimeSeconds, int database,
+                      Class<K> classOfK, Class<V> classOfV) {
+        RedisURI uri = RedisURI.Builder.redis(host, port).withTimeout(expTimeSeconds, TimeUnit.SECONDS).withPassword(password).withDatabase(database).withSsl(true).build();
+        client = RedisClient.create(uri);
+        connection = client.connect(
+                CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP));
+        commands = connection.sync();
+        expireLengthSeconds = expTimeSeconds;
+    }
+
     public RedisCache(String host, int port, int expTimeSeconds, Class<K> classOfK, Class<V> classOfV) {
         this(host, port, expTimeSeconds, 0, classOfK, classOfV);
+    }
+
+    public RedisCache(String host, int port, String password, int expTimeSeconds, Class<K> classOfK, Class<V> classOfV) {
+        this(host, port, password, expTimeSeconds, 0, classOfK, classOfV);
     }
 
     @Override
