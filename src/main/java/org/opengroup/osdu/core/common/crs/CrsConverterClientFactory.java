@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.core.common.crs;
 
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.stereotype.Component;
@@ -22,15 +23,21 @@ import org.springframework.stereotype.Component;
 public class CrsConverterClientFactory extends AbstractFactoryBean<ICrsConverterFactory> {
 
     //TODO: make it private once endpoint is up for all clouds
-	@Value("${CRS_API:}")
-	public String CRS_API;
+	public final String crsApi;
+
+	private final HttpResponseBodyMapper mapper;
+
+	public CrsConverterClientFactory(@Value("${CRS_API:}") String crsApi, HttpResponseBodyMapper mapper) {
+		this.crsApi = crsApi;
+		this.mapper = mapper;
+	}
 
 	@Override
 	protected ICrsConverterFactory createInstance() throws Exception {
 		return new CrsConverterFactory(CrsConverterAPIConfig
 				.builder()
-				.rootUrl(CRS_API)
-				.build());
+				.rootUrl(crsApi)
+				.build(), mapper);
 	}
 
 	@Override

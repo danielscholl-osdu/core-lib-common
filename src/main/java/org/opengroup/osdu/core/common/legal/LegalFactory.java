@@ -14,18 +14,18 @@
 
 package org.opengroup.osdu.core.common.legal;
 
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.http.HttpClient;
 
 public class LegalFactory implements ILegalFactory {
 
     private final LegalAPIConfig config;
+    private final HttpResponseBodyMapper mapper;
 
-    public LegalFactory(LegalAPIConfig config) {
-        if (config == null) {
-            throw new IllegalArgumentException("LegalAPIConfig cannot be empty");
-        }
+    public LegalFactory(LegalAPIConfig config, HttpResponseBodyMapper mapper) {
         this.config = config;
+        this.mapper = mapper;
     }
 
     @Override
@@ -33,6 +33,6 @@ public class LegalFactory implements ILegalFactory {
         if (headers == null) {
             throw new NullPointerException("headers cannot be null");
         }
-        return new LegalService(this.config, new HttpClient(), headers);
+        return new LegalService(this.config, new HttpClient(), headers, mapper);
     }
 }

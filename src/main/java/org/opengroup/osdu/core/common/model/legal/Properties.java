@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static org.opengroup.osdu.core.common.util.SerializationUtils.DEFAULT_EXPIRATION_DATE;
+import static org.opengroup.osdu.core.common.util.SerializationUtils.EXPIRATION_DATE_FORMAT;
+
 /**
  * If any class variable changed here,
  * need to update the corresponding doc model class in SwaggerHelper.java
@@ -33,7 +36,7 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Properties {
-    public static final Date DEFAULT_EXPIRATIONDATE = Date.valueOf("9999-12-31");
+    public static final Date DEFAULT_EXPIRATIONDATE = DEFAULT_EXPIRATION_DATE;
     public final static String UNKNOWN_CONTRACT_ID = "Unknown";
     public final static String NO_CONTRACT_ID = "No Contract Related";
 
@@ -43,7 +46,7 @@ public class Properties {
     private String contractId;
 
     @JsonDeserialize(using = ExpirationDateDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = EXPIRATION_DATE_FORMAT)
     private Date expirationDate;
 
     @Getter(AccessLevel.NONE)

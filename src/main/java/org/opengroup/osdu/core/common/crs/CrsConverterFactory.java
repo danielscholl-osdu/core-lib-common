@@ -14,18 +14,21 @@
 
 package org.opengroup.osdu.core.common.crs;
 
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.http.HttpClient;
 
 public class CrsConverterFactory implements ICrsConverterFactory {
 
     private final CrsConverterAPIConfig config;
+    private final HttpResponseBodyMapper mapper;
 
-    public CrsConverterFactory(CrsConverterAPIConfig config) {
+    public CrsConverterFactory(CrsConverterAPIConfig config, HttpResponseBodyMapper mapper) {
         if (config == null) {
             throw new IllegalArgumentException("CrsConverterAPIConfig cannot be empty");
         }
         this.config = config;
+        this.mapper = mapper;
     }
 
     @Override
@@ -33,6 +36,6 @@ public class CrsConverterFactory implements ICrsConverterFactory {
         if (headers == null) {
             throw new NullPointerException("headers cannot be null");
         }
-        return new CrsConverterService(this.config, new HttpClient(), headers);
+        return new CrsConverterService(this.config, new HttpClient(), headers, mapper);
     }
 }

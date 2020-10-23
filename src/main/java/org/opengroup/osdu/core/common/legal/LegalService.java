@@ -14,8 +14,9 @@
 
 package org.opengroup.osdu.core.common.legal;
 
-import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang3.StringUtils;
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyParsingException;
 import org.opengroup.osdu.core.common.model.legal.*;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.http.HttpRequest;
@@ -26,13 +27,16 @@ public class LegalService implements ILegalProvider {
     private final String rootUrl;
     private final IHttpClient httpClient;
     private final DpsHeaders headers;
+    private final HttpResponseBodyMapper responseBodyMapper;
 
     LegalService(LegalAPIConfig config,
                  IHttpClient httpClient,
-                 DpsHeaders headers) {
+                 DpsHeaders headers,
+                 HttpResponseBodyMapper mapper) {
         this.rootUrl = config.getRootUrl();
         this.httpClient = httpClient;
         this.headers = headers;
+        this.responseBodyMapper = mapper;
         if (config.apiKey != null) {
             headers.put("AppKey", config.apiKey);
         }
@@ -92,8 +96,8 @@ public class LegalService implements ILegalProvider {
     private <T> T getResult(HttpResponse result, Class<T> type) throws LegalException {
         if (result.isSuccessCode()) {
             try {
-                return result.parseBody(type);
-            } catch (JsonSyntaxException e) {
+                return responseBodyMapper.parseBody(result, type);
+            } catch (HttpResponseBodyParsingException e) {
                 throw new LegalException("Error parsing response. Check the inner HttpResponse for more info.", result);
             }
         } else {

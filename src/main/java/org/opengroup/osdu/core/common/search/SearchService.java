@@ -2,7 +2,8 @@ package org.opengroup.osdu.core.common.search;
 
 import org.apache.commons.lang3.StringUtils;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyParsingException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.search.*;
 import org.opengroup.osdu.core.common.http.HttpRequest;
@@ -12,10 +13,12 @@ import org.opengroup.osdu.core.common.http.IHttpClient;
 public class SearchService implements ISearchService {
     SearchService(SearchAPIConfig config,
                   IHttpClient httpClient,
-                  DpsHeaders headers) {
+                  DpsHeaders headers,
+                  HttpResponseBodyMapper bodyMapper) {
         this.rootUrl = config.getRootUrl();
         this.httpClient = httpClient;
         this.headers = headers;
+        this.bodyMapper = bodyMapper;
         if (config.apiKey != null) {
             headers.put("AppKey", config.getApiKey());
         }
@@ -24,6 +27,7 @@ public class SearchService implements ISearchService {
     private final String rootUrl;
     private final IHttpClient httpClient;
     private final DpsHeaders headers;
+    private final HttpResponseBodyMapper bodyMapper;
 
     @Override
     public CursorQueryResponse getAllKindEntries(String kind) throws SearchException {
@@ -84,8 +88,8 @@ public class SearchService implements ISearchService {
     private <T> T getResult(HttpResponse result, Class<T> type) throws SearchException {
         if (result.isSuccessCode()) {
             try {
-                return result.parseBody(type);
-            } catch (JsonSyntaxException e) {
+                return bodyMapper.parseBody(result, type);
+            } catch (HttpResponseBodyParsingException e) {
                 throw new SearchException("Error parsing response. Check the inner HttpResponse for more info.",
                         result);
             }
