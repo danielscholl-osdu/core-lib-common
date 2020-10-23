@@ -14,8 +14,9 @@
 
 package org.opengroup.osdu.core.common.entitlements;
 
-import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang3.StringUtils;
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyParsingException;
 import org.opengroup.osdu.core.common.model.entitlements.EntitlementsException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.entitlements.CreateGroup;
@@ -33,13 +34,16 @@ public class EntitlementsService implements IEntitlementsService {
     private final String rootUrl;
     private final IHttpClient httpClient;
     private final DpsHeaders headers;
+    private final HttpResponseBodyMapper responseBodyMapper;
 
     EntitlementsService(EntitlementsAPIConfig config,
                         IHttpClient httpClient,
-                        DpsHeaders headers) {
+                        DpsHeaders headers,
+                        HttpResponseBodyMapper mapper) {
         this.rootUrl = config.getRootUrl();
         this.httpClient = httpClient;
         this.headers = headers;
+        this.responseBodyMapper = mapper;
         if (config.apiKey != null) {
             headers.put("AppKey", config.apiKey);
         }
@@ -126,8 +130,8 @@ public class EntitlementsService implements IEntitlementsService {
     private <T> T getResult(HttpResponse result, Class<T> type) throws EntitlementsException {
         if (result.isSuccessCode()) {
             try {
-                return result.parseBody(type);
-            } catch (JsonSyntaxException e) {
+                return responseBodyMapper.parseBody(result, type);
+            } catch (HttpResponseBodyParsingException e) {
                 throw new EntitlementsException("Error parsing response. Check the inner HttpResponse for more info.",
                         result);
             }

@@ -84,6 +84,7 @@ The following software have components provided under the terms of this license:
 - Spring Context (from https://github.com/spring-projects/spring-framework)
 - Spring Core (from https://github.com/spring-projects/spring-framework)
 - Spring Expression Language (SpEL) (from https://github.com/spring-projects/spring-framework)
+- Spring TestContext Framework (from https://github.com/spring-projects/spring-framework)
 - Spring Web (from https://github.com/spring-projects/spring-framework)
 - Spring Web MVC (from https://github.com/spring-projects/spring-framework)
 - T-Digest (from https://github.com/tdunning/t-digest)

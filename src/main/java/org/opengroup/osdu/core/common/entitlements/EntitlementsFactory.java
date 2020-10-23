@@ -14,18 +14,21 @@
 
 package org.opengroup.osdu.core.common.entitlements;
 
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.http.HttpClient;
 
 public class EntitlementsFactory implements IEntitlementsFactory {
 
     private final EntitlementsAPIConfig config;
+    private final HttpResponseBodyMapper mapper;
 
-    public EntitlementsFactory(EntitlementsAPIConfig config) {
+    public EntitlementsFactory(EntitlementsAPIConfig config, HttpResponseBodyMapper mapper) {
         if (config == null) {
             throw new IllegalArgumentException("EntitlementsAPIConfig cannot be empty");
         }
         this.config = config;
+        this.mapper = mapper;
     }
 
     @Override
@@ -35,6 +38,6 @@ public class EntitlementsFactory implements IEntitlementsFactory {
         }
         return new EntitlementsService(this.config,
                 new HttpClient(),
-                headers);
+                headers, mapper);
     }
 }

@@ -14,23 +14,18 @@
 
 package org.opengroup.osdu.core.common.http;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class HttpResponse {
-    static final Gson gson = new Gson();
-    static final JsonParser parser = new JsonParser();
     Map<String, List<String>> headers;
     private String body = "";
     private String contentType = "";
@@ -39,45 +34,32 @@ public class HttpResponse {
     private HttpRequest request;
     private long latency = 0;
 
-    public Boolean isSuccessCode() {
+    public boolean isSuccessCode() {
         return responseCode >= 200 && responseCode <= 299;
     }
 
-    public Boolean isServerErrorCode() {
+    public boolean isServerErrorCode() {
         return responseCode >= 500;
     }
 
-    public Boolean IsNotFoundCode() {
+    public boolean IsNotFoundCode() {
         return responseCode == 404;
     }
 
-    public Boolean IsUnauthorizedCode() {
+    public boolean IsUnauthorizedCode() {
         return responseCode == 401;
     }
 
-    public Boolean IsForbiddenCode() {
+    public boolean IsForbiddenCode() {
         return responseCode == 403;
     }
 
-    public Boolean IsBadRequestCode() {
+    public boolean IsBadRequestCode() {
         return responseCode == 400;
     }
 
-    public Boolean hasException() {
+    public boolean hasException() {
         return exception != null;
     }
 
-    public JsonObject getAsJsonObject() {
-        if (StringUtils.isBlank(body))
-            return null;
-
-        return parser.parse(body).getAsJsonObject();
-    }
-
-    public <T> T parseBody(Class<T> type) {
-        if (StringUtils.isBlank(body))
-            return null;
-
-        return gson.fromJson(body, type);
-    }
 }

@@ -197,28 +197,6 @@ public class HttpClientTest {
         assertTrue(response.IsUnauthorizedCode());
     }
 
-
-    @Test
-    public void should_convertResponseToJsonObject_when_givenValidJson() throws Exception {
-
-        HttpRequest request = HttpRequest.get().url(URL).headers(HEADERS).build();
-        createMockHtppConnection(200, request);
-
-        HttpResponse response = this.sut.send(request);
-
-        assertEquals("test data", response.getAsJsonObject().get("name").getAsString());
-    }
-
-    @Test
-    public void should_convertResponseToClass_when_givenValidJson() throws Exception {
-
-        HttpRequest request = HttpRequest.get().url(URL).headers(HEADERS).build();
-        createMockHtppConnection(200, request);
-        HttpResponse response = this.sut.send(request);
-
-        assertEquals("test data", response.parseBody(ResponseTest.class).name);
-    }
-
     private void createMockHtppConnection(int returnCode, HttpRequest request) throws IOException {
         HttpURLConnection connection = getHttpURLConnection(returnCode);
         when(this.sut.createConnection(request)).thenReturn(connection);
@@ -237,7 +215,4 @@ public class HttpClientTest {
         return connection;
     }
 
-    private class ResponseTest {
-        String name;
-    }
 }
