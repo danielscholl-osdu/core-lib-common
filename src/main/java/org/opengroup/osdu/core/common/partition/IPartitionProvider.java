@@ -14,6 +14,8 @@
 
 package org.opengroup.osdu.core.common.partition;
 
+import java.util.List;
+
 public interface IPartitionProvider {
 
     PartitionInfo get(String partitionId) throws PartitionException;
@@ -21,5 +23,7 @@ public interface IPartitionProvider {
     PartitionInfo create(String partitionId, PartitionInfo partitionInfo) throws PartitionException;
 
     void delete(String partitionId) throws PartitionException;
+
+    List<String> list() throws PartitionException;
 
 }

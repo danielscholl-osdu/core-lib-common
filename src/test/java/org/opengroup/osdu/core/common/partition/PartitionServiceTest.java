@@ -28,6 +28,7 @@ import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -44,6 +45,7 @@ public class PartitionServiceTest {
     public static final String PARTITION_ID = "tenant1";
     public static final String PARTITION_NOT_FOUND = "partiton tenant1 not found";
     public static final String BAD_REQUEST = "Bad request";
+    public static final String LIST_PARTITION_RESPONSE = "[ \"default-dev\", \"opendes\" ]";
 
     @Test
     public void should_return_partition_when_exists() throws PartitionException, IOException {
@@ -137,6 +139,19 @@ public class PartitionServiceTest {
             assertNotNull(e);
             assertEquals(PARTITION_NOT_FOUND, e.getHttpResponse().getBody());
         }
+    }
+
+    @Test
+    public void should_return_list_partitions() throws IOException, PartitionException {
+        PartitionAPIConfig config = PartitionAPIConfig.builder().rootUrl("http://localhost").build();
+        DpsHeaders headers = new DpsHeaders();
+        CloseableHttpResponse mockResponse = getResponse(200, LIST_PARTITION_RESPONSE);
+        when(cacheHttpClient.execute(any())).thenReturn(mockResponse);
+
+        PartitionService sut = new PartitionService(config, headers, cacheHttpClient);
+        List<String> partitions = sut.list();
+        assertNotNull(partitions);
+        assertEquals(2, partitions.size());
     }
 
     private CloseableHttpResponse getResponse(int status, String body) throws IOException {

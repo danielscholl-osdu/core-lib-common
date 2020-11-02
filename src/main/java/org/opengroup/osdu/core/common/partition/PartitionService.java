@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
+import java.util.List;
 import java.util.Map;
 
 public class PartitionService implements IPartitionProvider {
@@ -88,6 +89,15 @@ public class PartitionService implements IPartitionProvider {
         HttpDelete httpDelete = new HttpDelete(url);
         HttpResponse response = send(httpDelete);
         getResult(response, String.class);
+    }
+
+    @Override
+    public List<String> list() throws PartitionException {
+        String url = this.createUrl("/partitions");
+        HttpGet httpGetRequest = new HttpGet(url);
+        HttpResponse response = send(httpGetRequest);
+        List<String> partitions = getResult(response, List.class);
+        return partitions;
     }
 
     private HttpResponse send(HttpRequestBase request) throws PartitionException {
