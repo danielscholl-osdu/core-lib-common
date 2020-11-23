@@ -14,19 +14,26 @@
 
 package org.opengroup.osdu.core.common.legal;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
-import org.opengroup.osdu.core.common.http.json.HttpResponseBodyParsingException;
-import org.opengroup.osdu.core.common.model.legal.*;
-import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.http.IHttpClient;
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyParsingException;
+import org.opengroup.osdu.core.common.model.http.DpsHeaders;
+import org.opengroup.osdu.core.common.model.legal.InvalidTagsWithReason;
+import org.opengroup.osdu.core.common.model.legal.LegalException;
+import org.opengroup.osdu.core.common.model.legal.LegalTag;
+import org.opengroup.osdu.core.common.model.legal.LegalTagProperties;
+import org.opengroup.osdu.core.common.model.legal.RequestLegalTags;
 
 public class LegalService implements ILegalProvider {
     private final String rootUrl;
     private final IHttpClient httpClient;
     private final DpsHeaders headers;
+    private final ObjectMapper objectMapper;
     private final HttpResponseBodyMapper responseBodyMapper;
 
     LegalService(LegalAPIConfig config,
@@ -36,6 +43,7 @@ public class LegalService implements ILegalProvider {
         this.rootUrl = config.getRootUrl();
         this.httpClient = httpClient;
         this.headers = headers;
+        this.objectMapper = new ObjectMapper();
         this.responseBodyMapper = mapper;
         if (config.apiKey != null) {
             headers.put("AppKey", config.apiKey);
@@ -44,9 +52,15 @@ public class LegalService implements ILegalProvider {
 
     @Override
     public LegalTag create(LegalTag lt) throws LegalException {
+        String body;
+        try {
+            body = objectMapper.writeValueAsString(lt);
+        } catch (JsonProcessingException e) {
+            throw new LegalException("Cannot build request from legal tag", null);
+        }
         String url = this.createUrl("/legaltags");
         HttpResponse result = this.httpClient.send(
-                HttpRequest.post(lt).url(url).headers(this.headers.getHeaders()).build());
+                HttpRequest.post().body(body).url(url).headers(this.headers.getHeaders()).build());
         return this.getResult(result, LegalTag.class);
     }
 
