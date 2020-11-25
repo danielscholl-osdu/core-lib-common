@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class PersistenceHelper {
@@ -106,6 +107,11 @@ public class PersistenceHelper {
 
 		json = gson.toJsonTree(recordMetadata.getLegal(), Legal.class);
 		jsonRecordObject.add("legal", json);
+
+		if(!recordMetadata.getTags().isEmpty()) {
+			json = gson.toJsonTree(recordMetadata.getTags(), Map.class);
+			jsonRecordObject.add("tags", json);
+		}
 
 		if (recordMetadata.getAncestry() != null && !Collections.isEmpty(recordMetadata.getAncestry().getParents())) {
 			json = gson.toJsonTree(recordMetadata.getAncestry(), RecordAncestry.class);

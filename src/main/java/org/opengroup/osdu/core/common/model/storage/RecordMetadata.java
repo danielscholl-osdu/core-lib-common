@@ -15,7 +15,9 @@
 package org.opengroup.osdu.core.common.model.storage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,6 +41,8 @@ public class RecordMetadata {
 
 	private RecordAncestry ancestry;
 
+	private Map<String, String> tags = new HashMap<>();
+
 	private List<String> gcsVersionPaths = new ArrayList<>();
 
 	private RecordState status;
@@ -58,6 +62,7 @@ public class RecordMetadata {
 		this.kind = record.getKind();
 		this.acl = record.getAcl();
 		this.legal = record.getLegal();
+		this.tags = record.getTags();
 		this.ancestry = record.getAncestry();
 	}
 

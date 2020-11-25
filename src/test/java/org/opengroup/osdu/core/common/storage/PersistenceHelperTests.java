@@ -175,6 +175,8 @@ public class PersistenceHelperTests {
 
     @Test
     public void should_combineJsonFromStorageWithRecordFromDataStore_when_generatingStringCopyOfTheRecord() {
+        String tagKey = "tagKey";
+        String tagValue = "tagValue";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         JsonParser parser = new JsonParser();
@@ -199,6 +201,7 @@ public class PersistenceHelperTests {
         metadata.setAcl(acl);
         metadata.setLegal(legal);
         metadata.setAncestry(ancestry);
+        metadata.getTags().put(tagKey, tagValue);
         long createTime = System.currentTimeMillis();
         long modifyTime = System.currentTimeMillis() + 3600 * 1000;
 
@@ -217,6 +220,7 @@ public class PersistenceHelperTests {
         assertEquals("slb:test:kind:1.0.0", json.get("kind").getAsString());
         assertEquals("user1", json.get("modifyUser").getAsString());
         assertEquals("user", json.get("createUser").getAsString());
+        assertEquals(tagValue, json.get("tags").getAsJsonObject().get(tagKey).getAsString());
         assertEquals( sdf.format(new Date(modifyTime)),  json.get("modifyTime").getAsString());
         assertEquals( sdf.format(new Date(createTime)),  json.get("createTime").getAsString());
 
