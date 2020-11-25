@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.core.common.model.storage;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -72,6 +73,8 @@ public class Record {
 	private RecordAncestry ancestry;
 
 	private Map<String, Object>[] meta;
+
+	private Map<String, String> tags = new HashMap<>();
 
 	public void createNewRecordId(String tenant) {
 		String uuid = UUID.randomUUID().toString().replace("-", "");
