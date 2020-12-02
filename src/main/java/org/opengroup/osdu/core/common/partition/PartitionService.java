@@ -72,7 +72,7 @@ public class PartitionService implements IPartitionProvider {
             entity = new StringEntity(jsonString);
         } catch (UnsupportedEncodingException e) {
             throw new PartitionException(
-                    String.format("Error making request to Partition service, error: %s", e.getMessage()), null);
+                    String.format("Error making request to Partition service create api, error: %s", e.getMessage()), null);
         }
         httpPost.setEntity(entity);
         HttpResponse response = send(httpPost);
@@ -81,6 +81,23 @@ public class PartitionService implements IPartitionProvider {
                 .builder()
                 .properties(properties)
                 .build();
+    }
+
+    @Override
+    public void update(String partitionId, PartitionInfo partitionInfo) throws PartitionException {
+        String url = this.createUrl(String.format("/partitions/%s", partitionId));
+        HttpPatch httpPatch = new HttpPatch(url);
+        StringEntity entity;
+        try {
+            String jsonString = this.gson.toJson(partitionInfo);
+            entity = new StringEntity(jsonString);
+        } catch (UnsupportedEncodingException e) {
+            throw new PartitionException(
+                    String.format("Error making request to Partition service update api, error: %s", e.getMessage()), null);
+        }
+        httpPatch.setEntity(entity);
+        HttpResponse response = send(httpPatch);
+        getResult(response, String.class);
     }
 
     @Override

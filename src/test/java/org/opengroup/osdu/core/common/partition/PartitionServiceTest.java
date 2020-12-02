@@ -114,6 +114,57 @@ public class PartitionServiceTest {
     }
 
     @Test
+    public void should_return_null_when_updating_partition() throws IOException, PartitionException {
+        PartitionAPIConfig config = PartitionAPIConfig.builder().rootUrl("http://localhost").build();
+        DpsHeaders headers = new DpsHeaders();
+        CloseableHttpResponse mockResponse = getResponse(204, null);
+        when(cacheHttpClient.execute(any())).thenReturn(mockResponse);
+
+        PartitionService sut = new PartitionService(config, headers, cacheHttpClient);
+        PartitionInfo input = PartitionInfo.builder()
+                .properties(new HashMap<>())
+                .build();
+        sut.update(PARTITION_ID, input);
+    }
+
+    @Test
+    public void should_return_exception_when_updating_with_bad_partitionId() throws IOException {
+        PartitionAPIConfig config = PartitionAPIConfig.builder().rootUrl("http://localhost").build();
+        DpsHeaders headers = new DpsHeaders();
+        CloseableHttpResponse mockResponse = getResponse(400, BAD_REQUEST);
+        when(cacheHttpClient.execute(any())).thenReturn(mockResponse);
+
+        PartitionService sut = new PartitionService(config, headers, cacheHttpClient);
+        try {
+            PartitionInfo input = PartitionInfo.builder()
+                    .properties(new HashMap<>())
+                    .build();
+            sut.update(null, input);
+            fail("should not be here");
+        } catch (PartitionException e) {
+            assertNotNull(e);
+            assertEquals(BAD_REQUEST, e.getHttpResponse().getBody());
+        }
+    }
+
+    @Test
+    public void should_return_exception_when_updating_with_bad_partitionInfo() throws IOException {
+        PartitionAPIConfig config = PartitionAPIConfig.builder().rootUrl("http://localhost").build();
+        DpsHeaders headers = new DpsHeaders();
+        CloseableHttpResponse mockResponse = getResponse(400, BAD_REQUEST);
+        when(cacheHttpClient.execute(any())).thenReturn(mockResponse);
+
+        PartitionService sut = new PartitionService(config, headers, cacheHttpClient);
+        try {
+            sut.update(PARTITION_ID, null);
+            fail("should not be here");
+        } catch (PartitionException e) {
+            assertNotNull(e);
+            assertEquals(BAD_REQUEST, e.getHttpResponse().getBody());
+        }
+    }
+
+    @Test
     public void should_return_partition_204_after_deleting() throws IOException, PartitionException {
         PartitionAPIConfig config = PartitionAPIConfig.builder().rootUrl("http://localhost").build();
         DpsHeaders headers = new DpsHeaders();

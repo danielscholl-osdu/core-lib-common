@@ -22,6 +22,8 @@ public interface IPartitionProvider {
 
     PartitionInfo create(String partitionId, PartitionInfo partitionInfo) throws PartitionException;
 
+    void update(String partitionId, PartitionInfo partitionInfo) throws PartitionException;
+
     void delete(String partitionId) throws PartitionException;
 
     List<String> list() throws PartitionException;
