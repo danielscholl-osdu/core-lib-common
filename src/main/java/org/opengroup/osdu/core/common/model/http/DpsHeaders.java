@@ -136,7 +136,7 @@ public class DpsHeaders {
     public String getContentType() {
         return this.getHeader(CONTENT_TYPE);
     }
-    
+
     public String getLegalTags() { return this.getHeader(LEGAL_TAGS); }
 
     public String getAcl() { return this.getHeader(ACL_HEADER); }
