@@ -14,10 +14,14 @@
 
 package org.opengroup.osdu.core.common.model.entitlements;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class MemberInfo {
     String email;
