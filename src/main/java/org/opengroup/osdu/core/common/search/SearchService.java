@@ -1,6 +1,5 @@
 package org.opengroup.osdu.core.common.search;
 
-import org.apache.commons.lang3.StringUtils;
 import com.google.gson.JsonObject;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyParsingException;
@@ -9,6 +8,7 @@ import org.opengroup.osdu.core.common.model.search.*;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.http.IHttpClient;
+import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class SearchService implements ISearchService {
     SearchService(SearchAPIConfig config,
@@ -82,7 +82,7 @@ public class SearchService implements ISearchService {
     }
 
     private String createUrl(String pathAndQuery) {
-        return StringUtils.join(this.rootUrl, pathAndQuery);
+        return UrlNormalizationUtil.normalizeStringUrl(this.rootUrl,pathAndQuery);
     }
 
     private <T> T getResult(HttpResponse result, Class<T> type) throws SearchException {

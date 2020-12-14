@@ -14,6 +14,8 @@
 
 package org.opengroup.osdu.core.common.legal;
 
+import static org.junit.Assert.assertEquals;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -35,12 +37,13 @@ import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.legal.LegalException;
 import org.opengroup.osdu.core.common.model.legal.LegalTag;
 import org.opengroup.osdu.core.common.model.legal.Properties;
-
 import java.sql.Date;
 import java.util.Collections;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LegalServiceTest {
+
+    private static final String ROOT_URL = "http://example.com";
     @Spy
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Spy
@@ -111,5 +114,20 @@ public class LegalServiceTest {
                 "}");
         JsonElement actualJson = parser.parse(httpRequestCaptor.getValue().getBody());
         Assert.assertEquals(expectedJson, actualJson);
+    }
+
+    @Test
+    public void testUrlNormalization () throws LegalException {
+        HttpResponse httpResponse = new HttpResponse();
+        httpResponse.setResponseCode(200);
+        Mockito.when(httpClient.send(Matchers.any())).thenReturn(httpResponse);
+        String malformedUrl = " \n  " + ROOT_URL + "\n // \t \f \r";
+        Mockito.when(legalAPIConfig.getRootUrl()).thenReturn(malformedUrl);
+        legalService = new LegalService(legalAPIConfig,httpClient,headers,responseBodyMapper);
+
+        legalService.get("any");
+        ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.verify(httpClient).send(captor.capture());
+        assertEquals(ROOT_URL + "/legaltags/any",captor.getValue().getUrl());
     }
 }

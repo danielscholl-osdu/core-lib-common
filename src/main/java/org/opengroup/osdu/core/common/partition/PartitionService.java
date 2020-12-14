@@ -33,6 +33,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.Map;
+import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class PartitionService implements IPartitionProvider {
 
@@ -163,7 +164,7 @@ public class PartitionService implements IPartitionProvider {
     }
 
     private String createUrl(String pathAndQuery) {
-        return StringUtils.join(this.rootUrl, pathAndQuery);
+        return UrlNormalizationUtil.normalizeStringUrl(this.rootUrl,pathAndQuery);
     }
 
     private PartitionException generatePartitionException(HttpResponse result) {

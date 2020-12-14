@@ -1,5 +1,6 @@
 package org.opengroup.osdu.core.common.search;
 
+import org.mockito.ArgumentCaptor;
 import org.opengroup.osdu.core.common.http.HttpClient;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
@@ -14,9 +15,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class SearchServiceTest {
+
+    public static final String ROOT_URL = "http://example.com";
+
     private IHttpClient httpClient;
 
     private SearchAPIConfig config;
@@ -95,5 +100,20 @@ public class SearchServiceTest {
         when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
         QueryResponse queryResponse = searchService.search(new QueryRequest());
         assertNotNull(queryResponse);
+    }
+
+    @Test
+    public void testUrlNormalization() throws SearchException {
+        HttpResponse response = new HttpResponse();
+        response.setResponseCode(200);
+        when(httpClient.send(any())).thenReturn(response);
+        String malformedRootUrl = " \n  " + ROOT_URL + "\n // \t \f \r";
+        config = SearchAPIConfig.builder().rootUrl(malformedRootUrl).build();
+        SearchService searchService = new SearchService(config, httpClient, dpsHeaders, bodyMapper);
+
+        searchService.search(new QueryRequest());
+        ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
+        verify(httpClient).send(captor.capture());
+        assertEquals(ROOT_URL + "/query",captor.getValue().getUrl());
     }
 }

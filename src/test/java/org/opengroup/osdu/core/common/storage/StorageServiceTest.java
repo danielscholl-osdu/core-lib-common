@@ -2,6 +2,8 @@ package org.opengroup.osdu.core.common.storage;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.opengroup.osdu.core.common.http.HttpClient;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
@@ -11,12 +13,16 @@ import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.storage.Record;
 import org.opengroup.osdu.core.common.model.storage.StorageException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class StorageServiceTest {
+
+    private static final String ROOT_URL = "http://example.com";
+
     private IHttpClient httpClient;
 
     private StorageAPIConfig config;
@@ -66,5 +72,20 @@ public class StorageServiceTest {
         when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
         Record record = storageService.getRecord("AnyRecord");
         assertNotNull(record);
+    }
+
+    @Test
+    public void testUrlNormalization () throws StorageException {
+        HttpResponse httpResponse = mock(HttpResponse.class);
+        when(httpResponse.isSuccessCode()).thenReturn(true);
+        when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
+        String malformedUrl = " \n  " + ROOT_URL + "\n // \t \f \r";
+        config = StorageAPIConfig.builder().rootUrl(malformedUrl).build();
+        StorageService storageService = new StorageService(config, httpClient, dpsHeaders, bodyMapper);
+
+        storageService.getRecord("any");
+        ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.verify(httpClient).send(captor.capture());
+        assertEquals(ROOT_URL + "/records/any",captor.getValue().getUrl());
     }
 }

@@ -17,14 +17,15 @@ package org.opengroup.osdu.core.common.partition;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicStatusLine;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,6 +43,7 @@ public class PartitionServiceTest {
     @Mock
     CloseableHttpClient cacheHttpClient;
 
+    public static final String ROOT_URL = "http://example.com";
     public static final String VALID_JSON_RESPONSE = "{ 'endpoint': '1.1.1.1', 'connection': 'test-connection', 'id': 'tenant1'}";
     public static final String PARTITION_ID = "tenant1";
     public static final String PARTITION_NOT_FOUND = "partiton tenant1 not found";
@@ -203,6 +206,21 @@ public class PartitionServiceTest {
         List<String> partitions = sut.list();
         assertNotNull(partitions);
         assertEquals(2, partitions.size());
+    }
+
+    @Test
+    public void testUrlNormalization() throws IOException, PartitionException {
+        CloseableHttpResponse mockResponse = getResponse(200, LIST_PARTITION_RESPONSE);
+        when(cacheHttpClient.execute(any())).thenReturn(mockResponse);
+        DpsHeaders headers = new DpsHeaders();
+        String malformedRootUrl = " \n  " + ROOT_URL + "\n // \t \f \r";
+        PartitionAPIConfig config = PartitionAPIConfig.builder().rootUrl(malformedRootUrl).build();
+        PartitionService sut = new PartitionService(config, headers, cacheHttpClient);
+
+        sut.list();
+        ArgumentCaptor<HttpRequestBase> captor = ArgumentCaptor.forClass(HttpRequestBase.class);
+        verify(cacheHttpClient).execute(captor.capture());
+        assertEquals(ROOT_URL + "/partitions",captor.getValue().getURI().toString());
     }
 
     private CloseableHttpResponse getResponse(int status, String body) throws IOException {
