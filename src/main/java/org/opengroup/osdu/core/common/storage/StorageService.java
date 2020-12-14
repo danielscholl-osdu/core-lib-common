@@ -1,6 +1,5 @@
 package org.opengroup.osdu.core.common.storage;
 
-import org.apache.commons.lang3.StringUtils;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.http.IHttpClient;
@@ -10,6 +9,7 @@ import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.storage.*;
 
 import java.util.Collection;
+import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class StorageService implements IStorageService {
 
@@ -103,7 +103,7 @@ public class StorageService implements IStorageService {
     }
 
     private String createUrl(String pathAndQuery) {
-        return StringUtils.join(this.rootUrl, pathAndQuery);
+        return UrlNormalizationUtil.normalizeStringUrl(this.rootUrl,pathAndQuery);
     }
 
     private <T> T getResult(HttpResponse result, Class<T> type) throws StorageException {

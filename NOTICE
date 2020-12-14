@@ -42,7 +42,6 @@ The following software have components provided under the terms of this license:
 - Jackson-dataformat-YAML (from https://github.com/FasterXML/jackson)
 - Jackson-datatype-jdk8 (from )
 - Jackson-module-parameter-names (from )
-- Jakarta Bean Validation API (from https://beanvalidation.org)
 - Java Servlet API (from http://servlet-spec.java.net)
 - Javassist (from http://www.javassist.org/)
 - Joda-Time (from http://www.joda.org/joda-time/)
@@ -80,7 +79,6 @@ The following software have components provided under the terms of this license:
 - Spring Boot Logging Starter (from http://projects.spring.io/spring-boot/)
 - Spring Boot Starter (from http://projects.spring.io/spring-boot/)
 - Spring Boot Tomcat Starter (from http://projects.spring.io/spring-boot/)
-- Spring Boot Validation Starter (from http://projects.spring.io/spring-boot/)
 - Spring Boot Web Starter (from http://projects.spring.io/spring-boot/)
 - Spring Commons Logging Bridge (from https://github.com/spring-projects/spring-framework)
 - Spring Context (from https://github.com/spring-projects/spring-framework)
@@ -122,7 +120,6 @@ BSD-2-Clause
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Hamcrest (from http://hamcrest.org/JavaHamcrest/)
 - Hamcrest Core (from http://hamcrest.org/)
 - Lucene Common Analyzers (from )
 
@@ -132,8 +129,6 @@ BSD-3-Clause
 The following software have components provided under the terms of this license:
 
 - Apache Commons Codec (from http://commons.apache.org/proper/commons-codec/)
-- Hamcrest (from http://hamcrest.org/JavaHamcrest/)
-- Hamcrest Core (from http://hamcrest.org/)
 - Lucene Common Analyzers (from )
 - Lucene Core (from )
 - Lucene Suggest (from )
@@ -143,7 +138,7 @@ The following software have components provided under the terms of this license:
 - Spring Core (from https://github.com/spring-projects/spring-framework)
 
 ========================================================================
-CC-BY-3.0
+CC-BY-2.5
 ========================================================================
 The following software have components provided under the terms of this license:
 
@@ -154,13 +149,14 @@ CDDL-1.0
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Java Servlet API (from http://servlet-spec.java.net)
+- javax.annotation-api (from http://jcp.org/en/jsr/detail?id=250)
 
 ========================================================================
 CDDL-1.1
 ========================================================================
 The following software have components provided under the terms of this license:
 
+- Java Servlet API (from http://servlet-spec.java.net)
 - tomcat-embed-core (from http://tomcat.apache.org/)
 
 ========================================================================
@@ -179,14 +175,6 @@ The following software have components provided under the terms of this license:
 - Logback Classic Module (from )
 - Logback Core Module (from )
 - SnakeYAML (from http://www.snakeyaml.org)
-- jakarta.annotation-api (from https://projects.eclipse.org/projects/ee4j.ca)
-
-========================================================================
-EPL-2.0
-========================================================================
-The following software have components provided under the terms of this license:
-
-- jakarta.annotation-api (from https://projects.eclipse.org/projects/ee4j.ca)
 
 ========================================================================
 GPL-2.0-only
@@ -194,6 +182,7 @@ GPL-2.0-only
 The following software have components provided under the terms of this license:
 
 - Java Servlet API (from http://servlet-spec.java.net)
+- javax.annotation-api (from http://jcp.org/en/jsr/detail?id=250)
 - tomcat-embed-core (from http://tomcat.apache.org/)
 
 ========================================================================
@@ -209,7 +198,7 @@ GPL-2.0-with-classpath-exception
 The following software have components provided under the terms of this license:
 
 - Java Servlet API (from http://servlet-spec.java.net)
-- jakarta.annotation-api (from https://projects.eclipse.org/projects/ee4j.ca)
+- javax.annotation-api (from http://jcp.org/en/jsr/detail?id=250)
 - tomcat-embed-core (from http://tomcat.apache.org/)
 
 ========================================================================
@@ -218,7 +207,6 @@ GPL-3.0-only
 The following software have components provided under the terms of this license:
 
 - Project Lombok (from https://projectlombok.org)
-- jakarta.annotation-api (from https://projects.eclipse.org/projects/ee4j.ca)
 
 ========================================================================
 LGPL-2.1-only

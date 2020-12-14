@@ -16,7 +16,6 @@ package org.opengroup.osdu.core.common.legal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.http.IHttpClient;
@@ -28,6 +27,7 @@ import org.opengroup.osdu.core.common.model.legal.LegalException;
 import org.opengroup.osdu.core.common.model.legal.LegalTag;
 import org.opengroup.osdu.core.common.model.legal.LegalTagProperties;
 import org.opengroup.osdu.core.common.model.legal.RequestLegalTags;
+import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class LegalService implements ILegalProvider {
     private final String rootUrl;
@@ -104,7 +104,7 @@ public class LegalService implements ILegalProvider {
     }
 
     private String createUrl(String pathAndQuery) {
-        return StringUtils.join(this.rootUrl, pathAndQuery);
+        return UrlNormalizationUtil.normalizeStringUrl(this.rootUrl,pathAndQuery);
     }
 
     private <T> T getResult(HttpResponse result, Class<T> type) throws LegalException {

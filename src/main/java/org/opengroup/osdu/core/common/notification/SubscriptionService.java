@@ -2,7 +2,6 @@ package org.opengroup.osdu.core.common.notification;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.http.IHttpClient;
@@ -13,6 +12,7 @@ import org.opengroup.osdu.core.common.model.notification.Topic;
 
 import java.io.IOException;
 import java.util.List;
+import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class SubscriptionService implements ISubscriptionService {
     SubscriptionService(SubscriptionAPIConfig config,
@@ -71,7 +71,7 @@ public class SubscriptionService implements ISubscriptionService {
     }
 
     private String createUrl(String pathAndQuery) {
-        return StringUtils.join(this.rootUrl, pathAndQuery);
+        return UrlNormalizationUtil.normalizeStringUrl(this.rootUrl,pathAndQuery);
     }
 
     static Subscription getSubscription(HttpResponse result) throws SubscriptionException {

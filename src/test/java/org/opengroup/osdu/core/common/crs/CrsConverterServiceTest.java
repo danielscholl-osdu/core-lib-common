@@ -1,0 +1,52 @@
+package org.opengroup.osdu.core.common.crs;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.opengroup.osdu.core.common.http.HttpRequest;
+import org.opengroup.osdu.core.common.http.HttpResponse;
+import org.opengroup.osdu.core.common.http.IHttpClient;
+import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
+import org.opengroup.osdu.core.common.model.crs.ConvertPointsRequest;
+import org.opengroup.osdu.core.common.model.crs.CrsConverterException;
+import org.opengroup.osdu.core.common.model.http.DpsHeaders;
+
+@RunWith(MockitoJUnitRunner.class)
+public class CrsConverterServiceTest {
+
+	public static final String ROOT_URL = "http://example.com";
+	@Mock
+	private IHttpClient httpClient;
+	@Mock
+	private DpsHeaders headers;
+	@Mock
+	private HttpResponseBodyMapper responseBodyMapper;
+	@Mock
+	private CrsConverterAPIConfig crsConverterAPIConfig;
+
+	private CrsConverterService crsConverterService;
+
+	@Test
+	public void testUrlNormalization() throws CrsConverterException {
+		HttpResponse response = new HttpResponse();
+		response.setResponseCode(200);
+		when(httpClient.send(any())).thenReturn(response);
+		String malformedRootUrl = " \n  " + ROOT_URL + "\n // \t \f \r";
+		Mockito.when(crsConverterAPIConfig.getRootUrl()).thenReturn(malformedRootUrl);
+		crsConverterService = new CrsConverterService(crsConverterAPIConfig, httpClient, headers, responseBodyMapper);
+
+		crsConverterService.convertPoints(new ConvertPointsRequest("","", Collections.EMPTY_LIST));
+		ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
+		verify(httpClient).send(captor.capture());
+		assertEquals(ROOT_URL + "/convert", captor.getValue().getUrl());
+	}
+}

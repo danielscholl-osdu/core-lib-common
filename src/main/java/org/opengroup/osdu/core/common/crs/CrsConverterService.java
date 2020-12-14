@@ -14,7 +14,6 @@
 
 package org.opengroup.osdu.core.common.crs;
 
-import org.apache.commons.lang3.StringUtils;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyParsingException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
@@ -22,6 +21,7 @@ import org.opengroup.osdu.core.common.model.crs.*;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.http.IHttpClient;
+import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class CrsConverterService implements ICrsConverterService {
     private final String rootUrl;
@@ -62,7 +62,7 @@ public class CrsConverterService implements ICrsConverterService {
     }
 
     private String createUrl(String pathAndQuery) {
-        return StringUtils.join(this.rootUrl, pathAndQuery);
+        return UrlNormalizationUtil.normalizeStringUrl(this.rootUrl,pathAndQuery);
     }
 
     private <T> T getResult(HttpResponse result, Class<T> type) throws CrsConverterException {
