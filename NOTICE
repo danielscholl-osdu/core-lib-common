@@ -164,6 +164,7 @@ CPL-1.0
 ========================================================================
 The following software have components provided under the terms of this license:
 
+- JUnit (from http://junit.org)
 - System Rules (from http://stefanbirkner.github.io/system-rules/)
 
 ========================================================================
@@ -171,7 +172,6 @@ EPL-1.0
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- JUnit (from http://junit.org)
 - Logback Classic Module (from )
 - Logback Core Module (from )
 - SnakeYAML (from http://www.snakeyaml.org)
@@ -300,6 +300,7 @@ unknown
 The following software have components provided under the terms of this license:
 
 - Byte Buddy (without dependencies) (from )
+- JUnit (from http://junit.org)
 - System Rules (from http://stefanbirkner.github.io/system-rules/)
 
 
