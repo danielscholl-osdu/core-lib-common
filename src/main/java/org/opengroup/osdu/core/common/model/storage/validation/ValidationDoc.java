@@ -22,9 +22,9 @@ public class ValidationDoc {
 
 	// https://www.owasp.org/index.php/OWASP_Validation_Regex_Repository
 	public static final String EMAIL_REGEX = "^data\\.[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-	public static final String RECORD_ID_REGEX = "[\\w-\\.]+:[\\w-\\.]+:[\\w-\\.]+";
-	public static final String RECORD_ID_WITH_VERSION_REGEX ="[\\w-\\.]+:[\\w-\\.]+:[\\w-\\.]+:(\\d+)";
-	public static final String KIND_REGEX = "[\\w-\\.]+:[\\w-\\.]+:[\\w-\\.]+:(\\d+.)?(\\d+.)?(\\d+)";
+	public static final String RECORD_ID_REGEX = "^[\\w\\-\\.]+:[\\w-\\.\\/]+:.+$";
+	public static final String RECORD_ID_WITH_VERSION_REGEX = "^[\\w\\-\\.]+:[\\w-\\.\\/]+:.+:[0-9]+$";
+	public static final String KIND_REGEX = "^[\\w\\-\\.]+:[\\w\\-\\.]+:[\\w\\-\\.\\/]+:[0-9]+.[0-9]+.[0-9]+$";
 
 	public static final String DUPLICATE_RECORD_ID = "Same record cannot be updated twice: '%s'.";
 	public static final String INVALID_NULL_IN_ARRAY = "Invalid 'null' value found in array";
