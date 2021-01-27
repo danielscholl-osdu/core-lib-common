@@ -22,7 +22,7 @@
 
   <groupId>org.opengroup.osdu</groupId>
   <artifactId>os-core-common</artifactId>
-  <version>0.3.24</version>
+  <version>0.3.25</version>
   <packaging>jar</packaging>
 
 
