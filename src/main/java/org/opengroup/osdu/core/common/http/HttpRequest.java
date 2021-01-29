@@ -29,6 +29,7 @@ public class HttpRequest {
     public static final String PUT = "PUT";
     public static final String GET = "GET";
     public static final String DELETE = "DELETE";
+    public static final String HEAD = "HEAD";
 
     String httpMethod;
     String url;
