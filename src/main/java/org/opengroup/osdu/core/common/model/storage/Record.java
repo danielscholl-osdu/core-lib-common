@@ -17,17 +17,20 @@ package org.opengroup.osdu.core.common.model.storage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import org.apache.http.HttpStatus;
 import org.opengroup.osdu.core.common.model.entitlements.Acl;
 import org.opengroup.osdu.core.common.model.legal.Legal;
 import org.opengroup.osdu.core.common.model.entitlements.validation.ValidAcl;
+import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidKind;
 import org.opengroup.osdu.core.common.model.legal.validation.ValidLegal;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidationDoc;
@@ -76,13 +79,76 @@ public class Record {
 
 	private Map<String, String> tags = new HashMap<>();
 
-	public void createNewRecordId(String tenant) {
+
+	private static final java.util.regex.Pattern recordKindPattern = java.util.regex.Pattern.compile(ValidationDoc.KIND_REGEX);
+	private static final java.util.regex.Pattern recordIdPattern = java.util.regex.Pattern.compile(ValidationDoc.RECORD_ID_REGEX);
+
+	public void createNewRecordId(String tenant, String kind) {
+
+		Matcher kindMatcher = recordKindPattern.matcher(kind);
+		boolean matchFound = kindMatcher.find();
+
+		if (!matchFound)
+			throw new AppException(HttpStatus.SC_BAD_REQUEST, "Record kind not valid",
+				"The Record kind is not valid");
+
+		String[] kindSplitByColon = kind.split(":");
+		String kindSubType = kindSplitByColon[2]; //grab GroupType/IndividualType
+
 		String uuid = UUID.randomUUID().toString().replace("-", "");
-		String dlId = String.format("%s:%s:%s", tenant, DATALAKE_RECORD_PREFIX, uuid);
+		String dlId = String.format("%s:%s:%s", tenant, kindSubType, uuid);
 		this.setId(dlId);
 	}
 
-	public static boolean isRecordIdValid(String recordId, String tenant) {
-		return recordId.split(":")[0].equalsIgnoreCase(tenant);
+	/**
+	 * Checks if a RecordId has a valid format.  Use when the Record kind is not available
+	 * @param recordId
+	 * @param tenant
+	 * @return
+	 */
+	public static boolean isRecordIdValidFormatAndTenant(String recordId, String tenant) {
+		
+		Matcher recordIdMatcher = recordIdPattern.matcher(recordId);
+		boolean matchFound = recordIdMatcher.find();
+
+		//full ID should match validation regex
+		if (!matchFound) {
+			return false;
+		}
+
+		//id should be split by colons. ex: tenant:groupType--individualType:uniqueId
+		String[] recordIdSplitByColon = recordId.split(":");
+
+		//first section of id should be the tenant
+		if (!recordIdSplitByColon[0].equalsIgnoreCase(tenant))
+			return false;
+
+		return true;
+	}
+
+	/**
+	 * Checks if a RecordId has a valid format and matches the specified tenant and kind
+	 * @param recordId
+	 * @param tenant
+	 * @param kind
+	 * @return
+	 */
+	public static boolean isRecordIdValid(String recordId, String tenant, String kind) {
+		
+		//Check format and tenant
+		if (!Record.isRecordIdValidFormatAndTenant(recordId, tenant))
+			return false;
+
+		//id should be split by colons. ex: tenant:groupType--individualType:uniqueId
+		String[] recordIdSplitByColon = recordId.split(":");
+
+		//make sure groupType/individualType is correct
+		String[] kindSplitByColon = kind.split(":");
+		String kindSubType = kindSplitByColon[2]; //grab GroupType/IndividualType
+
+		if (!recordIdSplitByColon[1].equalsIgnoreCase(kindSubType))
+			return false;
+			
+		return true;		
 	}
 }
