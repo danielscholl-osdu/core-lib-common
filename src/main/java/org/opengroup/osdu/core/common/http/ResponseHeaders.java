@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated // This class doesn't work well with CORS, use ResponseHeadersFactory instead
 public class ResponseHeaders {
     public static final Map<String, List<Object>> STANDARD_RESPONSE_HEADERS = new HashMap<>();
 
