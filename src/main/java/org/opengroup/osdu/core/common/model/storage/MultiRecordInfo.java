@@ -16,14 +16,14 @@ package org.opengroup.osdu.core.common.model.storage;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
 @Data
-public class MultiRecordInfo {
-	@JsonRawValue
-	private List<String> records;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class MultiRecordInfo {	
+	private List<Record> records;
 	private List<String> invalidRecords;
 	private List<String> retryRecords;
 }

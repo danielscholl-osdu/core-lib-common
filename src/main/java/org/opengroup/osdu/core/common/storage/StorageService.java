@@ -22,6 +22,7 @@ import org.opengroup.osdu.core.common.http.json.HttpResponseBodyParsingException
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.storage.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
@@ -71,6 +72,7 @@ public class StorageService implements IStorageService {
     @Override
     public MultiRecordInfo getRecords(Collection<String> ids) throws StorageException {
         MultiRecordIds input = new MultiRecordIds();
+        input.setRecords(new ArrayList<String>());
         input.getRecords().addAll(ids);
         String url = this.createUrl("/query/records");
         HttpResponse result = this.httpClient.send(
