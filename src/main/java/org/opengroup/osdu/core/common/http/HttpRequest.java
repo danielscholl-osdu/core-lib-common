@@ -67,6 +67,13 @@ public class HttpRequest {
         return HttpRequest.builder().httpMethod(DELETE);
     }
 
+    public static <T> HttpRequestBuilder patch(T body) {
+        return HttpRequest.builder().httpMethod(PATCH).body(new Gson().toJson(body));
+    }
+
+    public static HttpRequestBuilder patch() {
+        return HttpRequest.builder().httpMethod(PATCH);
+    }
     @Override
     public String toString() {
         return String.format("%s, httpMethod=%s", url, httpMethod);

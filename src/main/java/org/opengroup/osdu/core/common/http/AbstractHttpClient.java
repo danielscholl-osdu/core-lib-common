@@ -47,10 +47,10 @@ abstract class AbstractHttpClient implements IHttpClient {
             output.setHeaders(conn.getHeaderFields());
 
             if (output.isSuccessCode()) {
-                output.setBody(getBody(conn.getInputStream()).toString());
+                output.setBody(getBody(conn.getInputStream()));
 
             } else {
-                output.setBody(getBody(conn.getErrorStream()).toString());
+                output.setBody(getBody(conn.getErrorStream()));
             }
 
             output.setLatency(System.currentTimeMillis() - start);
@@ -68,14 +68,17 @@ abstract class AbstractHttpClient implements IHttpClient {
         return output;
     }
 
-    private StringBuilder getBody(InputStream stream) throws IOException {
+    private String getBody(InputStream stream) throws IOException {
+        if(stream == null) {
+            return "";
+        }
         try (BufferedReader in = new BufferedReader(new InputStreamReader(stream))) {
             String inputLine;
             StringBuilder resp = new StringBuilder();
             while ((inputLine = in.readLine()) != null) {
                 resp.append(inputLine);
             }
-            return resp;
+            return resp.toString();
         }
     }
 
