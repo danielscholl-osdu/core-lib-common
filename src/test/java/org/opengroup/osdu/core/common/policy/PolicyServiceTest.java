@@ -86,10 +86,10 @@ public class PolicyServiceTest {
                 "         },\n" +
                 "         \"acl\": {\n" +
                 "            \"owners\": [\n" +
-                "               \"data.default.owner@osdu.com\"\n" +
+                "               \"data.default.owner@opendes.osdu.com\"\n" +
                 "            ],\n" +
                 "            \"viewers\": [\n" +
-                "               \"data.default.viewer@osdu.com\"\n" +
+                "               \"data.default.viewer@opendes.osdu.com\"\n" +
                 "            ]\n" +
                 "         },\n" +
                 "         \"version\": 1587049754313659,\n" +
@@ -103,47 +103,15 @@ public class PolicyServiceTest {
                 "        ]\n" +
                 "      },\n" +
                 "      \"groups\": [\n" +
-                "         \"service.entitlements.user@osdu.com\",\n" +
-                "         \"service.storage.admin@osdu.com\",\n" +
-                "         \"service.legal.admin@osdu.com\",\n" +
-                "         \"service.search.user@osdu.com\",\n" +
-                "         \"data.datalake.viewer@osdu.com\",\n" +
-                "         \"data.default.viewer@osdu.com\",\n" +
-                "         \"data.default.owner@osdu.com\"\n" +
-                "      ],\n" +
-                "      \"user\": {\n" +
-                "            \"email\": \"joe@bigoil.com\",\n" +
-                "            \"name\": \"joe\",\n" +
-                "            \"nationality\": \"US\",\n" +
-                "            \"PresentLocation\": \"US\",\n" +
-                "            \"HomeOfficeLocation\": \"US\",\n" +
-                "            \"AssignedRegion\": \"US\",\n" +
-                "            \"osdurole\": \"owners\",\n" +
-                "            \"OrganisationBusinessUnit\": [\n" +
-                "               \"Deep Water\",\n" +
-                "               \"Qatar Business Unit\"\n" +
-                "            ]\n" +
-                "      },\n" +
-                "      \"legaltags\": {\n" +
-                "         \"originator\": \"SLB\",\n" +
-                "         \"name\": [\n" +
-                "            \"opendes-public-usa-dataset-1\"\n" +
-                "         ],\n" +
-                "         \"countryOfOrigin\": [\n" +
-                "            \"US\"\n" +
-                "         ],\n" +
-                "         \"description\": \"A legaltag used for demonstration purposes - update May 11\",\n" +
-                "         \"otherRelevantDataCountries\": [\n" +
-                "            \"US\"\n" +
-                "         ],\n" +
-                "         \"dataType\": \"Proprietary\",\n" +
-                "         \"personalData\": \"No Personal Data\",\n" +
-                "         \"expirationDate\": \"2099-01-01T15:09:56.798Z\",\n" +
-                "         \"securityClassification\": \"Public\",\n" +
-                "         \"exportClassification\": \"Not - Technical Data\",\n" +
-                "         \"contractId\": \"opendes-public-usa-dataset-1\"\n" +
-                "      }\n" +
-                "   }\n" +
+                "         \"service.entitlements.user@opendes.osdu.com\",\n" +
+                "         \"service.storage.admin@opendes.osdu.com\",\n" +
+                "         \"service.legal.admin@opendes.osdu.com\",\n" +
+                "         \"service.search.user@opendes.osdu.com\",\n" +
+                "         \"data.datalake.viewer@opendes.osdu.com\",\n" +
+                "         \"data.default.viewer@opendes.osdu.com\",\n" +
+                "         \"data.default.owner@opendes.osdu.com\"\n" +
+                "      ]\n" +
+                "\t}\n" +
                 "}\n";
         return new JsonParser().parse(storagePolicy).getAsJsonObject();
     }
