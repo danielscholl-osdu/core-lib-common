@@ -32,7 +32,7 @@ public class PolicyFactory implements IPolicyFactory {
     }
 
     @Override
-    public IPolicyService create(DpsHeaders headers) {
+    public IPolicyProvider create(DpsHeaders headers) {
         if (headers == null) {
             throw new NullPointerException("headers cannot be null");
         }

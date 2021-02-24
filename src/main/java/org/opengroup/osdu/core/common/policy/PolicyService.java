@@ -25,7 +25,7 @@ import org.opengroup.osdu.core.common.model.policy.PolicyRequest;
 import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 import org.opengroup.osdu.core.common.model.policy.PolicyResponse;
 
-public class PolicyService implements IPolicyService {
+public class PolicyService implements IPolicyProvider {
 
     PolicyService(PolicyAPIConfig config,
                   IHttpClient httpClient,

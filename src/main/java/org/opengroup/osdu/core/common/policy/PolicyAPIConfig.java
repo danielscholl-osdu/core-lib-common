@@ -20,6 +20,7 @@ import lombok.Data;
 @Builder
 @Data
 public class PolicyAPIConfig {
+
     String rootUrl;
 
     public static PolicyAPIConfig Default() {

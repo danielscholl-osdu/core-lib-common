@@ -18,5 +18,5 @@ import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 
 public interface IPolicyFactory {
 
-    IPolicyService create(DpsHeaders headers);
+    IPolicyProvider create(DpsHeaders headers);
 }

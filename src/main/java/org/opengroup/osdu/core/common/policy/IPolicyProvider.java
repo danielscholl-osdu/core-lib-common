@@ -17,9 +17,7 @@ package org.opengroup.osdu.core.common.policy;
 import org.opengroup.osdu.core.common.model.policy.PolicyRequest;
 import org.opengroup.osdu.core.common.model.policy.PolicyResponse;
 
-import java.io.UnsupportedEncodingException;
+public interface IPolicyProvider {
 
-public interface IPolicyService {
-
-   PolicyResponse evaluatePolicy(PolicyRequest policy) throws UnsupportedEncodingException, PolicyException;
+    PolicyResponse evaluatePolicy(PolicyRequest policy) throws PolicyException;
 }
