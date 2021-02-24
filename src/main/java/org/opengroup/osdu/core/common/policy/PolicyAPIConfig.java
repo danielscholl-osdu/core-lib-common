@@ -1,4 +1,4 @@
-// Copyright 2021 Schlumberger
+// Copyright © Schlumberger
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,20 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.opengroup.osdu.core.common.notification;
+package org.opengroup.osdu.core.common.policy;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Builder
 @Data
-public class SubscriptionAPIConfig {
-    @Builder.Default
-    String rootUrl = "https://os-register-dot-opendes.appspot.com/api/register/v1";
+public class PolicyAPIConfig {
+    String rootUrl;
 
-    String apiKey;
-
-    public static SubscriptionAPIConfig Default() {
-        return SubscriptionAPIConfig.builder().build();
+    public static PolicyAPIConfig Default() {
+        return PolicyAPIConfig.builder().build();
     }
 }
