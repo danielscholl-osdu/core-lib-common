@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Target({ ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.PARAMETER })
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {PatchOpValidator.class})
 @Documented

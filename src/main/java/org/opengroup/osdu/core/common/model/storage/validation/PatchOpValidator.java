@@ -14,21 +14,44 @@
 
 package org.opengroup.osdu.core.common.model.storage.validation;
 
+import java.util.function.Predicate;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class PatchOpValidator implements ConstraintValidator<ValidPatchOp, String> {
+import org.opengroup.osdu.core.common.model.storage.PatchOperation;
+
+public class PatchOpValidator implements ConstraintValidator<ValidPatchOp, PatchOperation> {
+    private static final String OPERATION_ADD = "add";
+    private static final String OPERATION_REMOVE = "remove";
+    private static final String OPERATION_REPLACE = "replace";
+
     @Override
     public void initialize(ValidPatchOp constraintAnnotation) {
         // do nothing
     }
 
     @Override
-    public boolean isValid(String op, ConstraintValidatorContext context) {
-        if (!op.equals("replace")) {
+    public boolean isValid(PatchOperation operation, ConstraintValidatorContext context) {
+        Predicate<String> allowedOperations = operation.getPath().startsWith("/tags") ?
+            allowedOperationsForTagsPredicate() :
+            allowedOperationsForOthersPredicate();
+
+        if (!allowedOperations.test(operation.getOp())) {
             context.buildConstraintViolationWithTemplate(ValidationDoc.INVALID_PATCH_OPERATION).addConstraintViolation();
             return false;
         }
         return true;
+    }
+
+    private Predicate<String> allowedOperationsForTagsPredicate() {
+        return operation -> OPERATION_ADD.equals(operation) ||
+            OPERATION_REMOVE.equals(operation) ||
+            OPERATION_REPLACE.equals(operation);
+    }
+
+
+    private Predicate<String> allowedOperationsForOthersPredicate() {
+      return operation -> OPERATION_REPLACE.equals(operation);
     }
 }
