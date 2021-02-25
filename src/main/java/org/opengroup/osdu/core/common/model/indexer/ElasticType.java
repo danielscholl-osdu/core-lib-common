@@ -28,6 +28,8 @@ public enum ElasticType {
 
     OBJECT("object"),
 
+    FLATTENED("flattened"),
+
     GEO_POINT("geo_point"),
 
     GEO_SHAPE("geo_shape"),

@@ -44,6 +44,7 @@ public class RecordIndexerPayload {
         private OperationType operationType;
         private long version;
         private Acl acl;
+        private Map<String, String> tags;
         private IndexProgress indexProgress;
         private Legal legal;
         private RecordAncestry ancestry;
