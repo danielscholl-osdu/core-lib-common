@@ -67,6 +67,9 @@ public class PatchPathValidatorTest {
 
         String path3 = "/legal/legaltags";
         assertTrue(this.sut.isValid(path3, this.context));
+
+        String path4 = "/tags";
+        assertTrue(this.sut.isValid(path4, this.context));
     }
 
 }

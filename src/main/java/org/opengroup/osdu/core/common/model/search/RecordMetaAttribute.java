@@ -33,6 +33,8 @@ public enum RecordMetaAttribute {
 
     X_ACL("x-acl"),
 
+    TAGS("tags"),
+
     LEGAL("legal"),
 
     ANCESTRY("ancestry"),

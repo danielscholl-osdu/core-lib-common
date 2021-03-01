@@ -149,9 +149,6 @@ public class Record {
 		String[] kindSplitByColon = kind.split(":");
 		String kindSubType = kindSplitByColon[2]; //grab GroupType/IndividualType
 
-		if (!recordIdSplitByColon[1].equalsIgnoreCase(kindSubType))
-			return false;
-			
 		return true;		
 	}
 }
