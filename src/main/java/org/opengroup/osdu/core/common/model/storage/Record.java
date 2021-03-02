@@ -140,22 +140,6 @@ public class Record {
 		
 		//Check format and tenant
 		if (!Record.isRecordIdValidFormatAndTenant(recordId, tenant))
-			return false;		
-
-		return true;		
-	}
-
-	/**
-	 * Checks if a RecordId has a valid format and matches the specified tenant and kind
-	 * @param recordId
-	 * @param tenant
-	 * @param kind
-	 * @return
-	 */
-	public static boolean isOsduRecordIdValid(String recordId, String tenant, String kind) {
-		
-		//Check format and tenant
-		if (!isRecordIdValid(recordId, tenant, kind))
 			return false;
 
 		//id should be split by colons. ex: tenant:groupType--individualType:uniqueId
@@ -165,10 +149,6 @@ public class Record {
 		String[] kindSplitByColon = kind.split(":");
 		String kindSubType = kindSplitByColon[2]; //grab GroupType/IndividualType
 
-		if (!recordIdSplitByColon[1].equalsIgnoreCase(kindSubType))
-			return false;
-			
 		return true;		
 	}
-
 }
