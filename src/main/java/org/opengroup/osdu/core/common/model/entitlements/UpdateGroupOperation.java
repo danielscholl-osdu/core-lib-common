@@ -1,6 +1,5 @@
 package org.opengroup.osdu.core.common.model.entitlements;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdateGroupOperation {
 
-    @JsonProperty("op")
-    private String operation;
+    private String op;
 
     private String path;
 

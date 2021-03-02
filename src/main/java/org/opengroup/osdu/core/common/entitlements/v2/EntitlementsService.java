@@ -82,7 +82,7 @@ public class EntitlementsService implements IEntitlementsService {
         }
 
         UpdateGroupOperation updateGroupOperation = UpdateGroupOperation.builder()
-                .operation(operation)
+                .op(operation)
                 .path(path)
                 .value(operationValue)
                 .build();

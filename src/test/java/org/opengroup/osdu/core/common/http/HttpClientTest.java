@@ -138,6 +138,17 @@ public class HttpClientTest {
     }
 
     @Test
+    public void should_convertObjectToJson_when_makingPatchRequest() throws Exception {
+        Integer input = 5;
+        HttpRequest request = HttpRequest.patch(input).url(URL).headers(HEADERS).build();
+        createMockHtppConnection(200, request);
+
+        HttpResponse response = this.sut.send(request);
+
+        assertEquals("5", response.getRequest().body);
+    }
+
+    @Test
     public void should_putRequest_when_makingValidPostRequest() throws Exception {
 
         HttpRequest request = HttpRequest.put().body(BODY).url(URL).headers(HEADERS).build();
