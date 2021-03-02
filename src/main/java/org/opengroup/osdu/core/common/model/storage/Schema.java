@@ -21,6 +21,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Builder;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidKind;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidNotNullArray;
@@ -36,6 +38,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Schema {
 
 	@ValidKind
