@@ -21,11 +21,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 abstract class AbstractHttpClient implements IHttpClient {
 
@@ -36,6 +41,7 @@ abstract class AbstractHttpClient implements IHttpClient {
         output.setRequest(request);
         HttpURLConnection conn = null;
         try {
+            supportPatchMethod();
             request.setUrl(encodeUrl(request.getUrl()));
 
             long start = System.currentTimeMillis();
@@ -119,4 +125,20 @@ abstract class AbstractHttpClient implements IHttpClient {
         return uri.toASCIIString();
     }
 
+    private void supportPatchMethod() {
+        try {
+            Field methodsField = HttpURLConnection.class.getDeclaredField("methods");
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(methodsField, methodsField.getModifiers() & ~Modifier.FINAL);
+            methodsField.setAccessible(true);
+            String[] oldMethods = (String[]) methodsField.get(null);
+            Set<String> methodsSet = new LinkedHashSet<>(Arrays.asList(oldMethods));
+            methodsSet.addAll(Arrays.asList(HttpRequest.PATCH));
+            String[] newMethods = methodsSet.toArray(new String[0]);
+            methodsField.set(null, newMethods);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }
