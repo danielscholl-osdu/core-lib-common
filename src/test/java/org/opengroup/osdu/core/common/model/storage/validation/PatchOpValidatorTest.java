@@ -30,8 +30,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PatchOpValidatorTest {
 
-    private static final String NON_TAG_PATH = "/acl";
+    private static final String OTHERS_PATH = "/status";
     private static final String TAG_PATH = "/tags";
+    private static final String ACL_PATH = "/acl/viewers";
+    private static final String LEGAL_PATH = "/legal/legaltags";
 
     private static final String PATCH_ADD = "add";
     private static final String PATCH_REMOVE = "remove";
@@ -64,33 +66,33 @@ public class PatchOpValidatorTest {
     }
 
     @Test
-    public void should_returnFalse_ForNonTag_AddOp() {
-        verifyIsInvalid(NON_TAG_PATH, PATCH_ADD);
+    public void should_returnFalse_ForOthers_AddOp() {
+        verifyIsInvalid(OTHERS_PATH, PATCH_ADD);
     }
 
     @Test
-    public void should_returnFalse_ForNonTag_RemoveOp() {
-        verifyIsInvalid(NON_TAG_PATH, PATCH_REMOVE);
+    public void should_returnFalse_ForOthers_RemoveOp() {
+        verifyIsInvalid(OTHERS_PATH, PATCH_REMOVE);
     }
 
     @Test
-    public void should_returnFalse_ForNonTag_MoveOp() {
-        verifyIsInvalid(NON_TAG_PATH, PATCH_MOVE);
+    public void should_returnFalse_ForOthers_MoveOp() {
+        verifyIsInvalid(OTHERS_PATH, PATCH_MOVE);
     }
 
     @Test
-    public void should_returnFalse_ForNonTag_CopyOp() {
-        verifyIsInvalid(NON_TAG_PATH, PATCH_COPY);
+    public void should_returnFalse_ForOthers_CopyOp() {
+        verifyIsInvalid(OTHERS_PATH, PATCH_COPY);
     }
 
     @Test
-    public void should_returnFalse_ForNonTag_TestOp() {
-        verifyIsInvalid(NON_TAG_PATH, PATCH_TEST);
+    public void should_returnFalse_ForOthers_TestOp() {
+        verifyIsInvalid(OTHERS_PATH, PATCH_TEST);
     }
 
     @Test
-    public void should_returnTrue_ForNonTag_ReplaceOp() {
-        verifyIsValid(NON_TAG_PATH, PATCH_REPLACE);
+    public void should_returnFalse_ForNonTag_ReplaceOp() {
+        verifyIsInvalid(OTHERS_PATH, PATCH_REPLACE);
     }
 
     // --- Tag Path tests ---
@@ -124,6 +126,70 @@ public class PatchOpValidatorTest {
     public void should_returnTrue_ForTag_RemoveOp() {
         verifyIsValid(TAG_PATH, PATCH_REMOVE);
     }
+
+
+    // --- Acl Path tests ---
+    @Test
+    public void should_returnFalse_ForAcl_MoveOp() {
+        verifyIsInvalid(ACL_PATH, PATCH_MOVE);
+    }
+
+    @Test
+    public void should_returnFalse_ForAcl_CopyOp() {
+        verifyIsInvalid(ACL_PATH, PATCH_COPY);
+    }
+
+    @Test
+    public void should_returnFalse_ForAcl_TestOp() {
+        verifyIsInvalid(ACL_PATH, PATCH_TEST);
+    }
+
+    @Test
+    public void should_returnTrue_ForAcl_ReplaceOp() {
+        verifyIsValid(ACL_PATH, PATCH_REPLACE);
+    }
+
+    @Test
+    public void should_returnTrue_ForAcl_AddOp() {
+        verifyIsValid(ACL_PATH, PATCH_ADD);
+    }
+
+    @Test
+    public void should_returnTrue_ForAcl_RemoveOp() {
+        verifyIsValid(ACL_PATH, PATCH_REMOVE);
+    }
+
+    // --- Legal Path tests ---
+    @Test
+    public void should_returnFalse_ForLegal_MoveOp() {
+        verifyIsInvalid(LEGAL_PATH, PATCH_MOVE);
+    }
+
+    @Test
+    public void should_returnFalse_ForLegal_CopyOp() {
+        verifyIsInvalid(LEGAL_PATH, PATCH_COPY);
+    }
+
+    @Test
+    public void should_returnFalse_ForLegal_TestOp() {
+        verifyIsInvalid(LEGAL_PATH, PATCH_TEST);
+    }
+
+    @Test
+    public void should_returnTrue_ForLegal_ReplaceOp() {
+        verifyIsValid(LEGAL_PATH, PATCH_REPLACE);
+    }
+
+    @Test
+    public void should_returnTrue_ForLegal_AddOp() {
+        verifyIsValid(LEGAL_PATH, PATCH_ADD);
+    }
+
+    @Test
+    public void should_returnTrue_ForLegal_RemoveOp() {
+        verifyIsValid(LEGAL_PATH, PATCH_REMOVE);
+    }
+
 
     private void verifyIsValid(String path, String op) {
         operation = buildOperation(path, op);
