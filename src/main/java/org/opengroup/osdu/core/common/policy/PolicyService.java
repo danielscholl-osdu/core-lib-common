@@ -21,6 +21,7 @@ import org.opengroup.osdu.core.common.http.IHttpClient;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyParsingException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
+import org.opengroup.osdu.core.common.model.policy.BatchPolicyResponse;
 import org.opengroup.osdu.core.common.model.policy.PolicyRequest;
 import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 import org.opengroup.osdu.core.common.model.policy.PolicyResponse;
@@ -48,6 +49,14 @@ public class PolicyService implements IPolicyProvider {
         HttpResponse result = this.httpClient.send(
                 HttpRequest.post(policyRequest).url(url).headers(this.headers.getHeaders()).build());
         return this.getResult(result, PolicyResponse.class);
+    }
+
+    @Override
+    public BatchPolicyResponse evaluateBatchPolicy(PolicyRequest policyRequest) throws PolicyException {
+        String url = this.createUrl("/evaluations/query");
+        HttpResponse result = this.httpClient.send(
+                HttpRequest.post(policyRequest).url(url).headers(this.headers.getHeaders()).build());
+        return this.getResult(result, BatchPolicyResponse.class);
     }
 
     private String createUrl(String pathAndQuery) {

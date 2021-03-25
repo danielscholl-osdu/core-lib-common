@@ -12,15 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.opengroup.osdu.core.common.policy;
+package org.opengroup.osdu.core.common.model.policy;
 
-import org.opengroup.osdu.core.common.model.policy.BatchPolicyResponse;
-import org.opengroup.osdu.core.common.model.policy.PolicyRequest;
-import org.opengroup.osdu.core.common.model.policy.PolicyResponse;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public interface IPolicyProvider {
+import java.util.List;
 
-    PolicyResponse evaluatePolicy(PolicyRequest policy) throws PolicyException;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class BatchResult {
 
-    BatchPolicyResponse evaluateBatchPolicy(PolicyRequest policy) throws PolicyException;
+    private List<String> allowed_records;
 }
