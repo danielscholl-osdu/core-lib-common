@@ -35,7 +35,7 @@ public class ValidationDoc {
 	public static final String INVALID_KIND = "Not a valid record kind. Found: ${validatedValue}";
 	public static final String INVALID_PARENT_RECORD_ID_FORMAT = "Invalid parent record format: '%s'. The following format is expected: {record-id}:{record-version}";
 	public static final String INVALID_PARENT_RECORD_VERSION_FORMAT = "Invalid parent record version: '%s'. Record version must be a numeric value";
-	public static final String INVALID_PATCH_OPERATION = "Invalid Patch Operation: can only be 'replace'";
+	public static final String INVALID_PATCH_OPERATION = "Invalid Patch Operation: can only be 'replace' or 'add' or 'remove'";
 	public static final String INVALID_PATCH_PATH = "Invalid Patch Path: can only be '/acl/viewers', '/acl/owners' or '/legal/legaltags'";
 	public static final String RECORD_ID_LIST_NOT_EMPTY = "The list of record IDs cannot be empty";
 	public static final String RECORD_ACL_NOT_EMPTY = "Record ACL cannot be empty";
