@@ -87,6 +87,7 @@ public final class SwaggerDoc {
     public static final String CURSOR_DESCRIPTION = "Search context to retrieve next batch of results.";
     public static final String AGGREGATEBY_DESCRIPTION = "The aggregateBy field returns the distinct values of the given field.";
     public static final String QUERYASOWNER_DESCRIPTION = "The queryAsOwner switches between viewer and owner to return results that you are entitled to view or results you are the owner of.";
+    public static final String TRACKTOTALCOUNT_DESCRIPTION = "Tracks accurate record count matching the query. Default is 'false' and returns 10000 if matching records are higher than 10000.";
 
     // SPATIAL FILTER
     public static final String FIELD_VALIDATION_NON_NULL_MSG = "'spatialFilter.field' can not be null";

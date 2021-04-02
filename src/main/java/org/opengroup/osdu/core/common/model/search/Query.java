@@ -64,6 +64,9 @@ public abstract class Query {
     @ApiModelProperty(value = SwaggerDoc.QUERYASOWNER_DESCRIPTION, dataType = "java.lang.Boolean", example = "false")
     private boolean queryAsOwner;
 
+    @ApiModelProperty(value = SwaggerDoc.TRACKTOTALCOUNT_DESCRIPTION, dataType = "java.lang.Boolean", example = "false")
+    private boolean trackTotalCount = false;
+
     @Valid
     @ValidSpatialFilter
     @ApiModelProperty(value = SwaggerDoc.SPATIAL_FILTER_DESCRIPTION)
