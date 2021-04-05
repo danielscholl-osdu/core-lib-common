@@ -21,7 +21,7 @@ public class ResponseHeadersFactory {
         responseHeaders.put("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
         responseHeaders.put("Expires", "0");
         responseHeaders.put("Access-Control-Max-Age", "3600");
-        responseHeaders.put("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, data-partition-id, correlation-id, appkey");
+        responseHeaders.put("Access-Control-Allow-Headers", "access-control-allow-origin, origin, content-type, accept, authorization, data-partition-id, correlation-id, appkey");
         return responseHeaders;
     }
 }
