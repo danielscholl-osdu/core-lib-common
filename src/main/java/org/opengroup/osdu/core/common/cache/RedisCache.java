@@ -66,6 +66,15 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
         commands.set(key, value, args);
     }
 
+    /**
+     * Puts entry in cache with ttl measured in milliseconds
+     */
+    public void put(K key, long ttl, V value) {
+        SetArgs args = new SetArgs();
+        args.px(ttl);
+        commands.set(key, value, args);
+    }
+
     @Override
     public V get(K key) {
         return commands.get(key);
