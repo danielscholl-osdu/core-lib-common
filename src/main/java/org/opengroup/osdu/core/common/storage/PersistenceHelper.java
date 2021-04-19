@@ -108,7 +108,7 @@ public class PersistenceHelper {
 		json = gson.toJsonTree(recordMetadata.getLegal(), Legal.class);
 		jsonRecordObject.add("legal", json);
 
-		if(!recordMetadata.getTags().isEmpty()) {
+		if(recordMetadata.getTags() != null && !recordMetadata.getTags().isEmpty()) {
 			json = gson.toJsonTree(recordMetadata.getTags(), Map.class);
 			jsonRecordObject.add("tags", json);
 		}
