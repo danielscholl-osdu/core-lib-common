@@ -28,14 +28,17 @@ public class IndexSchema {
 
     private String kind;
     private String type;
-    private Map<String, String> dataSchema;
+    private Map<String, Object> dataSchema;
     private Map<String, Object> metaSchema;
 
     public ArrayList<String> getSchemaKeysByValue(String value) {
         Set<String> keys = new HashSet<>();
-        for (Map.Entry<String, String> entry : this.getDataSchema().entrySet()) {
-            if (value.equalsIgnoreCase(entry.getValue())) {
-                keys.add(entry.getKey());
+        for (Map.Entry<String, Object> entry : this.getDataSchema().entrySet()) {
+            if(entry.getValue() instanceof String){
+                String stringValue = (String) entry.getValue();
+                if (value.equalsIgnoreCase(stringValue)) {
+                    keys.add(entry.getKey());
+                }
             }
         }
         return new ArrayList<>(keys);
