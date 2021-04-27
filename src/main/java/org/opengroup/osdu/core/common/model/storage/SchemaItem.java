@@ -39,4 +39,6 @@ public class SchemaItem {
 
 	@JsonInclude(value = Include.NON_NULL)
 	private Map<String, Object> ext;
+
+	private SchemaItem[] properties;
 }
