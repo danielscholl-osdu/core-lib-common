@@ -14,9 +14,11 @@
 
 package org.opengroup.osdu.core.common.cache;
 
+import com.lambdaworks.redis.ClientOptions;
 import com.lambdaworks.redis.RedisClient;
 import com.lambdaworks.redis.RedisURI;
 import com.lambdaworks.redis.SetArgs;
+import com.lambdaworks.redis.SocketOptions;
 import com.lambdaworks.redis.api.StatefulRedisConnection;
 import com.lambdaworks.redis.api.sync.RedisCommands;
 import com.lambdaworks.redis.codec.CompressionCodec;
@@ -35,6 +37,12 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
         RedisURI uri = new RedisURI(host, port, 30, TimeUnit.SECONDS);
         uri.setDatabase(database);
         client = RedisClient.create(uri);
+
+        ClientOptions clientOptions = ClientOptions.builder()
+                .socketOptions(SocketOptions.builder().connectTimeout(20, TimeUnit.SECONDS).build())
+                .build();
+        client.setOptions(clientOptions);
+
         connection = client.connect(
                 CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP));
         commands = connection.sync();
@@ -45,6 +53,12 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
                       Class<K> classOfK, Class<V> classOfV) {
         RedisURI uri = RedisURI.Builder.redis(host, port).withTimeout(expTimeSeconds, TimeUnit.SECONDS).withPassword(password).withDatabase(database).withSsl(true).build();
         client = RedisClient.create(uri);
+
+        ClientOptions clientOptions = ClientOptions.builder()
+                .socketOptions(SocketOptions.builder().connectTimeout(20, TimeUnit.SECONDS).build())
+                .build();
+        client.setOptions(clientOptions);
+
         connection = client.connect(
                 CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP));
         commands = connection.sync();
