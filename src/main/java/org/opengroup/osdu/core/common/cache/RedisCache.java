@@ -37,12 +37,18 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
         RedisURI uri = new RedisURI(host, port, 30, TimeUnit.SECONDS);
         uri.setDatabase(database);
         client = RedisClient.create(uri);
+        connection = client.connect(
+                CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP));
+        commands = connection.sync();
+        expireLengthSeconds = expTimeSeconds;
+    }
 
-        ClientOptions clientOptions = ClientOptions.builder()
-                .socketOptions(SocketOptions.builder().connectTimeout(15, TimeUnit.SECONDS).build())
-                .build();
+    public RedisCache(String host, int port, int expTimeSeconds, int database, ClientOptions clientOptions,
+                      Class<K> classOfK, Class<V> classOfV) {
+        RedisURI uri = new RedisURI(host, port, 30, TimeUnit.SECONDS);
+        uri.setDatabase(database);
+        client = RedisClient.create(uri);
         client.setOptions(clientOptions);
-
         connection = client.connect(
                 CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP));
         commands = connection.sync();
@@ -53,12 +59,17 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
                       Class<K> classOfK, Class<V> classOfV) {
         RedisURI uri = RedisURI.Builder.redis(host, port).withTimeout(expTimeSeconds, TimeUnit.SECONDS).withPassword(password).withDatabase(database).withSsl(true).build();
         client = RedisClient.create(uri);
+        connection = client.connect(
+                CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP));
+        commands = connection.sync();
+        expireLengthSeconds = expTimeSeconds;
+    }
 
-        ClientOptions clientOptions = ClientOptions.builder()
-                .socketOptions(SocketOptions.builder().connectTimeout(15, TimeUnit.SECONDS).build())
-                .build();
+    public RedisCache(String host, int port, String password, int expTimeSeconds, int database, ClientOptions clientOptions,
+                      Class<K> classOfK, Class<V> classOfV) {
+        RedisURI uri = RedisURI.Builder.redis(host, port).withTimeout(expTimeSeconds, TimeUnit.SECONDS).withPassword(password).withDatabase(database).withSsl(true).build();
+        client = RedisClient.create(uri);
         client.setOptions(clientOptions);
-
         connection = client.connect(
                 CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP));
         commands = connection.sync();
