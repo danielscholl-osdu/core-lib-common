@@ -39,7 +39,7 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
         client = RedisClient.create(uri);
 
         ClientOptions clientOptions = ClientOptions.builder()
-                .socketOptions(SocketOptions.builder().connectTimeout(20, TimeUnit.SECONDS).build())
+                .socketOptions(SocketOptions.builder().connectTimeout(15, TimeUnit.SECONDS).build())
                 .build();
         client.setOptions(clientOptions);
 
@@ -55,7 +55,7 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
         client = RedisClient.create(uri);
 
         ClientOptions clientOptions = ClientOptions.builder()
-                .socketOptions(SocketOptions.builder().connectTimeout(20, TimeUnit.SECONDS).build())
+                .socketOptions(SocketOptions.builder().connectTimeout(15, TimeUnit.SECONDS).build())
                 .build();
         client.setOptions(clientOptions);
 
