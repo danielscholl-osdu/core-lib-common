@@ -115,4 +115,12 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     public void clearAll() {
         this.commands.flushdb();
     }
+
+    public void pexpire(K key, long ttl) {
+        commands.pexpire(key, ttl);
+    }
+
+    public long pttl(K key) {
+        return commands.pttl(key);
+    }
 }
