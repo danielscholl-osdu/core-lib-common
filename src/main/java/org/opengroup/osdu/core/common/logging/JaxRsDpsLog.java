@@ -70,6 +70,14 @@ public class JaxRsDpsLog implements AutoCloseable {
 		log.info(loggerName, LOG_PREFIX + ".app", message, this.getLabels());
 	}
 
+	public void debug(String message) {
+		log.debug(LOG_PREFIX + ".app", message, this.getLabels());
+	}
+
+	public void debug(final String loggerName, final String message) {
+		log.debug(loggerName, LOG_PREFIX + ".app", message, this.getLabels());
+	}
+
 	public void warning(String message) {
 		log.warning(LOG_PREFIX + ".app", message, this.getLabels());
 	}

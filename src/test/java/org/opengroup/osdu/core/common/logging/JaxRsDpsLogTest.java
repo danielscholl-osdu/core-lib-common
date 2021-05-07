@@ -136,6 +136,22 @@ public class JaxRsDpsLogTest {
     }
 
     @Test
+    public void testDebug() {
+        doNothing().when(logger).debug(eq(APP_LOG_PREFIX), eq(LOG_MESSAGE), eq(headers));
+        jaxRsDpsLog.debug(LOG_MESSAGE);
+        verify(logger, times(1)).debug(eq(APP_LOG_PREFIX), eq(LOG_MESSAGE), eq(headers));
+        verify(dpsHeaders, times(1)).getHeaders();
+    }
+
+    @Test
+    public void testDebugWithLoggerName() {
+        doNothing().when(logger).debug(eq(LOGGER_NAME), eq(APP_LOG_PREFIX), eq(LOG_MESSAGE), eq(headers));
+        jaxRsDpsLog.debug(LOGGER_NAME, LOG_MESSAGE);
+        verify(logger, times(1)).debug(eq(LOGGER_NAME), eq(APP_LOG_PREFIX), eq(LOG_MESSAGE), eq(headers));
+        verify(dpsHeaders, times(1)).getHeaders();
+    }
+
+    @Test
     public void testWarning() {
         doNothing().when(logger).warning(eq(APP_LOG_PREFIX), eq(LOG_MESSAGE), eq(headers));
         jaxRsDpsLog.warning(LOG_MESSAGE);
