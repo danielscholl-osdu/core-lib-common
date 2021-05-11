@@ -41,6 +41,13 @@ public interface ILogger extends AutoCloseable {
         this.info(logPrefix, message, headers);
     }
 
+    void debug(String logPrefix, String message, Map<String, String> headers);
+
+    default void debug(final String loggerName, final String logPrefix, final String message,
+                      final Map<String, String> headers) {
+        this.info(logPrefix, message, headers);
+    }
+
     void warning(String logPrefix, String message, Map<String, String> headers);
 
     default void warning(final String loggerName, final String logPrefix, final String message,

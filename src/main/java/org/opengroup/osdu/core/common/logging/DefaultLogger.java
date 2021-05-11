@@ -55,6 +55,12 @@ public class DefaultLogger implements ILogger {
     public void info(String logPrefix, String message, Map<String, String> labels){
         logWriter.writeEntry(logPrefix, Level.INFO, message, headersToLog.createStandardLabelsFromMap(labels));
     }
+
+    @Override
+    public void debug(String logPrefix, String message, Map<String, String> labels) {
+        logWriter.writeEntry(logPrefix, Level.FINE, message, headersToLog.createStandardLabelsFromMap(labels));
+    }
+
     @Override
     public void warning(String logPrefix, String message, Map<String, String> labels){
         logWriter.writeEntry(logPrefix, Level.WARNING, message, headersToLog.createStandardLabelsFromMap(labels));
