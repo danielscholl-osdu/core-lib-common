@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.http.HttpStatus;
@@ -29,6 +30,7 @@ import org.opengroup.osdu.core.common.model.legal.Legal;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class RecordMetadata {
 
 	private String id;
