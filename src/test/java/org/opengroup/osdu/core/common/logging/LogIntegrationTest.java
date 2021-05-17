@@ -62,6 +62,11 @@ public class LogIntegrationTest {
         System.out.println("Time spent writing logs " + time);
         time = System.currentTimeMillis();
 
+        log.debug(logname, "debug", labels);
+        time = System.currentTimeMillis() - time;
+        System.out.println("Time spent writing logs " + time);
+        time = System.currentTimeMillis();
+
         log.info(logname, "info", labels);
         time = System.currentTimeMillis() - time;
         System.out.println("Time spent writing logs " + time);
