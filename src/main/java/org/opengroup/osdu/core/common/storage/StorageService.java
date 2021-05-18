@@ -33,7 +33,7 @@ public class StorageService implements IStorageService {
     private final DpsHeaders headers;
     private final HttpResponseBodyMapper bodyMapper;
 
-    StorageService(StorageAPIConfig config,
+    public StorageService(StorageAPIConfig config,
                    IHttpClient httpClient,
                    DpsHeaders headers,
                    HttpResponseBodyMapper bodyMapper) {

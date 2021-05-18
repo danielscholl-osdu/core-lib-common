@@ -28,7 +28,7 @@ import org.opengroup.osdu.core.common.model.policy.PolicyResponse;
 
 public class PolicyService implements IPolicyProvider {
 
-    PolicyService(PolicyAPIConfig config,
+    public PolicyService(PolicyAPIConfig config,
                   IHttpClient httpClient,
                   DpsHeaders headers,
                   HttpResponseBodyMapper bodyMapper) {
