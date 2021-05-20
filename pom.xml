@@ -30,7 +30,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.main.basedir>${project.basedir}</project.main.basedir>
     <spring-boot.version>2.4.5</spring-boot.version>
-    <elasticsearch.version>6.8.1</elasticsearch.version>
+    <elasticsearch.version>7.8.1</elasticsearch.version>
     <jackson-bom.version>2.11.4</jackson-bom.version>
     <netty-bom.version>4.1.63.Final</netty-bom.version>
     <snakeyaml.version>1.26</snakeyaml.version>
@@ -78,6 +78,24 @@
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
         <version>${snakeyaml.version}</version>
+      </dependency>
+      <!--
+      Overriding elasticsearch libraries, which come from spring-boot-bom
+      -->
+      <dependency>
+        <groupId>org.elasticsearch</groupId>
+        <artifactId>elasticsearch</artifactId>
+        <version>${elasticsearch.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.elasticsearch.client</groupId>
+        <artifactId>elasticsearch-rest-client</artifactId>
+        <version>${elasticsearch.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.elasticsearch.client</groupId>
+        <artifactId>elasticsearch-rest-high-level-client</artifactId>
+        <version>${elasticsearch.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -236,17 +254,14 @@
     <dependency>
       <groupId>org.elasticsearch</groupId>
       <artifactId>elasticsearch</artifactId>
-      <version>${elasticsearch.version}</version>
     </dependency>
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>${elasticsearch.version}</version>
     </dependency>
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-high-level-client</artifactId>
-      <version>${elasticsearch.version}</version>
     </dependency>
   </dependencies>
   <repositories>
