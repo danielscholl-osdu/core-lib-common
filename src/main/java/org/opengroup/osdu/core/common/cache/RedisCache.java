@@ -115,4 +115,18 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     public void clearAll() {
         this.commands.flushdb();
     }
+
+    /**
+     * Updates a key's ttl in milliseconds
+     */
+    public boolean updateTtl(K key, long ttl) {
+        return commands.pexpire(key, ttl);
+    }
+
+    /**
+     * Gets the ttl for a key in milliseconds
+     */
+    public long getTtl(K key) {
+        return commands.pttl(key);
+    }
 }
