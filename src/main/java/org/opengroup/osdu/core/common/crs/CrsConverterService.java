@@ -29,7 +29,7 @@ public class CrsConverterService implements ICrsConverterService {
     private final DpsHeaders headers;
     private final HttpResponseBodyMapper responseBodyMapper;
 
-    CrsConverterService(CrsConverterAPIConfig config,
+    public CrsConverterService(CrsConverterAPIConfig config,
                         IHttpClient httpClient,
                         DpsHeaders headers,
                         HttpResponseBodyMapper mapper) {

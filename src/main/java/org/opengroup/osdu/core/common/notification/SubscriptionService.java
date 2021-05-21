@@ -29,7 +29,7 @@ import java.util.List;
 import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class SubscriptionService implements ISubscriptionService {
-    SubscriptionService(SubscriptionAPIConfig config,
+    public SubscriptionService(SubscriptionAPIConfig config,
                         IHttpClient httpClient,
                         DpsHeaders headers) {
         this.rootUrl = config.getRootUrl();

@@ -25,7 +25,7 @@ import org.opengroup.osdu.core.common.http.IHttpClient;
 import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class SearchService implements ISearchService {
-    SearchService(SearchAPIConfig config,
+    public SearchService(SearchAPIConfig config,
                   IHttpClient httpClient,
                   DpsHeaders headers,
                   HttpResponseBodyMapper bodyMapper) {
