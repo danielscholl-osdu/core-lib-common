@@ -36,7 +36,7 @@ public class LegalService implements ILegalProvider {
     private final ObjectMapper objectMapper;
     private final HttpResponseBodyMapper responseBodyMapper;
 
-    LegalService(LegalAPIConfig config,
+    public LegalService(LegalAPIConfig config,
                  IHttpClient httpClient,
                  DpsHeaders headers,
                  HttpResponseBodyMapper mapper) {
