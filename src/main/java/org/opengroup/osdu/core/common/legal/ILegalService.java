@@ -16,6 +16,7 @@ package org.opengroup.osdu.core.common.legal;
 
 import org.opengroup.osdu.core.common.model.legal.InvalidTagWithReason;
 import org.opengroup.osdu.core.common.model.storage.Record;
+import org.opengroup.osdu.core.common.model.storage.RecordIdWithVersion;
 import org.opengroup.osdu.core.common.model.storage.RecordMetadata;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface ILegalService {
 	void validateLegalTags(Set<String> legaltags);
 
 	void populateLegalInfoFromParents(List<Record> inputRecords, Map<String, RecordMetadata> existingRecordsMetadata,
-                                      Map<String, List<String>> recordParentMap);
+									  Map<String, List<RecordIdWithVersion>> recordParentMap);
 
 	void validateOtherRelevantDataCountries(Set<String> ordc);
 
