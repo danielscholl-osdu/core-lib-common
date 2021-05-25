@@ -44,4 +44,8 @@ public class DpsException extends Exception {
     public String getAccountId() {
         return this.httpResponse.getRequest().getHeaders().get(DpsHeaders.ACCOUNT_ID);
     }
+
+    public HttpResponse getResponse(){
+        return this.httpResponse;
+    }
 }

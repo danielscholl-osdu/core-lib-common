@@ -16,23 +16,29 @@ package org.opengroup.osdu.core.common.partition;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
+import java.net.SocketTimeoutException;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.http.RequestStatus;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.SocketTimeoutException;
-import java.util.List;
-import java.util.Map;
 import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class PartitionService implements IPartitionProvider {
@@ -56,7 +62,7 @@ public class PartitionService implements IPartitionProvider {
         String url = this.createUrl(String.format("/partitions/%s", name));
         HttpGet httpGetRequest = new HttpGet(url);
         HttpResponse response = send(httpGetRequest);
-        Map<String, Property> properties = getResult(response, Map.class);
+        Map<String, Property> properties = getResult(response,Map.class,String.class,Property.class);
         return PartitionInfo
                 .builder()
                 .properties(properties)
@@ -77,7 +83,7 @@ public class PartitionService implements IPartitionProvider {
         }
         httpPost.setEntity(entity);
         HttpResponse response = send(httpPost);
-        Map<String, Property> properties = getResult(response, Map.class);
+        Map<String, Property> properties = getResult(response,Map.class,String.class,Property.class);
         return PartitionInfo
                 .builder()
                 .properties(properties)
@@ -148,7 +154,7 @@ public class PartitionService implements IPartitionProvider {
         }
     }
 
-    private <T> T getResult(HttpResponse result, Class<T> type) throws PartitionException {
+    private <T> T getResult(HttpResponse result, Class<T> type, Class... params) throws PartitionException {
         if (!result.isSuccessCode()) {
             throw this.generatePartitionException(result);
         }
@@ -157,9 +163,14 @@ public class PartitionService implements IPartitionProvider {
             if (StringUtils.isBlank(result.getBody())) {
                 return null;
             }
+            if(params.length > 0){
+                Type parametrizedType = TypeToken.getParameterized(type, params).getType();
+                return gson.fromJson(result.getBody(), parametrizedType);
+            }
             return gson.fromJson(result.getBody(), type);
         } catch (JsonSyntaxException e) {
-            throw new PartitionException("Error parsing response. Check the inner HttpResponse for more info.", result);
+            throw new PartitionException(String.format("Error parsing response. With message: %s Check the inner HttpResponse for more info.",e.getMessage()),
+                result);
         }
     }
 
