@@ -48,15 +48,15 @@ import java.util.List;
 
 @Component
 @RequestScope
-public class HttpClientHandler {
+public class HttpClientHandler implements IHttpClientHandler{
 
-    private final int RETRY_COUNT = 3;
+    protected static int RETRY_COUNT = 3;
 
     @Autowired
     @Lazy
     private JaxRsDpsLog log;
 
-    private final RequestConfig REQUEST_CONFIG = RequestConfig.custom()
+    protected static RequestConfig REQUEST_CONFIG = RequestConfig.custom()
             .setConnectTimeout(60000)
             .setConnectionRequestTimeout(60000)
             .setSocketTimeout(60000).build();
