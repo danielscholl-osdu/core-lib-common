@@ -37,7 +37,7 @@ import java.util.Map;
 public class UrlFetchServiceImpl implements IUrlFetchService {
 
     @Autowired
-    private HttpClientHandler httpClientHandler;
+    private IHttpClientHandler httpClientHandler;
 
     @Override
     public HttpResponse sendRequest(FetchServiceHttpRequest httpRequest) throws URISyntaxException {
