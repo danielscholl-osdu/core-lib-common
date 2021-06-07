@@ -45,6 +45,8 @@ public class JsonUtils {
      */
     public static JsonElement getJsonPropertyValueFromJsonObject(String propertyName, JsonObject jsonObject) {
         String[] propertiesHierarchy = splitJsonPropertiesByDots(propertyName);
+        // check if the first element ends with ']', if so, go to helper method;
+        // return the result coming from helper method.
         JsonObject json = jsonObject;
 
         for (int i = 0; i < propertiesHierarchy.length; i++) {
