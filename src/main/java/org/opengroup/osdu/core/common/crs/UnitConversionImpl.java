@@ -23,6 +23,7 @@ import org.opengroup.osdu.core.common.model.units.ReferenceConverter;
 import org.opengroup.osdu.core.common.model.crs.ConversionRecord;
 import org.opengroup.osdu.core.common.model.crs.ConvertStatus;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -119,49 +120,58 @@ public class UnitConversionImpl {
                 JsonObject data = record.getAsJsonObject(DATA);
                 for(int i = 0; i < propertyArray.size(); i++) {
                     String name = propertyArray.get(i).getAsString();
-                    JsonElement valueElement = getJsonPropertyValueFromJsonObject(name, data);
-                    if((null == valueElement) || (valueElement instanceof JsonNull)) {
-                        String message = String.format(MISSING_PROPERTY, name);
-                        conversionMessages.add(message);
-                        continue;
-                    }
-                    try {
-                        double value = valueElement.getAsDouble();
-                        value = unit.convertToSI(value);
-                        overrideNumberPropertyOfJsonObject(name, value, data);
-                        String[] nameArray = splitJsonPropertiesByDots(name);
-                        if (nameArray.length > 0 && PROPERTY_NAME_VALUE.equals(nameArray[nameArray.length - 1])) {
-                            String unitKeyProperty = createUnitKeyPropertyName(nameArray);
-                            if (isJsonPropertyPresentedInJsonObject(unitKeyProperty, data)) {
-                                overrideStringPropertyOfJsonObject(unitKeyProperty, unit.getBaseSymbol(), data);
-                            }
+                    List<JsonElement> valueElements = getJsonPropertyValueFromJsonObject(name, data);
+                    List<Number> convertedValues = new ArrayList<>();
+                    for (JsonElement valueElement : valueElements) {
+                        if((null == valueElement) || (valueElement instanceof JsonNull)) {
+                            // TODO: construct proper error message
+                            String message = String.format(MISSING_PROPERTY, name);
+                            conversionMessages.add(message);
+                            convertedValues.add(null);
+                            continue;
                         }
-                        unitConverted = true;
+                        try {
+                            double value = valueElement.getAsDouble();
+                            value = unit.convertToSI(value);
+                            convertedValues.add(value);
+                        }
+                        catch(ClassCastException ccEx){
+                            hasFailure = true;
+                            String message = String.format(PROPERTY_VALUE_CAST_ERROR, name);
+                            conversionMessages.add(message);
+                            break;
+                        }
+                        catch(IllegalStateException isEx) {
+                            hasFailure = true;
+                            String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
+                            conversionMessages.add(message);
+                            break;
+                        }
+                        catch(NumberFormatException nfEx){
+                            hasFailure = true;
+                            String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
+                            conversionMessages.add(message);
+                            break;
+                        }
+                        catch(Exception ex) {
+                            hasFailure = true;
+                            String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
+                            conversionMessages.add(message);
+                            break;
+                        }
                     }
-                    catch(ClassCastException ccEx){
-                        hasFailure = true;
-                        String message = String.format(PROPERTY_VALUE_CAST_ERROR, name);
-                        conversionMessages.add(message);
+                    if (hasFailure) {
                         break;
                     }
-                    catch(IllegalStateException isEx) {
-                        hasFailure = true;
-                        String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
-                        conversionMessages.add(message);
-                        break;
+                    overrideNumberPropertyOfJsonObject(name, convertedValues, data);
+                    String[] nameArray = splitJsonPropertiesByDots(name);
+                    if (nameArray.length > 0 && PROPERTY_NAME_VALUE.equals(nameArray[nameArray.length - 1])) {
+                        String unitKeyProperty = createUnitKeyPropertyName(nameArray);
+                        if (isJsonPropertyPresentedInJsonObject(unitKeyProperty, data)) {
+                            overrideStringPropertyOfJsonObject(unitKeyProperty, unit.getBaseSymbol(), data);
+                        }
                     }
-                    catch(NumberFormatException nfEx){
-                        hasFailure = true;
-                        String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
-                        conversionMessages.add(message);
-                        break;
-                    }
-                    catch(Exception ex){
-                        hasFailure = true;
-                        String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
-                        conversionMessages.add(message);
-                        break;
-                    }
+                    unitConverted = true;
                 }
                 if(unitConverted && !hasFailure){
                     String basePersistableReference = unit.getBaseUnit();
