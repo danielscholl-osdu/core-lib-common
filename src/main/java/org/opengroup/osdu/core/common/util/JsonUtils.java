@@ -24,6 +24,7 @@ import java.util.List;
 import static java.util.Optional.ofNullable;
 
 public class JsonUtils {
+    private static final String PN_END = "]";
 
     public static String jsonElementToString(JsonElement jsonElement) {
         if (jsonElement == null) {
@@ -44,28 +45,50 @@ public class JsonUtils {
     /**
      * @param propertyName - property name with path split by dots e.g. depth.value
      * @param jsonObject   - JsonObject which presumably contains the property
-     * @return JsonElement with property, if it found and null if not
+     * @return JsonElement list with property, if it found and null if not
      */
     public static List<JsonElement> getJsonPropertyValueFromJsonObject(String propertyName, JsonObject jsonObject) {
+        List<JsonElement> result = new ArrayList<>();
         String[] propertiesHierarchy = splitJsonPropertiesByDots(propertyName);
-        // check if the first element ends with ']', if so, go to helper method;
-        // return the result coming from helper method.
-        JsonObject json = jsonObject;
+
+        if (propertiesHierarchy[0].endsWith(PN_END)) {
+            return getNestedJsonPropertyValueFromJsonObject(propertiesHierarchy, jsonObject);
+        }
+
+        result.add(getJsonElement(propertiesHierarchy, jsonObject));
+        return result;
+    }
+
+    private static List<JsonElement> getNestedJsonPropertyValueFromJsonObject(String[] propertyNestedNames, JsonObject jsonObject) {
         List<JsonElement> result = new ArrayList<>();
 
-        for (int i = 0; i < propertiesHierarchy.length; i++) {
-            if (i == propertiesHierarchy.length - 1) {
-                result.add(json.get(propertiesHierarchy[i]));
-                return result;
-            } else {
-                JsonElement element = json.get(propertiesHierarchy[i]);
-                if (element == null || !element.isJsonObject()) {
-                    return null;
+        String[] innerNestedNames = new String[propertyNestedNames.length - 1];
+        System.arraycopy(propertyNestedNames, 1, innerNestedNames, 0, propertyNestedNames.length - 1);
+        JsonArray elementArray = jsonObject.getAsJsonArray(propertyNestedNames[0].substring(0, propertyNestedNames[0].length() - 2 )) ;
+
+        for (int i = 0; i < elementArray.size(); i++) {
+            JsonObject element = elementArray.get(i).getAsJsonObject();
+            JsonElement targetJsonObject = getJsonElement(innerNestedNames, element);
+            result.add(targetJsonObject);
+        }
+        return result;
+    }
+
+    private static JsonElement getJsonElement(String[] nestedNames, JsonObject jsonObject) {
+        JsonObject json = jsonObject;
+
+        for (int i = 0; i < nestedNames.length; i++) {
+            if (i == nestedNames.length - 1) {
+                    return json.get(nestedNames[i]);
+                } else {
+                    JsonElement element = json.get(nestedNames[i]);
+                    if (element == null || !element.isJsonObject()) {
+                        return null;
                 }
                 json = element.getAsJsonObject();
             }
         }
-        return null;
+        return json;
     }
 
     /**
@@ -98,7 +121,7 @@ public class JsonUtils {
     public static void overrideNumberPropertyOfJsonObject(String propertyName, List<Number> value, JsonObject jsonObject) {
         String[] nestedNames = splitJsonPropertiesByDots(propertyName);
 
-        if (nestedNames[0].endsWith("]")) {
+        if (nestedNames[0].endsWith(PN_END)) {
             overrideNestedNumberPropertyOfJsonObject(nestedNames, value, jsonObject);
         }
         // TODO: check the size of converted values
@@ -109,7 +132,7 @@ public class JsonUtils {
     }
 
     private static void overrideNestedNumberPropertyOfJsonObject(String[] nestedNames, List<Number> values, JsonObject jsonObject) {
-        JsonArray elementArray = jsonObject.getAsJsonArray(nestedNames[0]);
+        JsonArray elementArray = jsonObject.getAsJsonArray(nestedNames[0].substring(0, nestedNames[0].length() - 2 )) ;
         String[] innerNestedNames = new String[nestedNames.length - 1];
         System.arraycopy(nestedNames, 1, innerNestedNames, 0, nestedNames.length - 1);
         // TODO: check the size of elementArray
