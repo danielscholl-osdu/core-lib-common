@@ -22,6 +22,9 @@ import org.opengroup.osdu.core.common.util.JsonUtils;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.opengroup.osdu.core.common.util.JsonUtils.*;
@@ -111,8 +114,8 @@ public class JsonUtilsTest {
         setupMocksForJsonPropertyTests(internalJsonObject);
         when(internalJsonObject.get("value")).thenReturn(mockJsonPrimitive);
 
-        JsonElement jsonElement = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
-        assertSame(mockJsonPrimitive, jsonElement);
+        List<JsonElement> jsonElement = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
+        assertSame(mockJsonPrimitive, jsonElement.get(0));
 
         verify(mockJsonObject, times(1)).get("depth");
         verify(internalJsonObject, times(1)).get("value");
@@ -126,7 +129,7 @@ public class JsonUtilsTest {
         setupMocksForJsonPropertyTests(internalJsonObject);
         when(internalJsonObject.get("value")).thenReturn(null);
 
-        assertNull(getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject));
+        assertNull(getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject).get(0));
 
         verify(mockJsonObject, times(1)).get("depth");
         verify(internalJsonObject, times(1)).get("value");
@@ -195,10 +198,12 @@ public class JsonUtilsTest {
         String propertyName = "depth.value";
         JsonObject internalJsonObject = mock(JsonObject.class);
         Integer value = 42;
+        List<Number> values = new ArrayList<>();
+        values.add(value);
 
         setupMocksForJsonPropertyTests(internalJsonObject);
 
-        overrideNumberPropertyOfJsonObject(propertyName, value, mockJsonObject);
+        overrideNumberPropertyOfJsonObject(propertyName, values, mockJsonObject);
 
         verify(mockJsonObject, times(1)).get("depth");
         verify(internalJsonObject, times(1)).addProperty("value", value);
@@ -209,11 +214,13 @@ public class JsonUtilsTest {
         String propertyName = "depth.value";
         JsonObject internalJsonObject = mock(JsonObject.class);
         Integer value = 42;
+        List<Number> values = new ArrayList<>();
+        values.add(value);
 
         when(mockJsonObject.get("depth")).thenReturn(mockJsonPrimitive);
         when(mockJsonPrimitive.isJsonObject()).thenReturn(false);
 
-        overrideNumberPropertyOfJsonObject(propertyName, value, mockJsonObject);
+        overrideNumberPropertyOfJsonObject(propertyName, values, mockJsonObject);
 
         verify(mockJsonObject, times(1)).get("depth");
         verify(internalJsonObject, never()).addProperty(anyString(), any(Number.class));
