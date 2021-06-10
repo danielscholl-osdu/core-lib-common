@@ -55,7 +55,7 @@ public class JsonUtils {
             return getNestedJsonPropertyValueFromJsonObject(propertiesHierarchy, jsonObject);
         }
 
-        result.add(getJsonElement(propertiesHierarchy, jsonObject));
+        result.add(getNestedJsonElement(propertiesHierarchy, jsonObject));
         return result;
     }
 
@@ -64,17 +64,18 @@ public class JsonUtils {
 
         String[] innerNestedNames = new String[propertyNestedNames.length - 1];
         System.arraycopy(propertyNestedNames, 1, innerNestedNames, 0, propertyNestedNames.length - 1);
+
         JsonArray elementArray = jsonObject.getAsJsonArray(propertyNestedNames[0].substring(0, propertyNestedNames[0].length() - 2 )) ;
 
         for (int i = 0; i < elementArray.size(); i++) {
             JsonObject element = elementArray.get(i).getAsJsonObject();
-            JsonElement targetJsonObject = getJsonElement(innerNestedNames, element);
-            result.add(targetJsonObject);
+            JsonElement elementValue = getNestedJsonElement(innerNestedNames, element);
+            result.add(elementValue);
         }
         return result;
     }
 
-    private static JsonElement getJsonElement(String[] nestedNames, JsonObject jsonObject) {
+    private static JsonElement getNestedJsonElement(String[] nestedNames, JsonObject jsonObject) {
         JsonObject json = jsonObject;
 
         for (int i = 0; i < nestedNames.length; i++) {
@@ -124,7 +125,7 @@ public class JsonUtils {
         if (nestedNames[0].endsWith(PN_END)) {
             overrideNestedNumberPropertyOfJsonObject(nestedNames, value, jsonObject);
         }
-        // TODO: check the size of converted values
+
         JsonObject targetJsonObject = buildNewJsonObject(nestedNames, jsonObject);
 
         ofNullable(targetJsonObject)
@@ -135,7 +136,7 @@ public class JsonUtils {
         JsonArray elementArray = jsonObject.getAsJsonArray(nestedNames[0].substring(0, nestedNames[0].length() - 2 )) ;
         String[] innerNestedNames = new String[nestedNames.length - 1];
         System.arraycopy(nestedNames, 1, innerNestedNames, 0, nestedNames.length - 1);
-        // TODO: check the size of elementArray
+
         for (int i = 0; i < elementArray.size(); i++) {
             JsonObject element = elementArray.get(i).getAsJsonObject();
 

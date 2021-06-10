@@ -142,10 +142,43 @@ public class JsonUtilsTest {
 
         setupMocksForJsonPropertyTests(internalJsonObject);
 
-        assertNull(getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject));
+        assertNull(getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject).get(0));
 
         verify(mockJsonObject, times(1)).get("depth");
         verify(internalJsonObject, times(1)).get("deeper");
+    }
+
+    @Test
+    public void getJsonPropertyValueFromJsonObject_shouldReturnListOfProperty_whenNestedArrayItemsPropertyPresented() {
+        String propertyName = "markers[].value";
+
+        setupJsonArrayMock(3);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+        when(mockJsonObject.get("value")).thenReturn(mockJsonPrimitive);
+
+        List<JsonElement> result = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
+
+        assertEquals(3, result.size());
+        verify(mockJsonObject, times(3)).get("value");
+        assertSame(mockJsonPrimitive, result.get(0));
+        assertSame(mockJsonPrimitive, result.get(1));
+        assertSame(mockJsonPrimitive, result.get(2));
+    }
+
+    @Test
+    public void getJsonPropertyValueFromJsonObject_shouldReturnListOfNull_whenNestedArrayItemsPropertyNotPresented() {
+        String propertyName = "markers[].value";
+
+        setupJsonArrayMock(3);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+
+        List<JsonElement> result = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
+
+        assertEquals(3, result.size());
+        verify(mockJsonObject, times(3)).get("value");
+        assertNull(result.get(0));
+        assertNull(result.get(1));
+        assertNull(result.get(2));
     }
 
     // ---- JsonUtils.isJsonPropertyPresentedInJsonObject tests ----
@@ -295,6 +328,8 @@ public class JsonUtilsTest {
         when(mockJsonArray.size()).thenReturn(size);
         when(mockJsonArray.getAsString()).thenReturn(JSON_AS_STRING_VALUE);
         when(mockJsonArray.toString()).thenReturn(JSON_TO_STRING_VALUE);
+        when(mockJsonArray.get(anyInt())).thenReturn(mockJsonObject);
+        when(mockJsonObject.getAsJsonObject()).thenReturn(mockJsonObject);
     }
 
     private void setupJsonPrimitiveMock() {
