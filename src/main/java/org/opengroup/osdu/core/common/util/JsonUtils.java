@@ -124,6 +124,7 @@ public class JsonUtils {
 
         if (nestedNames[0].endsWith(PN_END)) {
             overrideNestedNumberPropertyOfJsonObject(nestedNames, value, jsonObject);
+            return;
         }
 
         JsonObject targetJsonObject = buildNewJsonObject(nestedNames, jsonObject);

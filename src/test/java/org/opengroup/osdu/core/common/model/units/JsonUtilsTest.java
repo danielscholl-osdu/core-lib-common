@@ -260,6 +260,27 @@ public class JsonUtilsTest {
         verify(mockJsonObject, never()).addProperty(anyString(), any(Number.class));
     }
 
+    @Test
+    public void overrideNumberPropertyOfJsonObject_succeed_whenJsonObjectPresentedInNestedArray() {
+        String propertyName = "markers[].value";
+        Integer value1 = 12;
+        Integer value2 = 22;
+        Integer value3 = 32;
+        List<Number> values = new ArrayList<>();
+        values.add(value1);
+        values.add(value2);
+        values.add(value3);
+
+
+        setupJsonArrayMock(3);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+
+        overrideNumberPropertyOfJsonObject(propertyName, values, mockJsonObject);
+        verify(mockJsonObject, times(1)).addProperty("value", 12);
+        verify(mockJsonObject, times(1)).addProperty("value", 22);
+        verify(mockJsonObject, times(1)).addProperty("value", 32);
+    }
+
     // ---- JsonUtils.overrideStringPropertyOfJsonObject tests ----
 
     @Test
