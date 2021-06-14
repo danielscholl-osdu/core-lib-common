@@ -122,10 +122,10 @@ public class UnitConversionImpl {
                     String name = propertyArray.get(i).getAsString();
                     List<JsonElement> valueElements = getJsonPropertyValueFromJsonObject(name, data);
                     List<Number> convertedValues = new ArrayList<>();
-                    for (JsonElement valueElement : valueElements) {
+                    for (int j = 0; j < valueElements.size(); j++) {
+                        JsonElement valueElement = valueElements.get(j);
                         if((null == valueElement) || (valueElement instanceof JsonNull)) {
-                            // TODO: construct proper error message
-                            String message = String.format(MISSING_PROPERTY, name);
+                            String message = String.format(MISSING_PROPERTY, constructPropertyName(name, j));
                             conversionMessages.add(message);
                             convertedValues.add(null);
                             continue;
@@ -137,25 +137,25 @@ public class UnitConversionImpl {
                         }
                         catch(ClassCastException ccEx){
                             hasFailure = true;
-                            String message = String.format(PROPERTY_VALUE_CAST_ERROR, name);
+                            String message = String.format(PROPERTY_VALUE_CAST_ERROR, constructPropertyName(name, j));
                             conversionMessages.add(message);
                             break;
                         }
                         catch(IllegalStateException isEx) {
                             hasFailure = true;
-                            String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
+                            String message = String.format(ILLEGAL_PROPERTY_VALUE, constructPropertyName(name, j));
                             conversionMessages.add(message);
                             break;
                         }
                         catch(NumberFormatException nfEx){
                             hasFailure = true;
-                            String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
+                            String message = String.format(ILLEGAL_PROPERTY_VALUE, constructPropertyName(name, j));
                             conversionMessages.add(message);
                             break;
                         }
                         catch(Exception ex) {
                             hasFailure = true;
-                            String message = String.format(ILLEGAL_PROPERTY_VALUE, name);
+                            String message = String.format(ILLEGAL_PROPERTY_VALUE, constructPropertyName(name, j));
                             conversionMessages.add(message);
                             break;
                         }
@@ -194,5 +194,16 @@ public class UnitConversionImpl {
         String[] unitKeyPropertyArray = Arrays.copyOf(array, array.length);
         unitKeyPropertyArray[unitKeyPropertyArray.length - 1] = PROPERTY_POSTFIX_UNIT_KEY;
         return String.join(".", unitKeyPropertyArray);
+    }
+
+    private String constructPropertyName(String name, int index) {
+        if (!name.contains("[")) {
+            return name;
+        } else {
+            String target = name.substring(name.indexOf("["), name.indexOf("]") + 1);
+            String position = "[" + index + "]";
+            String result = name.replace(target, position);
+            return result;
+        }
     }
 }

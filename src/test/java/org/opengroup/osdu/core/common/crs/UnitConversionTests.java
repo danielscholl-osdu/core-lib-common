@@ -399,4 +399,24 @@ public class UnitConversionTests {
         JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
         Assert.assertEquals(record, resultRecord);
     }
+
+    @Test
+    public void shouldReturnOriginalRecordWhenIOneOfNestedArrayPropertyValueIsMissingInDataAndNested() {
+        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"markers\":[{\"measuredDepth\": 10.0, \"testField\": \"test\"},{\"testField\": \"test\"}]},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"markers[].measuredDepth\"],\"name\": \"ft\"}]}";
+        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonArray metaArray = record.getAsJsonArray("meta");
+        Assert.assertEquals(1, metaArray.size());
+        List<ConversionRecord> conversionRecords = new ArrayList<>();
+        ConversionRecord conversionRecord = new ConversionRecord();
+        conversionRecord.setRecordJsonObject(record);
+        conversionRecord.setConvertStatus(ConvertStatus.SUCCESS);
+        conversionRecords.add(conversionRecord);
+        this.unitConversion.convertUnitsToSI(conversionRecords);
+        Assert.assertEquals(1, conversionRecords.size());
+        Assert.assertTrue(conversionRecords.get(0).getConvertStatus() == ConvertStatus.SUCCESS);
+        String message = String.format(UnitConversionImpl.MISSING_PROPERTY, "markers[1].measuredDepth");
+        Assert.assertEquals(message, conversionRecords.get(0).getConversionMessages().get(0));
+        JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
+        Assert.assertEquals(record, resultRecord);
+    }
 }
