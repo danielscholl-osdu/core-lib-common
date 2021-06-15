@@ -1,0 +1,26 @@
+{
+    "id": "unit-test-1",
+    "kind": "unit:test:1.0.0",
+    "data": {
+        "markers": [
+            {
+                "measuredDepth": 10.0,
+                "testField": "test"
+            },
+            {
+                "testField": "test"
+            }
+        ]
+    },
+    "meta": [
+        {
+            "path": "",
+            "kind": "UNIT",
+            "persistableReference": "% 7 B % 22 ScaleOffset % 22 % 3 A % 7 B % 22 Scale % 22 % 3 A0 .3048 % 2 C % 22 Offset % 22 % 3 A0 .0 % 7 D % 2 C % 22 Symbol % 22 % 3 A % 22 ft % 22 % 2 C % 22 BaseMeasurement % 22 % 3 A % 22 % 257 B % 2522 Ancestry % 2522 % 253 A % 2522 Length % 2522 % 257 D % 22 % 7 D",
+            "propertyNames": [
+                "markers[].measuredDepth"
+            ],
+            "name": "ft"
+        }
+    ]
+}

@@ -14,10 +14,8 @@
 
 package org.opengroup.osdu.core.common.crs;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,8 +24,11 @@ import org.opengroup.osdu.core.common.model.crs.ConversionRecord;
 import org.opengroup.osdu.core.common.model.crs.ConvertStatus;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
+import java.util.ArrayList;
 
 @RunWith(PowerMockRunner.class)
 public class UnitConversionTests {
@@ -402,8 +403,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenIOneOfNestedArrayPropertyValueIsMissingInDataAndNested() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"markers\":[{\"measuredDepth\": 10.0, \"testField\": \"test\"},{\"testField\": \"test\"}]},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"markers[].measuredDepth\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = getExpectedRecord();
         JsonArray metaArray = record.getAsJsonArray("meta");
         Assert.assertEquals(1, metaArray.size());
         List<ConversionRecord> conversionRecords = new ArrayList<>();
@@ -418,5 +418,13 @@ public class UnitConversionTests {
         Assert.assertEquals(message, conversionRecords.get(0).getConversionMessages().get(0));
         JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
         Assert.assertEquals(record, resultRecord);
+    }
+
+    private JsonObject getExpectedRecord() {
+        InputStream inStream = this.getClass().getResourceAsStream("/testdata/nested-data.json");
+        BufferedReader br = new BufferedReader(new InputStreamReader(inStream));
+        Gson gson = new Gson();
+        JsonReader reader = new JsonReader(br);
+        return gson.fromJson(reader, JsonObject.class);
     }
 }
