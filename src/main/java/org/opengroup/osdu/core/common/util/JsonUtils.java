@@ -51,9 +51,9 @@ public class JsonUtils {
         String[] propertiesHierarchy = splitJsonPropertiesByDots(propertyName);
 
         if (propertiesHierarchy[0].endsWith(PN_END) && isNestedArrayElementHomogenious(propertiesHierarchy[0])) {
-            return getOneNestedJsonProperyValueFromJsonObject(propertiesHierarchy, jsonObject);
-        } else if (propertiesHierarchy[0].endsWith(PN_END)) {
             return getNestedJsonPropertyValueFromJsonObject(propertiesHierarchy, jsonObject);
+        } else if (propertiesHierarchy[0].endsWith(PN_END)) {
+            return getOneNestedJsonProperyValueFromJsonObject(propertiesHierarchy, jsonObject);
         }
 
         List<JsonElement> result = new ArrayList<>();
@@ -139,10 +139,10 @@ public class JsonUtils {
         String[] nestedNames = splitJsonPropertiesByDots(propertyName);
 
         if (nestedNames[0].endsWith(PN_END) && isNestedArrayElementHomogenious(nestedNames[0])) {
-            overrideOneNestedNumberPorpertyOfJsonObject(nestedNames, value, jsonObject);
+            overrideNestedNumberPropertyOfJsonObject(nestedNames, value, jsonObject);
             return;
         } else if (nestedNames[0].endsWith(PN_END)) {
-            overrideNestedNumberPropertyOfJsonObject(nestedNames, value, jsonObject);
+            overrideOneNestedNumberPorpertyOfJsonObject(nestedNames, value, jsonObject);
             return;
         }
 
