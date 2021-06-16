@@ -48,24 +48,32 @@ public class JsonUtils {
      * @return JsonElement list with property, if it found and null if not
      */
     public static List<JsonElement> getJsonPropertyValueFromJsonObject(String propertyName, JsonObject jsonObject) {
-        List<JsonElement> result = new ArrayList<>();
         String[] propertiesHierarchy = splitJsonPropertiesByDots(propertyName);
 
-        if (propertiesHierarchy[0].endsWith(PN_END)) {
+        if (propertiesHierarchy[0].endsWith(PN_END) && isNestedArrayElementHomogenious(propertiesHierarchy[0])) {
+            return getOneNestedJsonProperyValueFromJsonObject(propertiesHierarchy, jsonObject);
+        } else if (propertiesHierarchy[0].endsWith(PN_END)) {
             return getNestedJsonPropertyValueFromJsonObject(propertiesHierarchy, jsonObject);
         }
 
+        List<JsonElement> result = new ArrayList<>();
         result.add(getNestedJsonElement(propertiesHierarchy, jsonObject));
         return result;
+    }
+
+    private static List<JsonElement> getOneNestedJsonProperyValueFromJsonObject(String[] propertyNestedNames, JsonObject jsonObject) {
+        List<JsonElement> result = new ArrayList<>();
+
+        String[] innerNestedNames = getInnerNestedPropertyNames(propertyNestedNames);
+        JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(propertyNestedNames[0])) ;
+
     }
 
     private static List<JsonElement> getNestedJsonPropertyValueFromJsonObject(String[] propertyNestedNames, JsonObject jsonObject) {
         List<JsonElement> result = new ArrayList<>();
 
-        String[] innerNestedNames = new String[propertyNestedNames.length - 1];
-        System.arraycopy(propertyNestedNames, 1, innerNestedNames, 0, propertyNestedNames.length - 1);
-
-        JsonArray elementArray = jsonObject.getAsJsonArray(propertyNestedNames[0].substring(0, propertyNestedNames[0].length() - 2 )) ;
+        String[] innerNestedNames = getInnerNestedPropertyNames(propertyNestedNames);
+        JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(propertyNestedNames[0])) ;
 
         for (int i = 0; i < elementArray.size(); i++) {
             JsonObject element = elementArray.get(i).getAsJsonObject();
@@ -134,9 +142,8 @@ public class JsonUtils {
     }
 
     private static void overrideNestedNumberPropertyOfJsonObject(String[] nestedNames, List<Number> values, JsonObject jsonObject) {
-        JsonArray elementArray = jsonObject.getAsJsonArray(nestedNames[0].substring(0, nestedNames[0].length() - 2 )) ;
-        String[] innerNestedNames = new String[nestedNames.length - 1];
-        System.arraycopy(nestedNames, 1, innerNestedNames, 0, nestedNames.length - 1);
+        JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(nestedNames[0])) ;
+        String[] innerNestedNames = getInnerNestedPropertyNames(nestedNames);
 
         for (int i = 0; i < elementArray.size(); i++) {
             JsonObject element = elementArray.get(i).getAsJsonObject();
@@ -185,5 +192,37 @@ public class JsonUtils {
     public static String[] splitJsonPropertiesByDots(String name) {
         if(name == null) return null;
         return name.split("\\.");
+    }
+
+    private static boolean isNestedArrayElementHomogenious(String nestedArrayName) {
+        int openIndex = nestedArrayName.indexOf("[");
+        return openIndex == nestedArrayName.length() - 2;
+    }
+
+    private static String[] getInnerNestedPropertyNames(String[] nestedPropertyNames) {
+        String[] innerNestedNames = new String[nestedPropertyNames.length - 1];
+        System.arraycopy(nestedPropertyNames, 1, innerNestedNames, 0, nestedPropertyNames.length - 1);
+
+        return innerNestedNames;
+    }
+
+    private static String getNestedJsonArrayName(String nestedArrayName) {
+        int openIndex = nestedArrayName.indexOf("[");
+        return nestedArrayName.substring(0, openIndex);
+    }
+
+    private static int getNestedArrayElementIndex(String itemNameWithIndex) {
+        int openIndex = itemNameWithIndex.indexOf("[") + 1;
+        int closeIndex = itemNameWithIndex.indexOf("]");
+        String indexString = itemNameWithIndex.substring(openIndex, closeIndex);
+
+        int index;
+        try {
+            index = Integer.parseInt(indexString);
+        } catch (Exception e) {
+            index = -1;
+        }
+
+        return index;
     }
 }
