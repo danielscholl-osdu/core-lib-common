@@ -33,7 +33,6 @@ import java.util.ArrayList;
 @RunWith(PowerMockRunner.class)
 public class UnitConversionTests {
 
-    private JsonParser jsonParser = new JsonParser();
     private UnitConversionImpl unitConversion = new UnitConversionImpl();
     private JsonObject testData;
 
