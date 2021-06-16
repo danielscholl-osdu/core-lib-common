@@ -35,16 +35,17 @@ public class UnitConversionTests {
 
     private JsonParser jsonParser = new JsonParser();
     private UnitConversionImpl unitConversion = new UnitConversionImpl();
+    private JsonObject testData;
 
     @Before
     public void setup() {
         this.unitConversion = new UnitConversionImpl();
+        this.testData = getTestData();
     }
 
     @Test
     public void shouldReturnOriginalRecordWhenMetaIsMissing() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"acl\": {\"viewers\": [\"viewers@unittest.com\"],\"owners\": [\"owners@unittest.com\"]},\"legal\": {\"legaltags\": [\"unit-test-legal\"],\"otherRelevantDataCountries\": [\"AA\"]},\"data\": {\"msg\": \"testing record 1\",\"X\": 16.00,\"Y\": 10.00,\"Z\": 0}}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("metaIsMissing");
         List<ConversionRecord> conversionRecords = new ArrayList<>();
         ConversionRecord conversionRecord = new ConversionRecord();
         conversionRecord.setRecordJsonObject(record);
@@ -59,8 +60,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenUnitIsMissingInMeta() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"acl\": {\"viewers\": [\"viewers@unittest.com\"],\"owners\": [\"owners@unittest.com\"]},\"legal\": {\"legaltags\": [\"unit-test-legal\"],\"otherRelevantDataCountries\": [\"AA\"]},\"data\": {\"msg\": \"testing record 1\",\"X\": 16.00,\"Y\": 10.00,\"Z\": 0},\"meta\": [{\"path\": \"\",\"kind\": \"CRS\",\"persistableReference\": \"reference\",\"propertyNames\": [\"X\",\"Y\",\"Z\"],\"name\": \"name\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("unitMissingInMeta");
         List<ConversionRecord> conversionRecords = new ArrayList<>();
         ConversionRecord conversionRecord = new ConversionRecord();
         conversionRecord.setRecordJsonObject(record);
@@ -74,8 +74,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenReferenceIsMissingInMeta() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"MD\": 10.0},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"propertyNames\": [\"MD\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("persistableReferenceMissing");
         List<ConversionRecord> conversionRecords = new ArrayList<>();
         ConversionRecord conversionRecord = new ConversionRecord();
         conversionRecord.setRecordJsonObject(record);
@@ -90,8 +89,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenReferenceIsInvalidInMeta() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"MD\": 10.0},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"reference\",\"propertyNames\": [\"MD\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("persistableReferenceInvalid");
         List<ConversionRecord> conversionRecords = new ArrayList<>();
         ConversionRecord conversionRecord = new ConversionRecord();
         conversionRecord.setRecordJsonObject(record);
@@ -106,8 +104,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenPropertyNamesAreMissingInMeta() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"MD\": 10.0},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("propertyNamesMissingInMeta");
         List<ConversionRecord> conversionRecords = new ArrayList<>();
         ConversionRecord conversionRecord = new ConversionRecord();
         conversionRecord.setRecordJsonObject(record);
@@ -122,8 +119,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenMetaDataKindIsMissingInMeta() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"MD\": 10.0},\"meta\": [{\"path\": \"\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"MD\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("metaDataKindIsMissing");
         List<ConversionRecord> conversionRecords = new ArrayList<>();
         ConversionRecord conversionRecord = new ConversionRecord();
         conversionRecord.setRecordJsonObject(record);
@@ -138,8 +134,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenPropertyNamesAreNotArrayInMeta() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"MD\": 10.0},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": \"MD\",\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("propertyNameAreNotArrayInMeta");
         List<ConversionRecord> conversionRecords = new ArrayList<>();
         ConversionRecord conversionRecord = new ConversionRecord();
         conversionRecord.setRecordJsonObject(record);
@@ -154,8 +149,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenPropertyIsMissingInData() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"TVD\": 10.0},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"MD\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("propertyMissingInData");
         List<ConversionRecord> conversionRecords = new ArrayList<>();
         ConversionRecord conversionRecord = new ConversionRecord();
         conversionRecord.setRecordJsonObject(record);
@@ -172,8 +166,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenPropertyValueIsNullInData() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"MD\": null},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"MD\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("nullPropertyValueInData");
         List<ConversionRecord> conversionRecords = new ArrayList<>();
         ConversionRecord conversionRecord = new ConversionRecord();
         conversionRecord.setRecordJsonObject(record);
@@ -190,8 +183,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenPropertyIsBadInData() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"MD\": \"Bad\"},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"MD\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("badPropertyValueInData");
         JsonArray metaArray = record.getAsJsonArray("meta");
         Assert.assertEquals(1, metaArray.size());
         JsonObject meta = (JsonObject) metaArray.get(0);
@@ -216,8 +208,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnUpdatedRecordWhenUnitMetaAndDataAreValid() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"MD\": 10.0},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"MD\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("validDataAndMeta");
         JsonArray metaArray = record.getAsJsonArray("meta");
         Assert.assertEquals(1, metaArray.size());
         JsonObject meta = (JsonObject) metaArray.get(0);
@@ -244,8 +235,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnUpdatedRecordWhenUnitMetaAndDataAreValidAndNested() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"MD\": {\"value\": 10.0}},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"MD.value\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("validNestedDataAndMeta");
         JsonArray metaArray = record.getAsJsonArray("meta");
         Assert.assertEquals(1, metaArray.size());
         JsonObject meta = (JsonObject) metaArray.get(0);
@@ -272,8 +262,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenPropertyValueIsNullInDataAndNested() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"MD\": {\"value\": null}},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"MD.value\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("nullNestedPropertyValueInData");
         List<ConversionRecord> conversionRecords = new ArrayList<>();
         ConversionRecord conversionRecord = new ConversionRecord();
         conversionRecord.setRecordJsonObject(record);
@@ -283,15 +272,14 @@ public class UnitConversionTests {
         Assert.assertEquals(1, conversionRecords.size());
         Assert.assertTrue(conversionRecords.get(0).getConvertStatus() == ConvertStatus.SUCCESS);
         String message = String.format(UnitConversionImpl.MISSING_PROPERTY, "MD.value");
-        Assert.assertTrue(conversionRecords.get(0).getConversionMessages().get(0).equalsIgnoreCase(message));
+        Assert.assertEquals(message, conversionRecords.get(0).getConversionMessages().get(0));
         JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
         Assert.assertEquals(record, resultRecord);
     }
 
     @Test
     public void shouldReturnUpdatedRecordWhenPersistableReferenceIsJsonObject() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"MD\": 10.0},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": { \"scaleOffset\": {\"scale\": 0.3048, \"offset\": 0 }, \"symbol\": \"ft/s\", \"baseMeasurement\": { \"type\": \"UM\", \"ancestry\": \"Velocity\" }, \"type\": \"USO\" },\"propertyNames\": [\"MD\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("persistableAsJsonObject");
         JsonArray metaArray = record.getAsJsonArray("meta");
         Assert.assertEquals(1, metaArray.size());
         JsonObject meta = (JsonObject) metaArray.get(0);
@@ -318,8 +306,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnUpdatedRecordWhenDataContainsDepthWitUnitKey() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"depth\":{ \"inner\" : { \"unitKey\":\"ft\", \"value\":10.0}}},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"depth.inner.value\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("dataContainsDepthUnitKey");
         JsonArray metaArray = record.getAsJsonArray("meta");
         Assert.assertEquals(1, metaArray.size());
         JsonObject meta = (JsonObject)metaArray.get(0);
@@ -350,8 +337,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnUpdatedRecordWhenDataContainsNestedArrayProperties() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"markers\":[{\"measuredDepth\": 10.0, \"testField\": \"test\"},{\"measuredDepth\": 20.0, \"testField\": \"test\"}]},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"markers[].measuredDepth\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("validNestedArray");
         JsonArray metaArray = record.getAsJsonArray("meta");
         Assert.assertEquals(1, metaArray.size());
         JsonObject meta = (JsonObject) metaArray.get(0);
@@ -383,8 +369,7 @@ public class UnitConversionTests {
 
     @Test
     public void shouldReturnOriginalRecordWhenNestedArrayPropertyValueTypeIsInvalidInDataAndNested() {
-        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"data\": {\"markers\":[{\"measuredDepth\": 10.0, \"testField\": \"test\"},{\"measuredDepth\": \"string\", \"testField\": \"test\"}]},\"meta\": [{\"path\": \"\",\"kind\": \"UNIT\",\"persistableReference\": \"%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D\",\"propertyNames\": [\"markers[].measuredDepth\"],\"name\": \"ft\"}]}";
-        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        JsonObject record = testData.getAsJsonObject("nestedArrayWithInvalidValueType");
         JsonArray metaArray = record.getAsJsonArray("meta");
         Assert.assertEquals(1, metaArray.size());
         List<ConversionRecord> conversionRecords = new ArrayList<>();
@@ -395,15 +380,15 @@ public class UnitConversionTests {
         this.unitConversion.convertUnitsToSI(conversionRecords);
         Assert.assertEquals(1, conversionRecords.size());
         Assert.assertTrue(conversionRecords.get(0).getConvertStatus() == ConvertStatus.ERROR);
-        String message = String.format(UnitConversionImpl.ILLEGAL_PROPERTY_VALUE, "markers[].measuredDepth");
-        Assert.assertTrue(conversionRecords.get(0).getConversionMessages().get(0).equalsIgnoreCase(message));
+        String message = String.format(UnitConversionImpl.ILLEGAL_PROPERTY_VALUE, "markers[1].measuredDepth");
+        Assert.assertEquals(message, conversionRecords.get(0).getConversionMessages().get(0));
         JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
         Assert.assertEquals(record, resultRecord);
     }
 
     @Test
     public void shouldReturnOriginalRecordWhenIOneOfNestedArrayPropertyValueIsMissingInDataAndNested() {
-        JsonObject record = getExpectedRecord();
+        JsonObject record = testData.getAsJsonObject("nestedArrayWithMissingValue");
         JsonArray metaArray = record.getAsJsonArray("meta");
         Assert.assertEquals(1, metaArray.size());
         List<ConversionRecord> conversionRecords = new ArrayList<>();
@@ -420,11 +405,12 @@ public class UnitConversionTests {
         Assert.assertEquals(record, resultRecord);
     }
 
-    private JsonObject getExpectedRecord() {
+    private JsonObject getTestData() {
         InputStream inStream = this.getClass().getResourceAsStream("/testdata/nested-data.json");
         BufferedReader br = new BufferedReader(new InputStreamReader(inStream));
         Gson gson = new Gson();
         JsonReader reader = new JsonReader(br);
-        return gson.fromJson(reader, JsonObject.class);
+        JsonObject result = gson.fromJson(reader, JsonObject.class);
+        return result;
     }
 }
