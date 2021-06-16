@@ -390,5 +390,63 @@
             "Y": 10.00,
             "Z": 0
         }
+    },
+    "inhomogeneousNestedArrayPropertyIsValid": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "markers": [
+                {
+                    "measuredDepth": 10.0,
+                    "testField": "test"
+                },
+                {
+                    "measuredDepth": 20.0,
+                    "testField": "test"
+                }
+            ]
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D",
+                "propertyNames": [
+                    "markers[1].measuredDepth"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "inhomogeneousNestedArrayPropertyWithInvalidDataType": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "markers": [
+                {
+                    "measuredDepth": 10.0,
+                    "testField": "test"
+                },
+                {
+                    "measuredDepth": 20.0,
+                    "testField": "test"
+                },
+                {
+                    "measuredDepth": "invalidType",
+                    "testField": "test"
+                }
+            ]
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "%7B%22ScaleOffset%22%3A%7B%22Scale%22%3A0.3048%2C%22Offset%22%3A0.0%7D%2C%22Symbol%22%3A%22ft%22%2C%22BaseMeasurement%22%3A%22%257B%2522Ancestry%2522%253A%2522Length%2522%257D%22%7D",
+                "propertyNames": [
+                    "markers[2].measuredDepth"
+                ],
+                "name": "ft"
+            }
+        ]
     }
 }
