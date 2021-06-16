@@ -218,24 +218,24 @@ public class JsonUtils {
         return name.split("\\.");
     }
 
-    private static boolean isNestedArrayElementHomogenious(String nestedArrayName) {
+    public static boolean isNestedArrayElementHomogenious(String nestedArrayName) {
         int openIndex = nestedArrayName.indexOf("[");
         return openIndex == nestedArrayName.length() - 2;
     }
 
-    private static String[] getInnerNestedPropertyNames(String[] nestedPropertyNames) {
+    public static String[] getInnerNestedPropertyNames(String[] nestedPropertyNames) {
         String[] innerNestedNames = new String[nestedPropertyNames.length - 1];
         System.arraycopy(nestedPropertyNames, 1, innerNestedNames, 0, nestedPropertyNames.length - 1);
 
         return innerNestedNames;
     }
 
-    private static String getNestedJsonArrayName(String nestedArrayName) {
+    public static String getNestedJsonArrayName(String nestedArrayName) {
         int openIndex = nestedArrayName.indexOf("[");
         return nestedArrayName.substring(0, openIndex);
     }
 
-    private static int getNestedArrayElementIndex(String itemNameWithIndex) {
+    public static int getNestedArrayElementIndex(String itemNameWithIndex) {
         int openIndex = itemNameWithIndex.indexOf("[") + 1;
         int closeIndex = itemNameWithIndex.indexOf("]");
         String indexString = itemNameWithIndex.substring(openIndex, closeIndex);
