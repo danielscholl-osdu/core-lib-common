@@ -455,6 +455,25 @@ public class UnitConversionTests {
         Assert.assertEquals(record, resultRecord);
     }
 
+    @Test
+    public void shouldReturnOriginalRecordWhenInhomogeneousNestedArrayPropertyValueIndexOutOfBoundary() {
+        JsonObject record = testData.getAsJsonObject("inhomogeneousPropertyIndexOutOfBoundary");
+        JsonArray metaArray = record.getAsJsonArray("meta");
+        Assert.assertEquals(1, metaArray.size());
+        List<ConversionRecord> conversionRecords = new ArrayList<>();
+        ConversionRecord conversionRecord = new ConversionRecord();
+        conversionRecord.setRecordJsonObject(record);
+        conversionRecord.setConvertStatus(ConvertStatus.SUCCESS);
+        conversionRecords.add(conversionRecord);
+        this.unitConversion.convertUnitsToSI(conversionRecords);
+        Assert.assertEquals(1, conversionRecords.size());
+        Assert.assertTrue(conversionRecords.get(0).getConvertStatus() == ConvertStatus.SUCCESS);
+        String message = String.format(UnitConversionImpl.MISSING_PROPERTY, "markers[2].measuredDepth");
+        Assert.assertEquals(message, conversionRecords.get(0).getConversionMessages().get(0));
+        JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
+        Assert.assertEquals(record, resultRecord);
+    }
+
     private JsonObject getTestData() {
         InputStream inStream = this.getClass().getResourceAsStream("/testdata/nested-data.json");
         BufferedReader br = new BufferedReader(new InputStreamReader(inStream));
