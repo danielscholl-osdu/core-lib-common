@@ -157,6 +157,10 @@ public class JsonUtils {
         JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(nestedNames[0])) ;
         int elementIndex = getNestedArrayElementIndex(nestedNames[0]);
 
+        if (elementIndex < 0 || elementIndex >= elementArray.size()) {
+            return;
+        }
+
         JsonObject element = elementArray.get(elementIndex).getAsJsonObject();
         JsonObject targetJsonObject = buildNewJsonObject(innerNestedNames, element);
 

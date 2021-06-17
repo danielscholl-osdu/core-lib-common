@@ -339,6 +339,20 @@ public class JsonUtilsTest {
         verify(mockJsonObject, times(1)).addProperty("value", 12);
     }
 
+    @Test
+    public void overrideNumberPropertyOfJsonObject_notHappened_whenJsonObjectIndexOutOfBoundary() {
+        String propertyName = "markers[1].value";
+        Integer value1 = 12;
+        List<Number> values = new ArrayList<>();
+        values.add(value1);
+
+        setupJsonArrayMock(1);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+
+        overrideNumberPropertyOfJsonObject(propertyName, values, mockJsonObject);
+        verify(mockJsonObject, never()).addProperty(anyString(), any(Number.class));
+    }
+
     // ---- JsonUtils.overrideStringPropertyOfJsonObject tests ----
 
     @Test
