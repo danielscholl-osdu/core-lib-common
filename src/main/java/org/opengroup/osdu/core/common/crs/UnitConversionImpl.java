@@ -199,7 +199,7 @@ public class UnitConversionImpl {
     private String constructPropertyName(String name, int index) {
         String[] nestedNames = splitJsonPropertiesByDots(name);
 
-        if (name.contains("[") && isNestedArrayElementHomogenious(nestedNames[0])) {
+        if (name.contains("[") && isNestedArrayElementHomogeneous(nestedNames[0])) {
             String target = name.substring(name.indexOf("["), name.indexOf("]") + 1);
             String position = "[" + index + "]";
             String result = name.replace(target, position);

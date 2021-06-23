@@ -50,7 +50,7 @@ public class JsonUtils {
     public static List<JsonElement> getJsonPropertyValueFromJsonObject(String propertyName, JsonObject jsonObject) {
         String[] propertiesHierarchy = splitJsonPropertiesByDots(propertyName);
 
-        if (propertiesHierarchy[0].endsWith(PN_END) && isNestedArrayElementHomogenious(propertiesHierarchy[0])) {
+        if (propertiesHierarchy[0].endsWith(PN_END) && isNestedArrayElementHomogeneous(propertiesHierarchy[0])) {
             return getNestedJsonPropertyValueFromJsonObject(propertiesHierarchy, jsonObject);
         } else if (propertiesHierarchy[0].endsWith(PN_END)) {
             return getOneNestedJsonProperyValueFromJsonObject(propertiesHierarchy, jsonObject);
@@ -138,7 +138,7 @@ public class JsonUtils {
     public static void overrideNumberPropertyOfJsonObject(String propertyName, List<Number> value, JsonObject jsonObject) {
         String[] nestedNames = splitJsonPropertiesByDots(propertyName);
 
-        if (nestedNames[0].endsWith(PN_END) && isNestedArrayElementHomogenious(nestedNames[0])) {
+        if (nestedNames[0].endsWith(PN_END) && isNestedArrayElementHomogeneous(nestedNames[0])) {
             overrideNestedNumberPropertyOfJsonObject(nestedNames, value, jsonObject);
             return;
         } else if (nestedNames[0].endsWith(PN_END)) {
@@ -222,7 +222,7 @@ public class JsonUtils {
         return name.split("\\.");
     }
 
-    public static boolean isNestedArrayElementHomogenious(String nestedArrayName) {
+    public static boolean isNestedArrayElementHomogeneous(String nestedArrayName) {
         int openIndex = nestedArrayName.indexOf("[");
         return openIndex == nestedArrayName.length() - 2;
     }
