@@ -181,6 +181,50 @@ public class JsonUtilsTest {
         assertNull(result.get(2));
     }
 
+    @Test
+    public void getJsonPropertyValueFromJsonObject_shouldReturnListOfProperty_whenOneOfNestedArrayItemsPropertyPresented() {
+        String propertyName = "markers[1].value";
+
+        setupJsonArrayMock(3);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+        when(mockJsonObject.get("value")).thenReturn(mockJsonPrimitive);
+
+        List<JsonElement> result = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
+
+        assertEquals(1, result.size());
+        verify(mockJsonObject, times(1)).get("value");
+        assertSame(mockJsonPrimitive, result.get(0));
+    }
+
+    @Test
+    public void getJsonPropertyValueFromJsonObject_shouldReturnListOfNull_whenOneOfNestedArrayItemsPropertyNotPresented() {
+        String propertyName = "markers[1].value";
+
+        setupJsonArrayMock(3);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+
+        List<JsonElement> result = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
+
+        assertEquals(1, result.size());
+        verify(mockJsonObject, times(1)).get("value");
+        assertNull(result.get(0));
+    }
+
+    @Test
+    public void getJsonPropertyValueFromJsonObject_shouldReturnListOfNull_whenNextedArrayItemIndexExceedsBoundary() {
+        String propertyName = "markers[2].value";
+
+        setupJsonArrayMock(1);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+        when(mockJsonObject.get("value")).thenReturn(mockJsonPrimitive);
+
+        List<JsonElement> result = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
+
+        assertEquals(1, result.size());
+        verify(mockJsonObject, times(0)).get("value");
+        assertNull(result.get(0));
+    }
+
     // ---- JsonUtils.isJsonPropertyPresentedInJsonObject tests ----
 
     @Test
@@ -279,6 +323,34 @@ public class JsonUtilsTest {
         verify(mockJsonObject, times(1)).addProperty("value", 12);
         verify(mockJsonObject, times(1)).addProperty("value", 22);
         verify(mockJsonObject, times(1)).addProperty("value", 32);
+    }
+
+    @Test
+    public void overrideOneNumberPropertyOfJsonObject_succeed_whenJsonObjectPresentedInNestedArray() {
+        String propertyName = "markers[1].value";
+        Integer value1 = 12;
+        List<Number> values = new ArrayList<>();
+        values.add(value1);
+
+        setupJsonArrayMock(3);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+
+        overrideNumberPropertyOfJsonObject(propertyName, values, mockJsonObject);
+        verify(mockJsonObject, times(1)).addProperty("value", 12);
+    }
+
+    @Test
+    public void overrideNumberPropertyOfJsonObject_notHappened_whenJsonObjectIndexOutOfBoundary() {
+        String propertyName = "markers[1].value";
+        Integer value1 = 12;
+        List<Number> values = new ArrayList<>();
+        values.add(value1);
+
+        setupJsonArrayMock(1);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+
+        overrideNumberPropertyOfJsonObject(propertyName, values, mockJsonObject);
+        verify(mockJsonObject, never()).addProperty(anyString(), any(Number.class));
     }
 
     // ---- JsonUtils.overrideStringPropertyOfJsonObject tests ----

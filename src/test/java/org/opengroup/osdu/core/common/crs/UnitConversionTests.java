@@ -404,6 +404,76 @@ public class UnitConversionTests {
         Assert.assertEquals(record, resultRecord);
     }
 
+    @Test
+    public void shouldReturnUpdatedRecordWhenDataContainsValidInhomogeneousNestedArrayProperties() {
+        JsonObject record = testData.getAsJsonObject("inhomogeneousNestedArrayPropertyIsValid");
+        JsonArray metaArray = record.getAsJsonArray("meta");
+        Assert.assertEquals(1, metaArray.size());
+        JsonObject meta = (JsonObject) metaArray.get(0);
+        String persistableReference = meta.get("persistableReference").getAsString();
+        List<ConversionRecord> conversionRecords = new ArrayList<>();
+        ConversionRecord conversionRecord = new ConversionRecord();
+        conversionRecord.setRecordJsonObject(record);
+        conversionRecords.add(conversionRecord);
+        this.unitConversion.convertUnitsToSI(conversionRecords);
+        Assert.assertEquals(1, conversionRecords.size());
+        Assert.assertTrue(conversionRecords.get(0).getConversionMessages().size() == 0);
+        JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
+        JsonElement data = resultRecord.get("data");
+        JsonArray markers = data.getAsJsonObject().getAsJsonArray("markers");
+        JsonObject item1 = markers.get(0).getAsJsonObject();
+        double actualConvertedMeasuredDepthValue1 = item1.get("measuredDepth").getAsDouble();
+        Assert.assertEquals(10.0, actualConvertedMeasuredDepthValue1, 0.00001);
+        JsonObject item2 = markers.get(1).getAsJsonObject();
+        double actualConvertedMeasuredDepthValue2 = item2.get("measuredDepth").getAsDouble();
+        Assert.assertEquals(6.096, actualConvertedMeasuredDepthValue2, 0.00001);
+        JsonArray resultMetaArray = resultRecord.getAsJsonArray("meta");
+        Assert.assertEquals(1, resultMetaArray.size());
+        JsonObject resultMeta = (JsonObject) resultMetaArray.get(0);
+        String resultPersistableReference = resultMeta.get("persistableReference").getAsString();
+        Assert.assertTrue(persistableReference != resultPersistableReference);
+        String resultName = resultMeta.get("name").getAsString();
+        Assert.assertEquals("m", resultName);
+    }
+
+    @Test
+    public void shouldReturnOriginalRecordWhenInhomogeneousNestedArrayPropertyValueTypeIsInvalidInDataAndNested() {
+        JsonObject record = testData.getAsJsonObject("inhomogeneousNestedArrayPropertyWithInvalidDataType");
+        JsonArray metaArray = record.getAsJsonArray("meta");
+        Assert.assertEquals(1, metaArray.size());
+        List<ConversionRecord> conversionRecords = new ArrayList<>();
+        ConversionRecord conversionRecord = new ConversionRecord();
+        conversionRecord.setRecordJsonObject(record);
+        conversionRecord.setConvertStatus(ConvertStatus.SUCCESS);
+        conversionRecords.add(conversionRecord);
+        this.unitConversion.convertUnitsToSI(conversionRecords);
+        Assert.assertEquals(1, conversionRecords.size());
+        Assert.assertTrue(conversionRecords.get(0).getConvertStatus() == ConvertStatus.ERROR);
+        String message = String.format(UnitConversionImpl.ILLEGAL_PROPERTY_VALUE, "markers[2].measuredDepth");
+        Assert.assertEquals(message, conversionRecords.get(0).getConversionMessages().get(0));
+        JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
+        Assert.assertEquals(record, resultRecord);
+    }
+
+    @Test
+    public void shouldReturnOriginalRecordWhenInhomogeneousNestedArrayPropertyValueIndexOutOfBoundary() {
+        JsonObject record = testData.getAsJsonObject("inhomogeneousPropertyIndexOutOfBoundary");
+        JsonArray metaArray = record.getAsJsonArray("meta");
+        Assert.assertEquals(1, metaArray.size());
+        List<ConversionRecord> conversionRecords = new ArrayList<>();
+        ConversionRecord conversionRecord = new ConversionRecord();
+        conversionRecord.setRecordJsonObject(record);
+        conversionRecord.setConvertStatus(ConvertStatus.SUCCESS);
+        conversionRecords.add(conversionRecord);
+        this.unitConversion.convertUnitsToSI(conversionRecords);
+        Assert.assertEquals(1, conversionRecords.size());
+        Assert.assertTrue(conversionRecords.get(0).getConvertStatus() == ConvertStatus.SUCCESS);
+        String message = String.format(UnitConversionImpl.MISSING_PROPERTY, "markers[2].measuredDepth");
+        Assert.assertEquals(message, conversionRecords.get(0).getConversionMessages().get(0));
+        JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
+        Assert.assertEquals(record, resultRecord);
+    }
+
     private JsonObject getTestData() {
         InputStream inStream = this.getClass().getResourceAsStream("/testdata/nested-data.json");
         BufferedReader br = new BufferedReader(new InputStreamReader(inStream));

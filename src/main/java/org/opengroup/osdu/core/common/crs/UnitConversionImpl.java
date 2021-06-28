@@ -197,13 +197,15 @@ public class UnitConversionImpl {
     }
 
     private String constructPropertyName(String name, int index) {
-        if (!name.contains("[")) {
-            return name;
-        } else {
+        String[] nestedNames = splitJsonPropertiesByDots(name);
+
+        if (name.contains("[") && isNestedArrayElementHomogeneous(nestedNames[0])) {
             String target = name.substring(name.indexOf("["), name.indexOf("]") + 1);
             String position = "[" + index + "]";
             String result = name.replace(target, position);
             return result;
+        } else {
+           return name;
         }
     }
 }
