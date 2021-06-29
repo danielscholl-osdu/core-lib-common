@@ -28,7 +28,6 @@ The following software have components provided under the terms of this license:
 - Google HTTP Client Library for Java (from https://github.com/google/google-http-java-client.git)
 - Gson (from https://github.com/google/gson)
 - Guava InternalFutureFailureAccess and InternalFutures (from )
-- Guava ListenableFuture only (from )
 - Guava: Google Core Libraries for Java (from https://github.com/google/guava.git)
 - HPPC Collections (from http://labs.carrotsearch.com)
 - Hibernate Validator Engine (from )
@@ -127,22 +126,20 @@ The following software have components provided under the terms of this license:
 - Hamcrest Core (from http://hamcrest.org/)
 - Lucene Common Analyzers (from )
 - Lucene Core (from )
+- Reflections (from http://github.com/ronmamo/reflections)
 
 ========================================================================
 BSD-3-Clause
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Apache Commons Codec (from http://commons.apache.org/proper/commons-codec/)
-- Hamcrest (from http://hamcrest.org/JavaHamcrest/)
-- Hamcrest Core (from http://hamcrest.org/)
+- Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - Lucene Common Analyzers (from )
 - Lucene Core (from )
 - Lucene Suggest (from )
 - Mockito (from http://www.mockito.org)
-- Reflections (from http://github.com/ronmamo/reflections)
-- SnakeYAML (from http://www.snakeyaml.org)
 - Spring Core (from https://github.com/spring-projects/spring-framework)
+- jakarta.annotation-api (from https://projects.eclipse.org/projects/ee4j.ca)
 
 ========================================================================
 CC-BY-2.5
@@ -152,11 +149,19 @@ The following software have components provided under the terms of this license:
 - FindBugs-jsr305 (from http://findbugs.sourceforge.net/)
 
 ========================================================================
+CC0-1.0
+========================================================================
+The following software have components provided under the terms of this license:
+
+- Guava: Google Core Libraries for Java (from https://github.com/google/guava.git)
+- HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
+- Netty/Common (from )
+
+========================================================================
 CDDL-1.1
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Java Servlet API (from http://servlet-spec.java.net)
 - tomcat-embed-core (from http://tomcat.apache.org/)
 
 ========================================================================
@@ -173,9 +178,6 @@ EPL-1.0
 The following software have components provided under the terms of this license:
 
 - Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
-- Logback Classic Module (from )
-- Logback Core Module (from )
-- SnakeYAML (from http://www.snakeyaml.org)
 - jakarta.annotation-api (from https://projects.eclipse.org/projects/ee4j.ca)
 
 ========================================================================
@@ -191,15 +193,10 @@ GPL-2.0-only
 ========================================================================
 The following software have components provided under the terms of this license:
 
+- Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - Java Servlet API (from http://servlet-spec.java.net)
+- jakarta.annotation-api (from https://projects.eclipse.org/projects/ee4j.ca)
 - tomcat-embed-core (from http://tomcat.apache.org/)
-
-========================================================================
-GPL-2.0-or-later
-========================================================================
-The following software have components provided under the terms of this license:
-
-- SnakeYAML (from http://www.snakeyaml.org)
 
 ========================================================================
 GPL-2.0-with-classpath-exception
@@ -207,7 +204,6 @@ GPL-2.0-with-classpath-exception
 The following software have components provided under the terms of this license:
 
 - Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
-- Java Servlet API (from http://servlet-spec.java.net)
 - jakarta.annotation-api (from https://projects.eclipse.org/projects/ee4j.ca)
 - tomcat-embed-core (from http://tomcat.apache.org/)
 
@@ -227,28 +223,13 @@ The following software have components provided under the terms of this license:
 
 - Elastic JNA Distribution (from https://github.com/java-native-access/jna)
 - Javassist (from http://www.javassist.org/)
-- Logback Classic Module (from )
-- Logback Core Module (from )
-
-========================================================================
-LGPL-2.1-or-later
-========================================================================
-The following software have components provided under the terms of this license:
-
-- SnakeYAML (from http://www.snakeyaml.org)
-
-========================================================================
-LGPL-3.0-only
-========================================================================
-The following software have components provided under the terms of this license:
-
-- Apache Log4j API (from )
 
 ========================================================================
 MIT
 ========================================================================
 The following software have components provided under the terms of this license:
 
+- Apache Log4j to SLF4J Adapter (from )
 - Checker Qual (from https://checkerframework.org)
 - JOpt Simple (from http://pholser.github.io/jopt-simple)
 - JUL to SLF4J bridge (from http://www.slf4j.org)
@@ -260,32 +241,11 @@ The following software have components provided under the terms of this license:
 - SLF4J API Module (from http://www.slf4j.org)
 
 ========================================================================
-MPL-1.1
-========================================================================
-The following software have components provided under the terms of this license:
-
-- Javassist (from http://www.javassist.org/)
-
-========================================================================
 MPL-2.0
 ========================================================================
 The following software have components provided under the terms of this license:
 
 - Javassist (from http://www.javassist.org/)
-
-========================================================================
-Public-Domain
-========================================================================
-The following software have components provided under the terms of this license:
-
-- HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
-
-========================================================================
-SPL-1.0
-========================================================================
-The following software have components provided under the terms of this license:
-
-- Checker Qual (from https://checkerframework.org)
 
 ========================================================================
 WTFPL
@@ -295,11 +255,17 @@ The following software have components provided under the terms of this license:
 - Reflections (from http://github.com/ronmamo/reflections)
 
 ========================================================================
-public-domain
+X11
 ========================================================================
 The following software have components provided under the terms of this license:
 
 - Guava: Google Core Libraries for Java (from https://github.com/google/guava.git)
+
+========================================================================
+public-domain
+========================================================================
+The following software have components provided under the terms of this license:
+
 - HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
 - Joda-Time (from http://www.joda.org/joda-time/)
 - Project Lombok (from https://projectlombok.org)
@@ -311,7 +277,6 @@ unknown
 The following software have components provided under the terms of this license:
 
 - Byte Buddy (without dependencies) (from )
-- Checker Qual (from https://checkerframework.org)
 - JUnit (from http://junit.org)
 - System Rules (from http://stefanbirkner.github.io/system-rules/)
 
