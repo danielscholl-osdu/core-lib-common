@@ -3,6 +3,7 @@ package org.opengroup.osdu.core.common.status;
 import java.util.Map;
 
 import org.opengroup.osdu.core.common.exception.CoreException;
+import org.opengroup.osdu.core.common.model.status.Message;
 
 /**
  * Interface to publish message in event.
@@ -11,8 +12,9 @@ import org.opengroup.osdu.core.common.exception.CoreException;
 public interface IEventPublisher {
     /**
      * This method will publish message to the configured event using data partition
-     * id and correlation id in attributesMap. Message should be in json format.
-     * Attributes map should consist both data-partition-id and correlation-id.
+     * id and correlation id in attributesMap. Messages is array which should
+     * contain either StatusDetails or DatasetDetails. Attributes map should consist
+     * both data-partition-id and correlation-id.
      * 
      * <pre>
      * {@code
@@ -20,15 +22,13 @@ public interface IEventPublisher {
      * attributesMap.put("data-partition-id", "partitionId");
      * attributesMap.put("correlation-id", "abc123");
      *  
-     * String message = { "data": "value" };
-     *  
-     * iEventpublisher.publish(message, attributesMap);
+     * iEventpublisher.publish(messages, attributesMap);
      * }
      * </pre>
      * 
-     * @param message
+     * @param messages
      * @param attributesMap
      * @throws CoreException
      */
-    void publish(String message, Map<String, String> attributesMap) throws CoreException;
+    void publish(Message[] messages, Map<String, String> attributesMap) throws CoreException;
 }
