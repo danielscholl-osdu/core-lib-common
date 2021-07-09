@@ -3,8 +3,8 @@ package org.opengroup.osdu.core.common.model.status;
 import lombok.Data;
 
 @Data
-public class StatusDetails {
-
+public class StatusDetails implements Message {
+    
     private String kind;
     private Properties properties;
 
@@ -19,7 +19,8 @@ public class StatusDetails {
         private String message;
         private int errorCode;
         private String userEmail;
-        private String timestamp;
+        // epoch time
+        private long timestamp;
 
     }
 }

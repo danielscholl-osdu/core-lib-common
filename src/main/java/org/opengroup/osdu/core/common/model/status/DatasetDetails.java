@@ -3,8 +3,8 @@ package org.opengroup.osdu.core.common.model.status;
 import lombok.Data;
 
 @Data
-public class DatasetDetails {
-
+public class DatasetDetails implements Message {
+    
     private String kind;
     private Properties properties;
 
@@ -15,7 +15,8 @@ public class DatasetDetails {
         private String datasetVersionId;
         private DatasetType datasetType;
         private int recordCount;
-        private String timestamp;
+        // epoch time
+        private long timestamp;
     }
 
 }
