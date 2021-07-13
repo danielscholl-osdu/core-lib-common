@@ -39,7 +39,9 @@ public class RecordIndexerPayload {
     public static class Record {
         private String id;
         private String kind;
+        private String authority;
         private String namespace;
+        private String source;
         private String type;
         private OperationType operationType;
         private long version;
@@ -48,6 +50,10 @@ public class RecordIndexerPayload {
         private IndexProgress indexProgress;
         private Legal legal;
         private RecordAncestry ancestry;
+        private String createUser;
+        private String createTime;
+        private String modifyUser;
+        private String modifyTime;
         private Map<String, Object> data;
         @JsonIgnore
         private boolean schemaMissing = false;
