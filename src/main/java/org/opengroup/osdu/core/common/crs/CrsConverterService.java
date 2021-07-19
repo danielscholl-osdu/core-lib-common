@@ -56,6 +56,13 @@ public class CrsConverterService implements ICrsConverterService {
         return this.getResult(result, ConvertTrajectoryResponse.class);
     }
 
+    @Override
+    public ConvertGeoJsonResponse convertGeoJson(ConvertGeoJsonRequest request) throws CrsConverterException {
+        String url = this.createUrl("/convertGeoJson");
+        HttpResponse result = this.httpClient.send(HttpRequest.post(request).url(url).headers(this.headers.getHeaders()).build());
+        return this.getResult(result, ConvertGeoJsonResponse.class);
+    }
+
     private CrsConverterException generateException(HttpResponse result) {
         return new CrsConverterException(
                 "Error making request to CrsConverter service. Check the inner HttpResponse for more info.", result);
