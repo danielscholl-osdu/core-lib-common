@@ -181,7 +181,7 @@ The following software have components provided under the terms of this license:
 
 - Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - Logback Classic Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-classic)
-- Logback Core Module (from http://logback.qos.ch)
+- Logback Core Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-core)
 - SnakeYAML (from http://code.google.com/p/snakeyaml/)
 - jakarta.annotation-api (from https://projects.eclipse.org/projects/ee4j.ca)
 
@@ -235,7 +235,7 @@ The following software have components provided under the terms of this license:
 - Elastic JNA Distribution (from https://github.com/java-native-access/jna)
 - Javassist (from http://www.javassist.org/)
 - Logback Classic Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-classic)
-- Logback Core Module (from http://logback.qos.ch)
+- Logback Core Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-core)
 
 ========================================================================
 LGPL-2.1-or-later
