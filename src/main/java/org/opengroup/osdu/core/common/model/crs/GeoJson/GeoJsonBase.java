@@ -1,14 +1,33 @@
-package org.opengroup.osdu.core.common.model.crs;
+package org.opengroup.osdu.core.common.model.crs.GeoJson;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 @Data
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = GeoJsonPoint.class, name = "Point"),
+        @JsonSubTypes.Type(value = GeoJsonPoint.class, name = "AnyCrsPoint"),
+        @JsonSubTypes.Type(value = GeoJsonMultiPoint.class, name = "MultiPoint"),
+        @JsonSubTypes.Type(value = GeoJsonMultiPoint.class, name = "AnyCrsMultiPoint"),
+        @JsonSubTypes.Type(value = GeoJsonPolygon.class, name = "Polygon"),
+        @JsonSubTypes.Type(value = GeoJsonPolygon.class, name = "AnyCrsPolygon"),
+        @JsonSubTypes.Type(value = GeoJsonMultiPolygon.class, name = "MultiPolygon"),
+        @JsonSubTypes.Type(value = GeoJsonMultiPolygon.class, name = "AnyCrsMultiPolygon"),
+        @JsonSubTypes.Type(value = GeoJsonGeometryCollection.class, name = "GeometryCollection"),
+        @JsonSubTypes.Type(value = GeoJsonGeometryCollection.class, name = "AnyCrsGeometryCollection"),
+        @JsonSubTypes.Type(value = GeoJsonFeature.class, name = "Feature"),
+        @JsonSubTypes.Type(value = GeoJsonFeature.class, name = "AnyCrsFeature"),
+        @JsonSubTypes.Type(value = GeoJsonFeatureCollection.class, name = "FeatureCollection"),
+        @JsonSubTypes.Type(value = GeoJsonFeatureCollection.class, name = "AnyCrsFeatureCollection")
+})
 @JsonIgnoreProperties({"valid", "dimension", "length", "geoJsonVariant"})
 public abstract class GeoJsonBase {
 
@@ -101,6 +120,15 @@ public abstract class GeoJsonBase {
 
     abstract void appendParts(ArrayList<GeoJsonBase> components);
 
+    static double[] getMinMax(double[] coordinates, int dimension) {
+        double[] bbox = new double[dimension * 2];
+        for (int i = 0; i < dimension; i++) {
+            bbox[i] = coordinates[i];
+            bbox[i + dimension] = bbox[i];
+        }
+        return bbox;
+    }
+
     static double[] getMinMax(double[][] coordinates, int dimension){
         double[] bbox = new double[dimension * 2];
         for (int i = 0; i < dimension; i++) {
@@ -111,6 +139,42 @@ public abstract class GeoJsonBase {
             for (int i = 0; i < dimension; i++) {
                 bbox[i] = Double.min(bbox[i], coordinates[j][i]);
                 bbox[i + dimension] = Double.max(bbox[i + dimension], coordinates[j][i]);
+            }
+        }
+        return bbox;
+    }
+
+    static double[] getMinMax(double[][][] coordinates, int dimension){
+        double[] bbox = new double[dimension * 2];
+        for (int i = 0; i < dimension; i++) {
+            bbox[i] = coordinates[0][0][i];
+            bbox[i + dimension] = coordinates[0][0][i];
+        }
+        for (double[][] coordinate : coordinates) {
+            for (int j = 1; j < coordinate.length; j++) {
+                for (int i = 0; i < dimension; i++) {
+                    bbox[i] = Double.min(bbox[i], coordinate[j][i]);
+                    bbox[i + dimension] = Double.max(bbox[i + dimension], coordinate[j][i]);
+                }
+            }
+        }
+        return bbox;
+    }
+
+    static double[] getMinMax(double[][][][] coordinates, int dimension) {
+        double[] bbox = new double[dimension * 2];
+        for (int i = 0; i < dimension; i++) {
+            bbox[i] = coordinates[0][0][0][i];
+            bbox[i + dimension] = coordinates[0][0][0][i];
+        }
+        for (double[][][] coordinate : coordinates) {
+            for (int k = 1; k < coordinate.length; k++) {
+                for (int j = 1; j < coordinate[k].length; j++) {
+                    for (int i = 0; i < dimension; i++) {
+                        bbox[i] = Double.min(bbox[i], coordinate[k][j][i]);
+                        bbox[i + dimension] = Double.max(bbox[i + dimension], coordinate[k][j][i]);
+                    }
+                }
             }
         }
         return bbox;

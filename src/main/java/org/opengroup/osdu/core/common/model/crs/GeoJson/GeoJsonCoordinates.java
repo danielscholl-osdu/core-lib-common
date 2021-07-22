@@ -1,4 +1,4 @@
-package org.opengroup.osdu.core.common.model.crs;
+package org.opengroup.osdu.core.common.model.crs.GeoJson;
 
 import lombok.AccessLevel;
 import lombok.Data;

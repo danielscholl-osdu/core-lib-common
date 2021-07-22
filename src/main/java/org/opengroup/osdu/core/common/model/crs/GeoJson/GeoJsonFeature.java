@@ -1,10 +1,13 @@
-package org.opengroup.osdu.core.common.model.crs;
+package org.opengroup.osdu.core.common.model.crs.GeoJson;
 
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
+
 import java.util.ArrayList;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class GeoJsonFeature extends GeoJsonBase {
     @JsonProperty("geometry")
     private GeoJsonBase geometry;
