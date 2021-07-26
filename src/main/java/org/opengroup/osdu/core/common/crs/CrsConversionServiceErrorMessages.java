@@ -26,6 +26,7 @@ public class CrsConversionServiceErrorMessages {
     public static final String ILLEGAL_PROPERTY_NAMES = "CRS conversion: 'propertyNames' illegal, no conversion applied.";
     public static final String MISSING_REFERENCE = "CRS conversion: 'persistableReference' missing, no conversion applied.";
     public static final String MISSING_PROPERTY = "CRS conversion: property '%s' is missing in datablock, no conversion applied to this property and its corresponding pairing property.";
+    public static final String MISSING_FEATURES = "CRS conversion: 'features' missing, no conversion applied.";
     public static final String PROPERTY_VALUE_CAST_ERROR = "CRS conversion: cannot cast the value of property '%s' to double, error message: %s, no conversion applied.";
     public static final String ILLEGAL_PROPERTY_VALUE = "CRS conversion: illegal value for property '%s', error message: %s, no conversion applied.";
     public static final String INVALID_NESTED_PROPERTY_NAME = "CRS conversion: invalid nested property name: '%s', no conversion applied.";

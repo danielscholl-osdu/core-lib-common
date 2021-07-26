@@ -53,12 +53,6 @@ public class GeoJsonPolygon extends GeoJsonBase {
         return length;
     }
 
-//    @Override
-//    void replaceCoordinates(GeoJsonCoordinates coordinates) {
-//        double[][][] pts = this.getCoordinates();
-//        replaceCoordinateArray(coordinates, pts);
-//    }
-
     @Override
     void appendParts(ArrayList<GeoJsonBase> components) {
         components.add(this);

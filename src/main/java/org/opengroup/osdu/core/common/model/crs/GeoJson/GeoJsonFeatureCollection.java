@@ -14,12 +14,11 @@
 
 package org.opengroup.osdu.core.common.model.crs.GeoJson;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.util.ArrayList;
+import lombok.EqualsAndHashCode;
+import io.swagger.annotations.ApiModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

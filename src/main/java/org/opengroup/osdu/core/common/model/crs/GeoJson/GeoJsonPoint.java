@@ -37,12 +37,6 @@ public class GeoJsonPoint extends GeoJsonBase {
         return this.isValid() ? 1 : 0;
     }
 
-//    @Override
-//    void replaceCoordinates(GeoJsonCoordinates coordinates) {
-//        double[] pt = this.getCoordinates();
-//        replaceCoordinateArray(coordinates, pt);
-//    }
-
     @Override
     void appendParts(ArrayList<GeoJsonBase> components) {
         components.add(this);

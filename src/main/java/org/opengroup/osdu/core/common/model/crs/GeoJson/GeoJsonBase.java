@@ -21,8 +21,6 @@ import java.util.ArrayList;
         @JsonSubTypes.Type(value = GeoJsonPolygon.class, name = "AnyCrsPolygon"),
         @JsonSubTypes.Type(value = GeoJsonMultiPolygon.class, name = "MultiPolygon"),
         @JsonSubTypes.Type(value = GeoJsonMultiPolygon.class, name = "AnyCrsMultiPolygon"),
-        @JsonSubTypes.Type(value = GeoJsonGeometryCollection.class, name = "GeometryCollection"),
-        @JsonSubTypes.Type(value = GeoJsonGeometryCollection.class, name = "AnyCrsGeometryCollection"),
         @JsonSubTypes.Type(value = GeoJsonFeature.class, name = "Feature"),
         @JsonSubTypes.Type(value = GeoJsonFeature.class, name = "AnyCrsFeature"),
         @JsonSubTypes.Type(value = GeoJsonFeatureCollection.class, name = "FeatureCollection"),
@@ -93,11 +91,6 @@ public abstract class GeoJsonBase {
 
     abstract int getLength();
 
-    public GeoJsonVariant getGeoJsonVariant(){
-        if (this.getType().startsWith(ANY_CRS_PREFIX)) return GeoJsonVariant.ANY_CRS_GEO_JSON;
-        return GeoJsonVariant.GEO_JSON;
-    }
-
     private void setGeoJsonVariantInternal(GeoJsonVariant gj_variant){
         if (gj_variant == GeoJsonVariant.ANY_CRS_GEO_JSON) {
             if (!this.getType().startsWith(ANY_CRS_PREFIX)) {
@@ -107,14 +100,6 @@ public abstract class GeoJsonBase {
             if (this.getType().startsWith(ANY_CRS_PREFIX)) {
                 this.setType(this.getType().replace(ANY_CRS_PREFIX, ""));
             }
-        }
-    }
-
-    public void setGeoJsonVariant(GeoJsonVariant gj_variant){
-        ArrayList<GeoJsonBase> components = new ArrayList<>();
-        this.appendParts(components);
-        for (GeoJsonBase gb : components){
-            gb.setGeoJsonVariantInternal(gj_variant);
         }
     }
 

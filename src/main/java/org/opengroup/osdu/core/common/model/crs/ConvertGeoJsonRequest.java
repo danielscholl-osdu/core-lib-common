@@ -14,12 +14,11 @@
 
 package org.opengroup.osdu.core.common.model.crs;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.opengroup.osdu.core.common.model.crs.GeoJson.GeoJsonFeatureCollection;
-
+import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotEmpty;
+import org.opengroup.osdu.core.common.model.crs.GeoJson.GeoJsonFeatureCollection;
 
 @Data
 @AllArgsConstructor

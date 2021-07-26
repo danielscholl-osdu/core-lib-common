@@ -14,9 +14,9 @@
 
 package org.opengroup.osdu.core.common.model.crs;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.opengroup.osdu.core.common.model.crs.GeoJson.GeoJsonFeatureCollection;
 
 import java.util.List;
