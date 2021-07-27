@@ -20,6 +20,8 @@ public enum ElasticType {
 
     KEYWORD("keyword"),
 
+    CONSTANT_KEYWORD("constant_keyword"),
+
     TEXT("text"),
 
     DATE("date"),

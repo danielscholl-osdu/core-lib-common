@@ -23,6 +23,10 @@ public enum RecordMetaAttribute {
 
     KIND("kind"),
 
+    AUTHORITY("authority"),
+
+    SOURCE("source"),
+
     NAMESPACE("namespace"),
 
     TYPE("type"),
@@ -38,6 +42,14 @@ public enum RecordMetaAttribute {
     LEGAL("legal"),
 
     ANCESTRY("ancestry"),
+
+    CREATE_USER("createUser"),
+
+    MODIFY_USER("modifyUser"),
+
+    CREATE_TIME("createTime"),
+
+    MODIFY_TIME("modifyTime"),
 
     INDEX_STATUS("index");
 
