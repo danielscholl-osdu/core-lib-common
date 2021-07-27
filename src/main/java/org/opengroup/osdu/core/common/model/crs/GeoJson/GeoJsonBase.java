@@ -49,9 +49,4 @@ public abstract class GeoJsonBase {
         this.dimension = -1;
         this.valid = false;
     }
-
-    public int getDimension() {
-        this.isValid();
-        return this.dimension;
-    }
 }
