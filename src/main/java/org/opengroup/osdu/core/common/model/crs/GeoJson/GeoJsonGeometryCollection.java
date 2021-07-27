@@ -21,12 +21,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+public class GeoJsonGeometryCollection extends GeoJsonBase {
+    @JsonProperty("geometries")
+    private GeoJsonBase[] geometries;
 
-public class GeoJsonPoint extends GeoJsonBase {
-    @JsonProperty("coordinates")
-    private double[] coordinates;
-
-    public GeoJsonPoint() {
-        super("AnyCrsPoint");
+    public GeoJsonGeometryCollection() {
+        super("AnyCrsGeometryCollection");
     }
 }

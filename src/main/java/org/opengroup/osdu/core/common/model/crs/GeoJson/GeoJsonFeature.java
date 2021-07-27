@@ -28,7 +28,7 @@ public class GeoJsonFeature extends GeoJsonBase {
     private Object properties;
 
     public GeoJsonFeature() {
-        super("AnyCrsFeature"); // default to non-GeoJSON
+        super("AnyCrsFeature");
         this.properties = new Object();
     }
  }

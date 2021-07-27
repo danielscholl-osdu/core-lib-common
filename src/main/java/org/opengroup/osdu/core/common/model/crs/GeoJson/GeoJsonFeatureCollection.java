@@ -36,6 +36,6 @@ public class GeoJsonFeatureCollection extends GeoJsonBase {
     private String persistableReferenceUnitZ;
 
     public GeoJsonFeatureCollection() {
-        super("AnyCrsFeatureCollection"); // default to non-GeoJSON
+        super("AnyCrsFeatureCollection");
     }
 }

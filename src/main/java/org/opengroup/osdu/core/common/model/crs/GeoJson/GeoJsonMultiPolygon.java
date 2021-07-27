@@ -27,5 +27,5 @@ public class GeoJsonMultiPolygon extends GeoJsonBase {
 
     public GeoJsonMultiPolygon() {
         super("AnyCrsMultiPolygon");
-    } // default to non-GeoJSON
+    }
 }

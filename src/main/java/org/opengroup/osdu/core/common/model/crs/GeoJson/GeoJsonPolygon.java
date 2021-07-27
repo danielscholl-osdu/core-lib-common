@@ -27,5 +27,5 @@ public class GeoJsonPolygon extends GeoJsonBase {
 
     public GeoJsonPolygon() {
         super("AnyCrsPolygon");
-    } // default to non-GeoJSON
+    }
 }

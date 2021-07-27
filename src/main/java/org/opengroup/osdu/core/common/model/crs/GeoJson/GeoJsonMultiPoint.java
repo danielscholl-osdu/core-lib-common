@@ -28,5 +28,5 @@ public class GeoJsonMultiPoint extends GeoJsonBase {
 
     public GeoJsonMultiPoint() {
         super("AnyCrsMultiPoint");
-    } // default to non-GeoJSON
+    }
 }
