@@ -20,7 +20,7 @@
 
   <groupId>org.opengroup.osdu</groupId>
   <artifactId>os-core-common</artifactId>
-  <version>0.11.0-SNAPSHOT-GEO</version>
+  <version>0.11.1-SNAPSHOT-GEO</version>
   <packaging>jar</packaging>
 
 
