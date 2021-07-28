@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-
 public class GeoJsonMultiPoint extends GeoJsonBase {
     @JsonProperty("coordinates")
     private double[][] coordinates;

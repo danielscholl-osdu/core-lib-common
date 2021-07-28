@@ -16,6 +16,7 @@ package org.opengroup.osdu.core.common.model.crs.GeoJson;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
@@ -34,6 +35,7 @@ import lombok.Data;
         @JsonSubTypes.Type(value = GeoJsonFeatureCollection.class, name = "AnyCrsFeatureCollection")
 })
 @JsonIgnoreProperties({"valid", "dimension", "length", "geoJsonVariant"})
+@EqualsAndHashCode
 public abstract class GeoJsonBase {
     @JsonProperty("type")
     private String type;
