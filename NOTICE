@@ -20,7 +20,7 @@ The following software have components provided under the terms of this license:
 - Bean Validation API (from http://beanvalidation.org)
 - Bean Validation API (from http://beanvalidation.org)
 - Byte Buddy (without dependencies) (from https://repo1.maven.org/maven2/net/bytebuddy/byte-buddy)
-- Byte Buddy Java agent (from https://repo1.maven.org/maven2/net/bytebuddy/byte-buddy-agent)
+- Byte Buddy agent (from https://repo1.maven.org/maven2/net/bytebuddy/byte-buddy-agent)
 - ClassMate (from http://github.com/cowtowncoder/java-classmate)
 - Elastic JNA Distribution (from https://github.com/java-native-access/jna)
 - Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
@@ -329,5 +329,4 @@ The following software have components provided under the terms of this license:
 - Checker Qual (from https://checkerframework.org)
 - JUnit (from http://junit.org)
 - System Rules (from http://stefanbirkner.github.io/system-rules/)
-
 
