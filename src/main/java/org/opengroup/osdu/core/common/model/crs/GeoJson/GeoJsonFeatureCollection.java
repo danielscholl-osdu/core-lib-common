@@ -17,25 +17,26 @@ package org.opengroup.osdu.core.common.model.crs.GeoJson;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import io.swagger.annotations.ApiModel;
+import org.opengroup.osdu.core.common.Constants;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ApiModel
 public class GeoJsonFeatureCollection extends GeoJsonBase {
-    @JsonProperty("features")
+    @JsonProperty(Constants.FEATURES)
     private GeoJsonFeature[] features;
 
-    @JsonProperty("properties")
+    @JsonProperty(Constants.PROPERTIES)
     private Object properties;
 
-    @JsonProperty("persistableReferenceCrs")
+    @JsonProperty(Constants.PERSISTABLE_REFERENCE_CRS)
     private String persistableReferenceCrs;
 
-    @JsonProperty("persistableReferenceUnitZ")
+    @JsonProperty(Constants.PERSISTABLE_REFERENCE_UNIT_Z)
     private String persistableReferenceUnitZ;
 
     public GeoJsonFeatureCollection() {
-        super("AnyCrsFeatureCollection");
+        super(Constants.ANY_CRS_FEATURE_COLLECTION);
     }
 }

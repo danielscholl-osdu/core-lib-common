@@ -16,19 +16,20 @@ package org.opengroup.osdu.core.common.model.crs.GeoJson;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.opengroup.osdu.core.common.Constants;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class GeoJsonFeature extends GeoJsonBase {
-    @JsonProperty("geometry")
+    @JsonProperty(Constants.GEOMETRY)
     private GeoJsonBase geometry;
 
-    @JsonProperty("properties")
+    @JsonProperty(Constants.PROPERTIES)
     private Object properties;
 
     public GeoJsonFeature() {
-        super("AnyCrsFeature");
+        super(Constants.ANY_CRS_FEATURE);
         this.properties = new Object();
     }
  }

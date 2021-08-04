@@ -16,16 +16,16 @@ package org.opengroup.osdu.core.common.model.crs.GeoJson;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+import org.opengroup.osdu.core.common.Constants;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class GeoJsonMultiLineString extends GeoJsonBase {
-    @JsonProperty("coordinates")
+    @JsonProperty(Constants.COORDINATES)
     private double[][][] coordinates;
 
     public GeoJsonMultiLineString() {
-        super("AnyCrsMultiLineString");
+        super(Constants.ANY_CRS_MULTILINE_STRING);
     }
 }
