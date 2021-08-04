@@ -16,20 +16,14 @@ package org.opengroup.osdu.core.common.model.crs;
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import javax.validation.constraints.NotEmpty;
 import org.opengroup.osdu.core.common.model.crs.GeoJson.GeoJsonFeatureCollection;
 
 @Data
 @AllArgsConstructor
 public class ConvertGeoJsonRequest {
-    @JsonProperty("featureCollection")
     private GeoJsonFeatureCollection featureCollection;
 
-    @NotEmpty
-    @JsonProperty("toCRS")
     private String toCRS;
 
-    @JsonProperty("toUnitZ")
     private String toUnitZ;
 }
