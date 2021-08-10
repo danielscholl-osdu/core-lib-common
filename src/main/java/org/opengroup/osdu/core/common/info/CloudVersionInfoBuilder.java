@@ -25,6 +25,7 @@ import java.util.Properties;
 import lombok.extern.slf4j.Slf4j;
 import org.opengroup.osdu.core.common.model.info.ConnectedOuterService;
 import org.opengroup.osdu.core.common.model.info.VersionInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -34,6 +35,9 @@ public class CloudVersionInfoBuilder implements VersionInfoBuilder {
   private final Properties buildInfoProperties = new Properties();
   private final Properties gitProperties = new Properties();
   private final VersionInfoProperties versionInfoProperties;
+
+  @Autowired(required = false)
+  private ConnectedOuterServicesBuilder outerServicesBuilder;
 
   public CloudVersionInfoBuilder(VersionInfoProperties versionInfoProperties) {
     this.versionInfoProperties = versionInfoProperties;
@@ -81,9 +85,10 @@ public class CloudVersionInfoBuilder implements VersionInfoBuilder {
 
   /**
    * The method collects service-specific values for all outer services connected to OSDU service.
-   * To define outer services info for OSDU service need to override this method.
+   * To define outer services info for OSDU service need to inject ConnectedOuterServicesBuilder.
    */
-  protected List<ConnectedOuterService> loadConnectedOuterServices() {
-    return Collections.emptyList();
+  private List<ConnectedOuterService> loadConnectedOuterServices() {
+    return outerServicesBuilder == null ? Collections.emptyList()
+        : outerServicesBuilder.buildConnectedOuterServices();
   }
 }
