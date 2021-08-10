@@ -8,13 +8,11 @@ Apache-2.0
 The following software have components provided under the terms of this license:
 
 - Apache Commons Codec (from https://commons.apache.org/proper/commons-codec/)
-- Apache Commons Lang (from https://commons.apache.org/proper/commons-lang/)
+- Apache Commons Lang (from http://commons.apache.org/proper/commons-lang/)
 - Apache Commons Logging (from http://commons.apache.org/proper/commons-logging/)
 - Apache HttpAsyncClient (from http://hc.apache.org/httpcomponents-asyncclient)
 - Apache HttpClient (from http://hc.apache.org/httpcomponents-client)
 - Apache HttpClient Cache (from http://hc.apache.org/httpcomponents-client)
-- Apache HttpCore (from http://hc.apache.org/httpcomponents-core-ga)
-- Apache HttpCore NIO (from http://hc.apache.org/httpcomponents-core-ga)
 - Apache Log4j API (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api)
 - Apache Log4j to SLF4J Adapter (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-to-slf4j)
 - Bean Validation API (from http://beanvalidation.org)
@@ -23,24 +21,27 @@ The following software have components provided under the terms of this license:
 - Byte Buddy agent (from https://repo1.maven.org/maven2/net/bytebuddy/byte-buddy-agent)
 - ClassMate (from http://github.com/cowtowncoder/java-classmate)
 - Elastic JNA Distribution (from https://github.com/java-native-access/jna)
+- Elasticsearch: Core (from https://repo1.maven.org/maven2/org/elasticsearch/elasticsearch)
 - Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - FindBugs-jsr305 (from http://findbugs.sourceforge.net/)
 - Google HTTP Client Library for Java (from https://repo1.maven.org/maven2/com/google/http-client/google-http-client)
-- Gson (from https://github.com/google/gson)
+- Gson (from http://code.google.com/p/google-gson/)
 - Guava InternalFutureFailureAccess and InternalFutures (from https://repo1.maven.org/maven2/com/google/guava/failureaccess)
 - Guava: Google Core Libraries for Java (from https://repo1.maven.org/maven2/com/google/guava/guava)
 - HPPC Collections (from https://repo1.maven.org/maven2/com/carrotsearch/hppc)
 - Hibernate Validator Engine (from https://repo1.maven.org/maven2/org/hibernate/validator/hibernate-validator)
+- HttpCore (NIO extensions module) (from http://hc.apache.org/httpcomponents-core/)
+- HttpCore (base module) (from http://hc.apache.org/httpcomponents-core/)
 - J2ObjC Annotations (from https://github.com/google/j2objc/)
 - JBoss Logging 3 (from http://www.jboss.org)
 - JSON Web Token support for the JVM (from https://github.com/jwtk/jjwt)
 - Jackson dataformat: CBOR (from http://github.com/FasterXML/jackson-dataformats-binary)
-- Jackson dataformat: Smile (from http://github.com/FasterXML/jackson-dataformats-binary)
 - Jackson datatype: JSR310 (from https://repo1.maven.org/maven2/com/fasterxml/jackson/datatype/jackson-datatype-jsr310)
 - Jackson datatype: jdk8 (from https://repo1.maven.org/maven2/com/fasterxml/jackson/datatype/jackson-datatype-jdk8)
 - Jackson-annotations (from http://github.com/FasterXML/jackson)
-- Jackson-core (from https://github.com/FasterXML/jackson-core)
-- Jackson-dataformat-YAML (from https://github.com/FasterXML/jackson-dataformats-text)
+- Jackson-core (from http://wiki.fasterxml.com/JacksonHome)
+- Jackson-dataformat-Smile (from http://github.com/FasterXML/jackson-dataformat-smile)
+- Jackson-dataformat-YAML (from https://github.com/FasterXML/jackson)
 - Jackson-module-parameter-names (from https://repo1.maven.org/maven2/com/fasterxml/jackson/module/jackson-module-parameter-names)
 - Java Servlet API (from http://servlet-spec.java.net)
 - Javassist (from http://www.javassist.org/)
@@ -69,27 +70,33 @@ The following software have components provided under the terms of this license:
 - Objenesis (from http://objenesis.org)
 - OpenCensus (from https://github.com/census-instrumentation/opencensus-java)
 - OpenCensus (from https://github.com/census-instrumentation/opencensus-java)
-- SnakeYAML (from http://code.google.com/p/snakeyaml/)
+- PowerMock (from http://www.powermock.org)
+- PowerMock (from http://www.powermock.org)
+- PowerMock (from http://www.powermock.org)
+- SnakeYAML (from http://www.snakeyaml.org)
 - Spring AOP (from https://github.com/spring-projects/spring-framework)
 - Spring Beans (from https://github.com/spring-projects/spring-framework)
+- Spring Boot (from http://projects.spring.io/spring-boot/)
+- Spring Boot AutoConfigure (from http://projects.spring.io/spring-boot/)
 - Spring Boot Json Starter (from https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter-json)
-- Spring Boot Tomcat Starter (from https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter-tomcat)
-- Spring Boot Web Starter (from https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter-web)
+- Spring Boot Logging Starter (from http://projects.spring.io/spring-boot/)
+- Spring Boot Starter (from http://projects.spring.io/spring-boot/)
+- Spring Boot Tomcat Starter (from http://projects.spring.io/spring-boot/)
+- Spring Boot Validation Starter (from https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter-validation)
+- Spring Boot Web Starter (from http://projects.spring.io/spring-boot/)
 - Spring Commons Logging Bridge (from https://github.com/spring-projects/spring-framework)
 - Spring Context (from https://github.com/spring-projects/spring-framework)
 - Spring Core (from https://github.com/spring-projects/spring-framework)
 - Spring Expression Language (SpEL) (from https://github.com/spring-projects/spring-framework)
-- Spring TestContext Framework (from https://github.com/spring-projects/spring-framework)
+- Spring TestContext Framework (from https://github.com/SpringSource/spring-framework)
 - Spring Web (from https://github.com/spring-projects/spring-framework)
-- Spring Web MVC (from https://github.com/spring-projects/spring-framework)
+- Spring Web MVC (from https://github.com/SpringSource/spring-framework)
 - T-Digest (from https://github.com/tdunning/t-digest)
 - aggs-matrix-stats (from https://github.com/elastic/elasticsearch)
+- cli (from https://github.com/elastic/elasticsearch)
 - compiler (from http://github.com/spullara/mustache.java)
-- elasticsearch-cli (from https://github.com/elastic/elasticsearch)
 - elasticsearch-core (from https://github.com/elastic/elasticsearch)
 - elasticsearch-geo (from https://github.com/elastic/elasticsearch)
-- elasticsearch-secure-sm (from https://github.com/elastic/elasticsearch)
-- elasticsearch-x-content (from https://github.com/elastic/elasticsearch)
 - error-prone annotations (from https://repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations)
 - io.grpc:grpc-context (from https://github.com/grpc/grpc-java)
 - jackson-databind (from http://github.com/FasterXML/jackson)
@@ -98,24 +105,17 @@ The following software have components provided under the terms of this license:
 - lettuce (from http://github.com/mp911de/lettuce/wiki)
 - mapper-extras (from https://github.com/elastic/elasticsearch)
 - parent-join (from https://github.com/elastic/elasticsearch)
-- powermock-core (from http://www.powermock.org)
-- powermock-module-junit4 (from http://www.powermock.org)
-- powermock-module-junit4-common (from )
-- powermock-reflect (from )
+- powermock-module-junit4-common (from https://repo1.maven.org/maven2/org/powermock/powermock-module-junit4-common)
 - rank-eval (from https://github.com/elastic/elasticsearch)
 - rest (from https://github.com/elastic/elasticsearch)
 - rest-high-level (from https://github.com/elastic/elasticsearch)
 - rxjava (from https://github.com/ReactiveX/RxJava)
-- server (from https://github.com/elastic/elasticsearch)
-- spring-boot (from https://spring.io/projects/spring-boot)
-- spring-boot-autoconfigure (from https://spring.io/projects/spring-boot)
-- spring-boot-starter (from https://spring.io/projects/spring-boot)
-- spring-boot-starter-logging (from https://spring.io/projects/spring-boot)
-- spring-boot-starter-validation (from https://spring.io/projects/spring-boot)
+- secure-sm (from https://github.com/elastic/elasticsearch)
 - swagger-annotations (from https://repo1.maven.org/maven2/io/swagger/swagger-annotations)
 - swagger-jaxrs (from )
 - tomcat-embed-core (from http://tomcat.apache.org/)
 - tomcat-embed-websocket (from https://tomcat.apache.org/)
+- x-content (from https://github.com/elastic/elasticsearch)
 
 ========================================================================
 BSD-2-Clause
@@ -141,7 +141,7 @@ The following software have components provided under the terms of this license:
 - Lucene Suggest (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-suggest)
 - Mockito (from http://www.mockito.org)
 - Reflections (from http://github.com/ronmamo/reflections)
-- SnakeYAML (from http://code.google.com/p/snakeyaml/)
+- SnakeYAML (from http://www.snakeyaml.org)
 - Spring Core (from https://github.com/spring-projects/spring-framework)
 
 ========================================================================
@@ -180,9 +180,9 @@ EPL-1.0
 The following software have components provided under the terms of this license:
 
 - Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
-- Logback Classic Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-classic)
-- Logback Core Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-core)
-- SnakeYAML (from http://code.google.com/p/snakeyaml/)
+- Logback Classic Module (from http://logback.qos.ch)
+- Logback Core Module (from http://logback.qos.ch)
+- SnakeYAML (from http://www.snakeyaml.org)
 - jakarta.annotation-api (from https://projects.eclipse.org/projects/ee4j.ca)
 
 ========================================================================
@@ -206,7 +206,7 @@ GPL-2.0-or-later
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- SnakeYAML (from http://code.google.com/p/snakeyaml/)
+- SnakeYAML (from http://www.snakeyaml.org)
 
 ========================================================================
 GPL-2.0-with-classpath-exception
@@ -224,7 +224,7 @@ GPL-3.0-only
 The following software have components provided under the terms of this license:
 
 - Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
-- Project Lombok (from https://projectlombok.org)
+- Project Lombok (from http://projectlombok.org)
 - jakarta.annotation-api (from https://projects.eclipse.org/projects/ee4j.ca)
 
 ========================================================================
@@ -234,8 +234,8 @@ The following software have components provided under the terms of this license:
 
 - Elastic JNA Distribution (from https://github.com/java-native-access/jna)
 - Javassist (from http://www.javassist.org/)
-- Logback Classic Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-classic)
-- Logback Core Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-core)
+- Logback Classic Module (from http://logback.qos.ch)
+- Logback Core Module (from http://logback.qos.ch)
 
 ========================================================================
 LGPL-2.1-or-later
@@ -243,7 +243,7 @@ LGPL-2.1-or-later
 The following software have components provided under the terms of this license:
 
 - Javassist (from http://www.javassist.org/)
-- SnakeYAML (from http://code.google.com/p/snakeyaml/)
+- SnakeYAML (from http://www.snakeyaml.org)
 
 ========================================================================
 LGPL-3.0-only
@@ -258,14 +258,14 @@ MIT
 The following software have components provided under the terms of this license:
 
 - Checker Qual (from https://checkerframework.org)
-- JOpt Simple (from http://pholser.github.io/jopt-simple)
+- JOpt Simple (from http://pholser.github.com/jopt-simple)
 - JUL to SLF4J bridge (from http://www.slf4j.org)
 - Lucene Core (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
 - Mockito (from http://www.mockito.org)
 - Netty/Common (from https://repo1.maven.org/maven2/io/netty/netty-common)
-- Project Lombok (from https://projectlombok.org)
+- Project Lombok (from http://projectlombok.org)
 - SLF4J API Module (from http://www.slf4j.org)
-- java jwt (from http://www.jwt.io)
+- java jwt (from https://github.com/auth0/java-jwt)
 
 ========================================================================
 MPL-1.1
@@ -317,7 +317,7 @@ The following software have components provided under the terms of this license:
 - Guava: Google Core Libraries for Java (from https://repo1.maven.org/maven2/com/google/guava/guava)
 - HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
 - Joda-Time (from https://www.joda.org/joda-time/)
-- Project Lombok (from https://projectlombok.org)
+- Project Lombok (from http://projectlombok.org)
 - Spring Web (from https://github.com/spring-projects/spring-framework)
 
 ========================================================================
@@ -329,4 +329,5 @@ The following software have components provided under the terms of this license:
 - Checker Qual (from https://checkerframework.org)
 - JUnit (from http://junit.org)
 - System Rules (from http://stefanbirkner.github.io/system-rules/)
+
 
