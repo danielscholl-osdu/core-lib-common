@@ -28,7 +28,7 @@ import org.opengroup.osdu.core.common.Constants;
         @JsonSubTypes.Type(value = GeoJsonMultiPoint.class, name = Constants.ANY_CRS_MULTIPOINT),
         @JsonSubTypes.Type(value = GeoJsonLineString.class, name = Constants.LINE_STRING),
         @JsonSubTypes.Type(value = GeoJsonLineString.class, name = Constants.ANY_CRS_LINE_STRING),
-        @JsonSubTypes.Type(value = GeoJsonMultiLineString.class, name = Constants.MULTI_LINE_STRING),
+        @JsonSubTypes.Type(value = GeoJsonMultiLineString.class, name = Constants.MULTILINE_STRING),
         @JsonSubTypes.Type(value = GeoJsonMultiLineString.class, name = Constants.ANY_CRS_MULTILINE_STRING),
         @JsonSubTypes.Type(value = GeoJsonPolygon.class, name = Constants.POLYGON),
         @JsonSubTypes.Type(value = GeoJsonPolygon.class, name = Constants.ANY_CRS_POLYGON),

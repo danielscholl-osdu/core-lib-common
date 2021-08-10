@@ -46,7 +46,7 @@ public final class Constants {
     public static final String PROPERTY_NAMES = "propertyNames";
     public static final String ANY_CRS_POLYGON = "AnyCrsPolygon";
     public static final String ANY_CRS_FEATURE = "AnyCrsFeature";
-    public static final String MULTI_LINE_STRING = "MultiLineString";
+    public static final String MULTILINE_STRING = "MultiLineString";
     public static final String WGS84_COORDINATES = "Wgs84Coordinates";
     public static final String ANY_CRS_MULTIPOINT = "AnyCrsMultiPoint";
     public static final String FEATURE_COLLECTION = "FeatureCollection";
