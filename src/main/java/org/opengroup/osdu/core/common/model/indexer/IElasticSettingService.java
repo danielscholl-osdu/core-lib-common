@@ -14,9 +14,15 @@
 
 package org.opengroup.osdu.core.common.model.indexer;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.opengroup.osdu.core.common.model.search.ClusterSettings;
 
 public interface IElasticSettingService {
 
     ClusterSettings getElasticClusterInformation();
+
+    default Map<String, ClusterSettings> getAllClustersSettings() {
+        return new HashMap<>();
+    }
 }
