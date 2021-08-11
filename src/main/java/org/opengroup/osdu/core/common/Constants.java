@@ -41,8 +41,8 @@ public final class Constants {
     public static final String MULTIPOINT = "MultiPoint";
     public static final String LINE_STRING = "LineString";
     public static final String COORDINATES = "coordinates";
-    public static final String ANY_CRS_POINT = "AnyCrsPoint";
     public static final String MULTIPOLYGON = "MultiPolygon";
+    public static final String ANY_CRS_POINT = "AnyCrsPoint";
     public static final String PROPERTY_NAMES = "propertyNames";
     public static final String ANY_CRS_POLYGON = "AnyCrsPolygon";
     public static final String ANY_CRS_FEATURE = "AnyCrsFeature";
