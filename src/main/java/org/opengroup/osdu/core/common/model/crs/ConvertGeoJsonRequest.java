@@ -12,14 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.opengroup.osdu.core.common.crs;
+package org.opengroup.osdu.core.common.model.crs;
 
-import org.opengroup.osdu.core.common.model.crs.*;
+import lombok.Data;
+import lombok.AllArgsConstructor;
+import org.opengroup.osdu.core.common.model.crs.GeoJson.GeoJsonFeatureCollection;
 
-public interface ICrsConverterService {
-    ConvertPointsResponse convertPoints(ConvertPointsRequest request) throws CrsConverterException;
+@Data
+@AllArgsConstructor
+public class ConvertGeoJsonRequest {
+    private GeoJsonFeatureCollection featureCollection;
 
-    ConvertTrajectoryResponse convertTrajectory(ConvertTrajectoryRequest request) throws CrsConverterException;
+    private String toCRS;
 
-    ConvertGeoJsonResponse convertGeoJson(ConvertGeoJsonRequest request) throws CrsConverterException;
+    private String toUnitZ;
 }

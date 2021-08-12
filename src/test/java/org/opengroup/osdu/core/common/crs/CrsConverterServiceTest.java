@@ -30,9 +30,11 @@ import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.http.IHttpClient;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
+import org.opengroup.osdu.core.common.model.crs.ConvertGeoJsonRequest;
 import org.opengroup.osdu.core.common.model.crs.ConvertPointsRequest;
 import org.opengroup.osdu.core.common.model.crs.CrsConverterException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
+import org.opengroup.osdu.core.common.model.crs.GeoJson.GeoJsonFeatureCollection;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CrsConverterServiceTest {
@@ -62,5 +64,21 @@ public class CrsConverterServiceTest {
 		ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
 		verify(httpClient).send(captor.capture());
 		assertEquals(ROOT_URL + "/convert", captor.getValue().getUrl());
+	}
+
+	@Test
+	public void testUrlNormalizationForGeoJson() throws CrsConverterException {
+		HttpResponse response = new HttpResponse();
+		response.setResponseCode(200);
+		when(httpClient.send(any())).thenReturn(response);
+		String malformedRootUrl = " \n  " + ROOT_URL + "\n // \t \f \r";
+		Mockito.when(crsConverterAPIConfig.getRootUrl()).thenReturn(malformedRootUrl);
+		crsConverterService = new CrsConverterService(crsConverterAPIConfig, httpClient, headers, responseBodyMapper);
+		GeoJsonFeatureCollection fc = null;
+
+		crsConverterService.convertGeoJson(new ConvertGeoJsonRequest(fc,"", ""));
+		ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
+		verify(httpClient).send(captor.capture());
+		assertEquals(ROOT_URL + "/convertGeoJson", captor.getValue().getUrl());
 	}
 }
