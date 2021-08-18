@@ -14,8 +14,15 @@
 
 package org.opengroup.osdu.core.common.multitenancy;
 
+import java.util.Collections;
+import java.util.List;
 import org.opengroup.osdu.core.common.model.tenant.TenantInfo;
 
 public interface ITenantInfoService {
-    TenantInfo getTenantInfo();
+
+  TenantInfo getTenantInfo();
+
+  default List<TenantInfo> getAllTenantInfos() {
+    return Collections.emptyList();
+  }
 }

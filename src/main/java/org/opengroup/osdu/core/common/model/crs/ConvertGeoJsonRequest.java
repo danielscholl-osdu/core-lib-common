@@ -1,4 +1,4 @@
-// Copyright 2021 Schlumberger
+// Copyright 2017-2019, Schlumberger
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,17 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.opengroup.osdu.core.common.cryptographic;
+package org.opengroup.osdu.core.common.model.crs;
 
-public class SignatureServiceException extends Exception {
-    private static final long serialVersionUID = -4393652925816393733L;
+import lombok.Data;
+import lombok.AllArgsConstructor;
+import org.opengroup.osdu.core.common.model.crs.GeoJson.GeoJsonFeatureCollection;
 
-    public SignatureServiceException(String errorMessage) {
-        super(errorMessage);
-    }
+@Data
+@AllArgsConstructor
+public class ConvertGeoJsonRequest {
+    private GeoJsonFeatureCollection featureCollection;
 
-    public SignatureServiceException(String errorMessage, Exception e) {
-        super(errorMessage);
-        this.initCause(e);
-    }
+    private String toCRS;
+
+    private String toUnitZ;
 }

@@ -129,4 +129,11 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     public long getTtl(K key) {
         return commands.pttl(key);
     }
+
+    /**
+     * Gets redis INFO
+     */
+    public String info() {
+        return commands.info();
+    }
 }

@@ -12,17 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.opengroup.osdu.core.common.cryptographic;
+package org.opengroup.osdu.core.common.model.crs.GeoJson;
 
-public class SignatureServiceException extends Exception {
-    private static final long serialVersionUID = -4393652925816393733L;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.opengroup.osdu.core.common.Constants;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    public SignatureServiceException(String errorMessage) {
-        super(errorMessage);
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class GeoJsonFeature extends GeoJsonBase {
+    @JsonProperty(Constants.GEOMETRY)
+    private GeoJsonBase geometry;
+
+    @JsonProperty(Constants.PROPERTIES)
+    private Object properties;
+
+    public GeoJsonFeature() {
+        super(Constants.ANY_CRS_FEATURE);
+        this.properties = new Object();
     }
-
-    public SignatureServiceException(String errorMessage, Exception e) {
-        super(errorMessage);
-        this.initCause(e);
-    }
-}
+ }

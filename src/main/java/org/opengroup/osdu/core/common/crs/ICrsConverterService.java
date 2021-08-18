@@ -20,4 +20,6 @@ public interface ICrsConverterService {
     ConvertPointsResponse convertPoints(ConvertPointsRequest request) throws CrsConverterException;
 
     ConvertTrajectoryResponse convertTrajectory(ConvertTrajectoryRequest request) throws CrsConverterException;
+
+    ConvertGeoJsonResponse convertGeoJson(ConvertGeoJsonRequest request) throws CrsConverterException;
 }
