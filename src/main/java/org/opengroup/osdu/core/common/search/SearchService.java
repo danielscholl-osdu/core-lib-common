@@ -14,7 +14,6 @@
 
 package org.opengroup.osdu.core.common.search;
 
-import com.google.gson.JsonObject;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyParsingException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
@@ -72,22 +71,6 @@ public class SearchService implements ISearchService {
         HttpResponse result = this.httpClient.send(
                 HttpRequest.post(cursorRequest).url(url).headers(this.headers.getHeaders()).build());
         return result.IsNotFoundCode() ? new CursorQueryResponse() : this.getResult(result, CursorQueryResponse.class);
-    }
-
-    @Override
-    public JsonObject getIndexSchema(String kind) throws SearchException {
-        String url = this.createUrl(String.format("/index/schema/%s", kind));
-        HttpResponse result = this.httpClient.send(
-                HttpRequest.get().url(url).headers(this.headers.getHeaders()).build());
-        return result.IsNotFoundCode() ? null : this.getResult(result, JsonObject.class);
-    }
-
-    @Override
-    public void deleteIndex(String kind) throws SearchException {
-        String url = this.createUrl(String.format("/index/%s", kind));
-        HttpResponse result = this.httpClient.send(
-                HttpRequest.delete().url(url).headers(this.headers.getHeaders()).build());
-        this.getResult(result, String.class);
     }
 
     private SearchException generateException(HttpResponse result) {

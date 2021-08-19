@@ -24,7 +24,7 @@ The following software have components provided under the terms of this license:
 - Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - FindBugs-jsr305 (from http://findbugs.sourceforge.net/)
 - Google HTTP Client Library for Java (from https://repo1.maven.org/maven2/com/google/http-client/google-http-client)
-- Gson (from http://code.google.com/p/google-gson/)
+- Gson (from https://repo1.maven.org/maven2/com/google/code/gson/gson)
 - Guava InternalFutureFailureAccess and InternalFutures (from https://repo1.maven.org/maven2/com/google/guava/failureaccess)
 - Guava: Google Core Libraries for Java (from https://repo1.maven.org/maven2/com/google/guava/guava)
 - HPPC Collections (from https://repo1.maven.org/maven2/com/carrotsearch/hppc)

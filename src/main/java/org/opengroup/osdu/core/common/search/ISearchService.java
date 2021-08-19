@@ -14,8 +14,11 @@
 
 package org.opengroup.osdu.core.common.search;
 
-import com.google.gson.JsonObject;
-import org.opengroup.osdu.core.common.model.search.*;
+import org.opengroup.osdu.core.common.model.search.CursorQueryRequest;
+import org.opengroup.osdu.core.common.model.search.CursorQueryResponse;
+import org.opengroup.osdu.core.common.model.search.QueryRequest;
+import org.opengroup.osdu.core.common.model.search.QueryResponse;
+import org.opengroup.osdu.core.common.model.search.SearchException;
 
 public interface ISearchService {
     CursorQueryResponse getAllKindEntries(String kind) throws SearchException;
@@ -23,8 +26,4 @@ public interface ISearchService {
     QueryResponse search(QueryRequest searchRequest) throws SearchException;
 
     CursorQueryResponse searchCursor(CursorQueryRequest cursorRequest) throws SearchException;
-
-    JsonObject getIndexSchema(String kind) throws SearchException;
-
-    void deleteIndex(String kind) throws SearchException;
 }
