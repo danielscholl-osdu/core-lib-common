@@ -1,5 +1,7 @@
 package org.opengroup.osdu.core.common.model.status;
 
+import java.util.Map;
+
 import lombok.Data;
 
 @Data
@@ -21,6 +23,7 @@ public class StatusDetails implements Message {
         private String userEmail;
         // epoch time
         private long timestamp;
+        private Map<String,Object> additionalProperties;
 
     }
 }
