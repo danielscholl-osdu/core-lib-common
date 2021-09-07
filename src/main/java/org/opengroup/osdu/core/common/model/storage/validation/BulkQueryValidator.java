@@ -34,6 +34,12 @@ public class BulkQueryValidator implements ConstraintValidator<ValidBulkQuery, R
     public boolean isValid(RecordQuery recordQuery, ConstraintValidatorContext context) {
         context.disableDefaultConstraintViolation();
 
+        if(recordQuery == null){
+            context.buildConstraintViolationWithTemplate(ValidationDoc.INVALID_PAYLOAD)
+                    .addConstraintViolation();
+            return false;
+        }
+
         List<String> recordIds = recordQuery.getIds();
         Set<String> ids = new HashSet<>();
         for (String recordId : recordIds) {
