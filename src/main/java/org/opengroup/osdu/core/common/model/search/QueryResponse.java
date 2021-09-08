@@ -33,7 +33,6 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.ALWAYS)
 public class QueryResponse {
 
     @JsonInclude(JsonInclude.Include.ALWAYS)

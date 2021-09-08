@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.core.common.model.search;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,6 +31,7 @@ import java.util.Map;
 public class CursorQueryResponse {
 
     private String cursor;
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private List<Map<String, Object>> results;
     private long totalCount;
 
