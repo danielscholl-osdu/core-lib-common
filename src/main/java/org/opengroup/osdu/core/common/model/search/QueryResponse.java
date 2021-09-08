@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.core.common.model.search;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -32,8 +33,10 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class QueryResponse {
 
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private List<Map<String, Object>> results = new ArrayList<>();
     private List<AggregationResponse> aggregations = new ArrayList<>();
     private long totalCount;
