@@ -18,6 +18,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.opengroup.osdu.core.common.model.validation.ValidatorUtils;
 import org.opengroup.osdu.core.common.model.entitlements.Acl;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidationDoc;
 
@@ -48,7 +49,7 @@ public class AclValidator implements ConstraintValidator<ValidAcl, Acl> {
 		for (int i = 0; i < acl.getViewers().length; i++) {
 			if (acl.getViewers()[i] == null || !acl.getViewers()[i].matches(ValidationDoc.EMAIL_REGEX)) {
 				context.buildConstraintViolationWithTemplate(
-						String.format(ValidationDoc.INVALID_GROUP_NAME, acl.getViewers()[i])).addConstraintViolation();
+						String.format(ValidationDoc.INVALID_GROUP_NAME, ValidatorUtils.escapeString(acl.getViewers()[i]))).addConstraintViolation();
 				return false;
 			}
 		}
@@ -56,7 +57,7 @@ public class AclValidator implements ConstraintValidator<ValidAcl, Acl> {
 		for (int i = 0; i < acl.getOwners().length; i++) {
 			if (acl.getOwners()[i] == null || !acl.getOwners()[i].matches(ValidationDoc.EMAIL_REGEX)) {
 				context.buildConstraintViolationWithTemplate(
-						String.format(ValidationDoc.INVALID_GROUP_NAME, acl.getOwners()[i])).addConstraintViolation();
+						String.format(ValidationDoc.INVALID_GROUP_NAME, ValidatorUtils.escapeString(acl.getOwners()[i]))).addConstraintViolation();
 				return false;
 			}
 		}

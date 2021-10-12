@@ -23,7 +23,7 @@ The following software have components provided under the terms of this license:
 - Google HTTP Client Library for Java (from https://repo1.maven.org/maven2/com/google/http-client/google-http-client)
 - Gson (from https://repo1.maven.org/maven2/com/google/code/gson/gson)
 - Guava InternalFutureFailureAccess and InternalFutures (from https://repo1.maven.org/maven2/com/google/guava/failureaccess)
-- Guava: Google Core Libraries for Java (from https://github.com/google/guava)
+- Guava: Google Core Libraries for Java (from https://repo1.maven.org/maven2/com/google/guava/guava)
 - HPPC Collections (from https://repo1.maven.org/maven2/com/carrotsearch/hppc)
 - Hibernate Validator Engine (from https://repo1.maven.org/maven2/org/hibernate/validator/hibernate-validator)
 - HttpClient (from http://hc.apache.org/httpcomponents-client)
@@ -41,7 +41,7 @@ The following software have components provided under the terms of this license:
 - Jackson-dataformat-YAML (from https://github.com/FasterXML/jackson-dataformats-text)
 - Jackson-module-parameter-names (from https://repo1.maven.org/maven2/com/fasterxml/jackson/module/jackson-module-parameter-names)
 - Jakarta Bean Validation API (from https://beanvalidation.org)
-- Jakarta Expression Language Implementation (from https://projects.eclipse.org/projects/ee4j.el)
+- Jakarta Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - Java Servlet API (from http://servlet-spec.java.net)
 - Javassist (from http://www.javassist.org/)
 - Joda-Time (from https://www.joda.org/joda-time/)
@@ -76,9 +76,6 @@ The following software have components provided under the terms of this license:
 - SnakeYAML (from http://www.snakeyaml.org)
 - Spring AOP (from https://github.com/spring-projects/spring-framework)
 - Spring Beans (from https://github.com/spring-projects/spring-framework)
-- Spring Boot Logging Starter (from https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter-logging)
-- Spring Boot Starter (from https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter)
-- Spring Boot Web Starter (from https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter-web)
 - Spring Commons Logging Bridge (from https://github.com/spring-projects/spring-framework)
 - Spring Context (from https://github.com/spring-projects/spring-framework)
 - Spring Core (from https://github.com/spring-projects/spring-framework)
@@ -109,9 +106,12 @@ The following software have components provided under the terms of this license:
 - server (from https://github.com/elastic/elasticsearch)
 - spring-boot (from https://spring.io/projects/spring-boot)
 - spring-boot-autoconfigure (from https://spring.io/projects/spring-boot)
+- spring-boot-starter (from https://spring.io/projects/spring-boot)
 - spring-boot-starter-json (from https://spring.io/projects/spring-boot)
+- spring-boot-starter-logging (from https://spring.io/projects/spring-boot)
 - spring-boot-starter-tomcat (from https://spring.io/projects/spring-boot)
 - spring-boot-starter-validation (from https://spring.io/projects/spring-boot)
+- spring-boot-starter-web (from https://spring.io/projects/spring-boot)
 - swagger-annotations (from https://repo1.maven.org/maven2/io/swagger/swagger-annotations)
 - swagger-jaxrs (from https://repo1.maven.org/maven2/io/swagger/swagger-jaxrs)
 - tomcat-embed-core (from http://tomcat.apache.org/)
@@ -123,7 +123,7 @@ BSD-2-Clause
 The following software have components provided under the terms of this license:
 
 - Hamcrest (from http://hamcrest.org/JavaHamcrest/)
-- Hamcrest Core (from http://hamcrest.org/)
+- Hamcrest Core (from https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core)
 - Lucene Common Analyzers (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
 - Lucene Core (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
 - Reflections (from http://github.com/ronmamo/reflections)
@@ -135,7 +135,7 @@ The following software have components provided under the terms of this license:
 
 - Apache Commons Codec (from https://commons.apache.org/proper/commons-codec/)
 - Hamcrest (from http://hamcrest.org/JavaHamcrest/)
-- Hamcrest Core (from http://hamcrest.org/)
+- Hamcrest Core (from https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core)
 - Lucene Common Analyzers (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
 - Lucene Core (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
 - Lucene Suggest (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-suggest)
@@ -180,9 +180,9 @@ EPL-1.0
 The following software have components provided under the terms of this license:
 
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Expression Language Implementation (from https://projects.eclipse.org/projects/ee4j.el)
-- Logback Classic Module (from http://logback.qos.ch)
-- Logback Core Module (from http://logback.qos.ch)
+- Jakarta Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
+- Logback Classic Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-classic)
+- Logback Core Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-core)
 - SnakeYAML (from http://www.snakeyaml.org)
 
 ========================================================================
@@ -191,7 +191,7 @@ EPL-2.0
 The following software have components provided under the terms of this license:
 
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Expression Language Implementation (from https://projects.eclipse.org/projects/ee4j.el)
+- Jakarta Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 
 ========================================================================
 GPL-2.0-only
@@ -214,7 +214,7 @@ GPL-2.0-with-classpath-exception
 The following software have components provided under the terms of this license:
 
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Expression Language Implementation (from https://projects.eclipse.org/projects/ee4j.el)
+- Jakarta Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - Java Servlet API (from http://servlet-spec.java.net)
 - tomcat-embed-core (from http://tomcat.apache.org/)
 
@@ -224,7 +224,7 @@ GPL-3.0-only
 The following software have components provided under the terms of this license:
 
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Expression Language Implementation (from https://projects.eclipse.org/projects/ee4j.el)
+- Jakarta Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - Project Lombok (from https://projectlombok.org)
 
 ========================================================================
@@ -234,8 +234,8 @@ The following software have components provided under the terms of this license:
 
 - Elastic JNA Distribution (from https://github.com/java-native-access/jna)
 - Javassist (from http://www.javassist.org/)
-- Logback Classic Module (from http://logback.qos.ch)
-- Logback Core Module (from http://logback.qos.ch)
+- Logback Classic Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-classic)
+- Logback Core Module (from https://repo1.maven.org/maven2/ch/qos/logback/logback-core)
 
 ========================================================================
 LGPL-2.1-or-later
@@ -314,7 +314,7 @@ public-domain
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Guava: Google Core Libraries for Java (from https://github.com/google/guava)
+- Guava: Google Core Libraries for Java (from https://repo1.maven.org/maven2/com/google/guava/guava)
 - HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
 - Joda-Time (from https://www.joda.org/joda-time/)
 - Project Lombok (from https://projectlombok.org)

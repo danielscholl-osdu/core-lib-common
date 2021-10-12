@@ -30,6 +30,8 @@ import org.opengroup.osdu.core.common.model.storage.RecordQuery;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BulkQueryValidatorTest {
@@ -52,6 +54,8 @@ public class BulkQueryValidatorTest {
                 .thenReturn(builder);
         when(this.context.buildConstraintViolationWithTemplate(String.format(ValidationDoc.INVALID_RECORD_ID_FORMAT, invalidFormatRecord)))
                 .thenReturn(builder);
+        when(this.context.buildConstraintViolationWithTemplate(anyString()))
+                .thenReturn(builder);
     }
 
     @Test
@@ -72,7 +76,7 @@ public class BulkQueryValidatorTest {
     }
 
     @Test
-    public void should_retuanFalse_ifWrongFormatRecords() {
+    public void should_returnFalse_ifWrongFormatRecords() {
         RecordQuery recordQuery = new RecordQuery();
         List<String> ids = new ArrayList<>();
         ids.add(invalidFormatRecord);
@@ -89,5 +93,16 @@ public class BulkQueryValidatorTest {
         recordQuery.setIds(ids);
 
         assertTrue(this.sut.isValid(recordQuery, this.context));
+    }
+
+    @Test
+    public void should_notInterpolate_when_recordIdHasExpressionLanguage() {
+        RecordQuery recordQuery = new RecordQuery();
+        List<String> ids = new ArrayList<>();
+        ids.add("${2+2}");
+        recordQuery.setIds(ids);
+    
+        assertFalse(this.sut.isValid(recordQuery, this.context));
+        verify(this.context).buildConstraintViolationWithTemplate("Invalid record format: '\\$\\{2+2\\}'. The following format is expected: {tenant-name}:{object-type}:{unique-identifier} or {tenant-name}:{object-type}:{unique-identifier}:{version}");
     }
 }
