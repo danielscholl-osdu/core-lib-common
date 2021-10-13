@@ -225,7 +225,7 @@ The following software have components provided under the terms of this license:
 
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
 - Jakarta Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
-- Project Lombok (from https://projectlombok.org)
+- Project Lombok (from http://projectlombok.org)
 
 ========================================================================
 LGPL-2.1-only
@@ -263,7 +263,7 @@ The following software have components provided under the terms of this license:
 - Lucene Core (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
 - Mockito (from http://www.mockito.org)
 - Netty/Common (from https://repo1.maven.org/maven2/io/netty/netty-common)
-- Project Lombok (from https://projectlombok.org)
+- Project Lombok (from http://projectlombok.org)
 - SLF4J API Module (from http://www.slf4j.org)
 - java jwt (from https://github.com/auth0/java-jwt)
 
@@ -317,7 +317,7 @@ The following software have components provided under the terms of this license:
 - Guava: Google Core Libraries for Java (from https://repo1.maven.org/maven2/com/google/guava/guava)
 - HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
 - Joda-Time (from https://www.joda.org/joda-time/)
-- Project Lombok (from https://projectlombok.org)
+- Project Lombok (from http://projectlombok.org)
 - Spring Web (from https://github.com/spring-projects/spring-framework)
 
 ========================================================================
