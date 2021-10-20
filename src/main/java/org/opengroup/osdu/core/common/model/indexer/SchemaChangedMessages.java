@@ -17,11 +17,13 @@ package org.opengroup.osdu.core.common.model.indexer;
 
 import com.google.common.base.Strings;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 
 import java.util.Map;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class SchemaChangedMessages {
