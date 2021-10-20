@@ -17,20 +17,14 @@ package org.opengroup.osdu.core.common.model.indexer;
 
 import com.google.common.base.Strings;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
-import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Map;
 
-@Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@RequestScope
-public class SchemaChangedMessage {
+public class SchemaChangedMessages {
 
     private String messageId;
     private String publishTime;

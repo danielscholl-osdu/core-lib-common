@@ -15,7 +15,6 @@
 package org.opengroup.osdu.core.common.model.indexer;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.http.HttpStatus;
@@ -26,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SchemaInfo {
@@ -48,14 +46,14 @@ public class SchemaInfo {
         Map<String, SchemaOperationType> schemaOperations = new HashMap<>();
 
         try {
-            for (SchemaInfo msg : messages) {
-                SchemaOperationType op = SchemaOperationType.valueOf(msg.getOp());
+            for (SchemaInfo message : messages) {
+                SchemaOperationType op = SchemaOperationType.valueOf(message.getOp());
                 if (op == operationType) {
-                    schemaOperations.put(msg.getKind(), op);
+                    schemaOperations.put(message.getKind(), op);
                 }
             }
         } catch (Exception e) {
-            throw new AppException(HttpStatus.SC_BAD_REQUEST, "Request parsing error", "Error parsing schema updates in request payload.", e);
+            throw new AppException(HttpStatus.SC_BAD_REQUEST, "Request parsing error", "Error parsing schema events in request payload.", e);
         }
         return schemaOperations;
     }
