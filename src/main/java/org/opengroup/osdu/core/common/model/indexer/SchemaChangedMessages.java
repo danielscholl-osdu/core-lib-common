@@ -20,12 +20,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@RequestScope
 public class SchemaChangedMessages {
 
     private String messageId;
