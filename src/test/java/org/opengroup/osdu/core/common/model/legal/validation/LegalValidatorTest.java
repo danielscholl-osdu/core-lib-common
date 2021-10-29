@@ -92,11 +92,11 @@ public class LegalValidatorTest {
         this.record.setLegal(legal);
 
         RecordAncestry ancestry = new RecordAncestry();
-        ancestry.setParents(Sets.newHashSet("${2+2}:abc:def:xyz"));
+        ancestry.setParents(Sets.newHashSet("tenant:abc:def:xyz"));
 
         this.record.setAncestry(ancestry);
 
         assertFalse(this.sut.isValid(this.record, this.context));
-        verify(this.context).buildConstraintViolationWithTemplate("Invalid parent record version: '\\$\\{2+2\\}:abc:def:xyz'. Record version must be a numeric value");
+        verify(this.context).buildConstraintViolationWithTemplate("Invalid parent record version: 'tenant:abc:def:xyz'. Record version must be a numeric value");
     }
 }
