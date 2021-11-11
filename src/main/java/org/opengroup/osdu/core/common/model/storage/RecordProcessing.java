@@ -26,4 +26,5 @@ public class RecordProcessing {
 	private RecordData recordData;
 	private RecordMetadata recordMetadata;
 	private OperationType operationType;
+	private String kind;
 }

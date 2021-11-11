@@ -24,5 +24,5 @@ public interface IPersistenceService {
 
 	void persistRecordBatch(TransferBatch transfer);
 
-	List<String> updateMetadata(List<RecordMetadata> recordMetadata, List<String> recordsId, Map<String, String> recordsIdMap);
+	List<String> updateMetadata(List<RecordMetadata> recordMetadata, List<String> recordsId, Map<String, String> recordsIdMap, String previousKind);
 }

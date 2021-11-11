@@ -26,4 +26,5 @@ public class PubSubInfo {
 	private String id;
 	private String kind;
 	private OperationType op;
+	private String previousVersionsKind;
 }
