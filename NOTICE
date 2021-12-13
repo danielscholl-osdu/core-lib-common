@@ -12,7 +12,6 @@ The following software have components provided under the terms of this license:
 - Apache HttpAsyncClient (from http://hc.apache.org/httpcomponents-asyncclient)
 - Apache HttpClient Cache (from http://hc.apache.org/httpcomponents-client)
 - Apache HttpCore (from http://hc.apache.org/httpcomponents-core-ga)
-- Apache HttpCore NIO (from http://hc.apache.org/httpcomponents-core-ga)
 - Apache Log4j API (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api)
 - Apache Log4j to SLF4J Adapter (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-to-slf4j)
 - Apache Lucene (module: backward-codecs) (from https://lucene.apache.org/)
@@ -30,6 +29,7 @@ The following software have components provided under the terms of this license:
 - HPPC Collections (from https://repo1.maven.org/maven2/com/carrotsearch/hppc)
 - Hibernate Validator Engine (from https://repo1.maven.org/maven2/org/hibernate/validator/hibernate-validator)
 - HttpClient (from http://hc.apache.org/httpcomponents-client)
+- HttpCore NIO (from http://hc.apache.org/httpcomponents-core-ga)
 - J2ObjC Annotations (from https://github.com/google/j2objc/)
 - JBoss Logging 3 (from http://www.jboss.org)
 - JSON Web Token support for the JVM (from https://repo1.maven.org/maven2/io/jsonwebtoken/jjwt)
@@ -257,7 +257,7 @@ The following software have components provided under the terms of this license:
 - Netty/Common (from https://repo1.maven.org/maven2/io/netty/netty-common)
 - Project Lombok (from https://projectlombok.org)
 - SLF4J API Module (from http://www.slf4j.org)
-- java jwt (from https://github.com/auth0/java-jwt)
+- java jwt (from http://www.jwt.io)
 
 ========================================================================
 MPL-1.1
