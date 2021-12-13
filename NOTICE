@@ -9,6 +9,7 @@ The following software have components provided under the terms of this license:
 
 - Apache Commons Codec (from https://commons.apache.org/proper/commons-codec/)
 - Apache Commons Lang (from http://commons.apache.org/proper/commons-lang/)
+- Apache HttpAsyncClient (from http://hc.apache.org/httpcomponents-asyncclient)
 - Apache HttpClient Cache (from http://hc.apache.org/httpcomponents-client)
 - Apache HttpCore (from http://hc.apache.org/httpcomponents-core-ga)
 - Apache HttpCore NIO (from http://hc.apache.org/httpcomponents-core-ga)
@@ -25,10 +26,9 @@ The following software have components provided under the terms of this license:
 - Google HTTP Client Library for Java (from https://repo1.maven.org/maven2/com/google/http-client/google-http-client)
 - Gson (from http://code.google.com/p/google-gson/)
 - Guava InternalFutureFailureAccess and InternalFutures (from https://repo1.maven.org/maven2/com/google/guava/failureaccess)
-- Guava: Google Core Libraries for Java (from https://repo1.maven.org/maven2/com/google/guava/guava)
+- Guava: Google Core Libraries for Java (from https://github.com/google/guava)
 - HPPC Collections (from https://repo1.maven.org/maven2/com/carrotsearch/hppc)
 - Hibernate Validator Engine (from https://repo1.maven.org/maven2/org/hibernate/validator/hibernate-validator)
-- HttpAsyncClient (from http://hc.apache.org/httpcomponents-asyncclient)
 - HttpClient (from http://hc.apache.org/httpcomponents-client)
 - J2ObjC Annotations (from https://github.com/google/j2objc/)
 - JBoss Logging 3 (from http://www.jboss.org)
@@ -74,11 +74,6 @@ The following software have components provided under the terms of this license:
 - SnakeYAML (from http://code.google.com/p/snakeyaml/)
 - Spring AOP (from https://github.com/spring-projects/spring-framework)
 - Spring Beans (from https://github.com/spring-projects/spring-framework)
-- Spring Boot (from http://projects.spring.io/spring-boot/)
-- Spring Boot AutoConfigure (from http://projects.spring.io/spring-boot/)
-- Spring Boot Logger Starter (from http://projects.spring.io/spring-boot/)
-- Spring Boot Starter (from http://projects.spring.io/spring-boot/)
-- Spring Boot Tomcat Starter (from http://projects.spring.io/spring-boot/)
 - Spring Boot Validation Starter (from http://projects.spring.io/spring-boot/)
 - Spring Boot Web Starter (from http://projects.spring.io/spring-boot/)
 - Spring Commons Logging Bridge (from https://github.com/spring-projects/spring-framework)
@@ -101,7 +96,7 @@ The following software have components provided under the terms of this license:
 - jackson-databind (from http://github.com/FasterXML/jackson)
 - javax.inject (from http://code.google.com/p/atinject/)
 - lang-mustache (from https://github.com/elastic/elasticsearch)
-- lettuce (from http://github.com/mp911de/lettuce)
+- lettuce (from http://github.com/lettuce-io/lettuce-core)
 - mapper-extras (from https://github.com/elastic/elasticsearch)
 - parent-join (from https://github.com/elastic/elasticsearch)
 - powermock-core (from http://www.powermock.org)
@@ -111,11 +106,16 @@ The following software have components provided under the terms of this license:
 - rest-high-level (from https://github.com/elastic/elasticsearch)
 - rxjava (from https://github.com/ReactiveX/RxJava)
 - server (from https://github.com/elastic/elasticsearch)
+- spring-boot (from https://spring.io/projects/spring-boot)
+- spring-boot-autoconfigure (from https://spring.io/projects/spring-boot)
+- spring-boot-starter (from https://spring.io/projects/spring-boot)
 - spring-boot-starter-json (from https://spring.io/projects/spring-boot)
+- spring-boot-starter-logging (from https://spring.io/projects/spring-boot)
+- spring-boot-starter-tomcat (from https://spring.io/projects/spring-boot)
 - swagger-annotations (from https://repo1.maven.org/maven2/io/swagger/swagger-annotations)
 - swagger-jaxrs (from https://repo1.maven.org/maven2/io/swagger/swagger-jaxrs)
 - tomcat-embed-core (from http://tomcat.apache.org/)
-- tomcat-embed-websocket (from http://tomcat.apache.org/)
+- tomcat-embed-websocket (from https://tomcat.apache.org/)
 
 ========================================================================
 BSD-2-Clause
@@ -292,7 +292,7 @@ public-domain
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Guava: Google Core Libraries for Java (from https://repo1.maven.org/maven2/com/google/guava/guava)
+- Guava: Google Core Libraries for Java (from https://github.com/google/guava)
 - HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
 - Joda-Time (from http://www.joda.org/joda-time/)
 - Project Lombok (from https://projectlombok.org)
