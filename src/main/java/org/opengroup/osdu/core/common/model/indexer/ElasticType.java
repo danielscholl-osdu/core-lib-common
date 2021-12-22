@@ -20,6 +20,8 @@ public enum ElasticType {
 
     KEYWORD("keyword"),
 
+    CONSTANT_KEYWORD("constant_keyword"),
+
     TEXT("text"),
 
     DATE("date"),
@@ -27,6 +29,8 @@ public enum ElasticType {
     NESTED("nested"),
 
     OBJECT("object"),
+
+    FLATTENED("flattened"),
 
     GEO_POINT("geo_point"),
 

@@ -67,9 +67,9 @@ public final class SwaggerDoc {
     public static final String RECORD_DESCRIPTION = "Records management operations.";
     public static final String RECORD_DATA_DESCRIPTION = "Record payload represented as a list of key-value pairs.";
     public static final String RECORD_ID_DESCRIPTION = "Unique identifier in whole Data Ecosystem. When not provided, Data Ecosystem will create and assign an id to the record. Must follow the naming convention: {Data-Partition-Id}:{object-type}:{uuid}.";
-    public static final String RECORD_ID_EXAMPLE = "common:welldb:123456";
+    public static final String RECORD_ID_EXAMPLE = "common:work-product-component--wellLog:123456";
     public static final String RECORD_KIND_DESCRIPTION = "Kind of data it is being ingested. Must follow the naming convention: {Data-Partition-Id}:{dataset-name}:{record-type}:{version}.";
-    public static final String RECORD_KIND_EXAMPLE = "common:welldb:wellbore:1.0.0";
+    public static final String RECORD_KIND_EXAMPLE = "common:wks:work-product-component--wellLog:1.0.0";
     public static final String RECORD_ACL_DESCRIPTION = "Group of users who have access to the record.";
     public static final String RECORD_ACL_VIEWER_DESCRIPTION = "List of valid groups which will have view/read privileges over the record.";
     public static final String RECORD_ACL_OWNER_DESCRIPTION = "List of valid groups which will have write privileges over the record.";

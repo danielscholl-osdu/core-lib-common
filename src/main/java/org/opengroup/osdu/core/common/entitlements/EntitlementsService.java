@@ -36,7 +36,7 @@ public class EntitlementsService implements IEntitlementsService {
     private final DpsHeaders headers;
     private final HttpResponseBodyMapper responseBodyMapper;
 
-    EntitlementsService(EntitlementsAPIConfig config,
+    public EntitlementsService(EntitlementsAPIConfig config,
                         IHttpClient httpClient,
                         DpsHeaders headers,
                         HttpResponseBodyMapper mapper) {

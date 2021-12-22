@@ -16,6 +16,7 @@ package org.opengroup.osdu.core.common.cache;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import org.opengroup.osdu.core.common.cache.enums.CachingStrategy;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,9 +25,25 @@ public class VmCache<K, V> implements ICache<K, V> {
     private final Cache<K, V> cache;
 
     public VmCache(int cacheExpirationSeconds, int maximumCacheSize) {
-
         this.cache = CacheBuilder.newBuilder().expireAfterAccess(cacheExpirationSeconds, TimeUnit.SECONDS)
                 .maximumSize(maximumCacheSize).build();
+    }
+
+    public VmCache(int cacheExpirationSeconds, int maximumCacheSize, CachingStrategy cachingStrategy) {
+        switch (cachingStrategy){
+            case EXPIRE_AFTER_WRITE: {
+                this.cache = CacheBuilder.newBuilder().expireAfterWrite(cacheExpirationSeconds, TimeUnit.SECONDS)
+                        .maximumSize(maximumCacheSize).build();
+                break;
+            }
+            case EXPIRE_AFTER_ACCESS: {
+                this.cache = CacheBuilder.newBuilder().expireAfterAccess(cacheExpirationSeconds, TimeUnit.SECONDS)
+                        .maximumSize(maximumCacheSize).build();
+                break;
+            }
+            default:
+                throw new IllegalArgumentException("Unsupported Caching Strategy for VmCache");
+        }
     }
 
     @Override

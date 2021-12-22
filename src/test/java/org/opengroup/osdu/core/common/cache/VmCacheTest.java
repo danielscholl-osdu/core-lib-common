@@ -15,6 +15,7 @@
 package org.opengroup.osdu.core.common.cache;
 
 import org.junit.Test;
+import org.opengroup.osdu.core.common.cache.enums.CachingStrategy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -77,6 +78,47 @@ public class VmCacheTest {
 
         sut.clearAll();
 
+        assertNull(sut.get(id));
+    }
+
+    @Test
+    public void shouldInvalidateItem_using_expireAfterWriteStrategy() throws InterruptedException {
+        String id = "1";
+        String value = "abc";
+        VmCache<String, String> sut = new VmCache<>(1, 1, CachingStrategy.EXPIRE_AFTER_WRITE);
+
+        // Item is inserted into cache..
+        sut.put(id, value);
+        Thread.sleep(505);
+
+        // Item is available within expiry period.
+        assertEquals(value, sut.get(id));
+
+        Thread.sleep(505);
+
+        // item is not available post expiry period
+        assertNull(sut.get(id));
+    }
+
+    @Test
+    public void shouldInvalidateItem_using_expireAfterAccessStrategy() throws InterruptedException {
+        String id = "1";
+        String value = "abc";
+        VmCache<String, String> sut = new VmCache<>(1, 1, CachingStrategy.EXPIRE_AFTER_ACCESS);
+
+        // Item is inserted into cache..
+        sut.put(id, value);
+        Thread.sleep(505);
+
+        // Item is available within expiry period. This access refreshes the expiry back to 1000 ms
+        assertEquals(value, sut.get(id));
+        Thread.sleep(505);
+
+        // Item is available even after 1 second. Because last access was 500ms back.
+        assertEquals(value, sut.get(id));
+        Thread.sleep(1010);
+
+        // After 1 second without access, item is no longer available.
         assertNull(sut.get(id));
     }
 }

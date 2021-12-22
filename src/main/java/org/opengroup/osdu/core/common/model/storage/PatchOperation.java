@@ -29,11 +29,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ValidPatchOp
 public class PatchOperation {
     @ApiModelProperty(value = SwaggerDoc.BULK_UPDATE_RECORD_OP,
             required = true,
             example = SwaggerDoc.BULK_UPDATE_RECORD_OP_EXAMPLE)
-    @ValidPatchOp
     private String op;
 
     @ApiModelProperty(value = SwaggerDoc.BULK_UPDATE_RECORD_PATH,

@@ -19,6 +19,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
+import org.opengroup.osdu.core.common.model.validation.ValidatorUtils;
 import org.opengroup.osdu.core.common.model.storage.Record;
 
 import io.jsonwebtoken.lang.Collections;
@@ -38,18 +39,17 @@ public class LegalValidator implements ConstraintValidator<ValidLegal, Record> {
 
 		if (record.getAncestry() != null && !Collections.isEmpty(record.getAncestry().getParents())) {
 			for (String parent : record.getAncestry().getParents()) {
-				String[] tokens = parent.split(":");
 
-				if (tokens.length != 4) {
-					String msg = String.format(ValidationDoc.INVALID_PARENT_RECORD_ID_FORMAT, parent);
-
+				if (!parent.matches(ValidationDoc.RECORD_ID_REGEX)) {
+					String msg = String.format(ValidationDoc.INVALID_PARENT_RECORD_ID_FORMAT, ValidatorUtils.escapeString(parent));
+					
 					context.buildConstraintViolationWithTemplate(msg).addConstraintViolation();
 					return false;
 				}
 
-				if (!NumberUtils.isCreatable(tokens[tokens.length - 1])) {
-					String msg = String.format(ValidationDoc.INVALID_PARENT_RECORD_VERSION_FORMAT, parent);
-
+				if (!parent.matches(ValidationDoc.RECORD_ID_WITH_VERSION_REGEX)) {
+					String msg = String.format(ValidationDoc.INVALID_PARENT_RECORD_VERSION_FORMAT, ValidatorUtils.escapeString(parent));
+					
 					context.buildConstraintViolationWithTemplate(msg).addConstraintViolation();
 					return false;
 				}

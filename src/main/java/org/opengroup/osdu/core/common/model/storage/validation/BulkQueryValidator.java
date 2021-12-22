@@ -21,6 +21,7 @@ import java.util.Set;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.opengroup.osdu.core.common.model.validation.ValidatorUtils;
 import org.opengroup.osdu.core.common.model.storage.RecordQuery;
 
 public class BulkQueryValidator implements ConstraintValidator<ValidBulkQuery, RecordQuery> {
@@ -34,16 +35,22 @@ public class BulkQueryValidator implements ConstraintValidator<ValidBulkQuery, R
     public boolean isValid(RecordQuery recordQuery, ConstraintValidatorContext context) {
         context.disableDefaultConstraintViolation();
 
+        if(recordQuery == null){
+            context.buildConstraintViolationWithTemplate(ValidationDoc.INVALID_PAYLOAD)
+                    .addConstraintViolation();
+            return false;
+        }
+
         List<String> recordIds = recordQuery.getIds();
         Set<String> ids = new HashSet<>();
         for (String recordId : recordIds) {
             if (ids.contains(recordId)) {
-                context.buildConstraintViolationWithTemplate(String.format(ValidationDoc.DUPLICATE_RECORD_ID, recordId))
+                context.buildConstraintViolationWithTemplate(String.format(ValidationDoc.DUPLICATE_RECORD_ID, ValidatorUtils.escapeString(recordId)))
                         .addConstraintViolation();
                 return false;
             }
             if (!recordId.matches(ValidationDoc.RECORD_ID_REGEX) && !recordId.matches(ValidationDoc.RECORD_ID_WITH_VERSION_REGEX)) {
-                context.buildConstraintViolationWithTemplate(String.format(ValidationDoc.INVALID_RECORD_ID_FORMAT, recordId))
+                context.buildConstraintViolationWithTemplate(String.format(ValidationDoc.INVALID_RECORD_ID_FORMAT, ValidatorUtils.escapeString(recordId)))
                         .addConstraintViolation();
                 return false;
             }

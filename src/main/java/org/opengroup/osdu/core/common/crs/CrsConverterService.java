@@ -29,7 +29,7 @@ public class CrsConverterService implements ICrsConverterService {
     private final DpsHeaders headers;
     private final HttpResponseBodyMapper responseBodyMapper;
 
-    CrsConverterService(CrsConverterAPIConfig config,
+    public CrsConverterService(CrsConverterAPIConfig config,
                         IHttpClient httpClient,
                         DpsHeaders headers,
                         HttpResponseBodyMapper mapper) {
@@ -54,6 +54,13 @@ public class CrsConverterService implements ICrsConverterService {
         String url = this.createUrl("/convertTrajectory");
         HttpResponse result = this.httpClient.send(HttpRequest.post(request).url(url).headers(this.headers.getHeaders()).build());
         return this.getResult(result, ConvertTrajectoryResponse.class);
+    }
+
+    @Override
+    public ConvertGeoJsonResponse convertGeoJson(ConvertGeoJsonRequest request) throws CrsConverterException {
+        String url = this.createUrl("/convertGeoJson");
+        HttpResponse result = this.httpClient.send(HttpRequest.post(request).url(url).headers(this.headers.getHeaders()).build());
+        return this.getResult(result, ConvertGeoJsonResponse.class);
     }
 
     private CrsConverterException generateException(HttpResponse result) {

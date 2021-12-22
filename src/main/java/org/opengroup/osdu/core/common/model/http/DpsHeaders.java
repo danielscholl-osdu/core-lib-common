@@ -38,6 +38,8 @@ public class DpsHeaders {
 
     public static final String PRIMARY_PARTITION_ID = "primary-account-id";
     public static final String FRAME_OF_REFERENCE = "frame-of-reference";
+    public static final String USER_ID = "x-user-id";
+    public static final String APP_ID = "x-app-id";
 
     private static final HashSet<String> headerKeys = new HashSet<>();
 
@@ -52,6 +54,8 @@ public class DpsHeaders {
         headerKeys.add(LEGAL_TAGS);
         headerKeys.add(ACL_HEADER);
         headerKeys.add(KIND_VERSION);
+        headerKeys.add(USER_ID);
+        headerKeys.add(APP_ID);
     }
 
     private final Map<String, String> headers = new HashMap<>();
@@ -64,7 +68,7 @@ public class DpsHeaders {
         DpsHeaders output = new DpsHeaders();
         input.forEach(entry -> {
             String key = entry.getKey().toLowerCase();
-            if (headerKeys.contains(key)) {
+            if (headerKeys.contains(key) || key.startsWith("x-")) {
                 output.headers.put(key, StringUtils.join(entry.getValue(), ','));
             }
         });
@@ -75,7 +79,7 @@ public class DpsHeaders {
         DpsHeaders output = new DpsHeaders();
         input.forEach((k) -> {
             String key = k.getKey().toLowerCase();
-            if (headerKeys.contains(key)) {
+            if (headerKeys.contains(key) || key.startsWith("x-")) {
                 output.headers.put(key, k.getValue());
             }
         });
@@ -88,11 +92,10 @@ public class DpsHeaders {
         return output;
     }
 
-    protected void addFromMap(Map<String, String> input)
-    {
+    protected void addFromMap(Map<String, String> input) {
         input.forEach((k, v) -> {
             String key = k.toLowerCase();
-            if (headerKeys.contains(key) || k.toLowerCase().startsWith("x-")) {
+            if (headerKeys.contains(key) || key.startsWith("x-")) {
                 this.headers.put(key, v);
             }
         });
@@ -137,11 +140,25 @@ public class DpsHeaders {
         return this.getHeader(CONTENT_TYPE);
     }
 
-    public String getLegalTags() { return this.getHeader(LEGAL_TAGS); }
+    public String getLegalTags() {
+        return this.getHeader(LEGAL_TAGS);
+    }
 
-    public String getAcl() { return this.getHeader(ACL_HEADER); }
+    public String getAcl() {
+        return this.getHeader(ACL_HEADER);
+    }
 
-    public String getKindVersion(){ return this.getHeader(KIND_VERSION); }
+    public String getKindVersion() {
+        return this.getHeader(KIND_VERSION);
+    }
+
+    public String getUserId() {
+        return this.getHeader(USER_ID);
+    }
+
+    public String getAppId() {
+        return this.getHeader(APP_ID);
+    }
 
     public void put(String key, String value) {
         this.headers.put(key, value);

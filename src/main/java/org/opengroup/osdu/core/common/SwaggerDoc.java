@@ -77,7 +77,7 @@ public final class SwaggerDoc {
     public static final String SORT_NOT_VALID_ORDER_OPTION = "Not a valid order option. It can only be either 'ASC' or 'DESC'";
     public static final String SORT_ORDER_VALIDATION_NOT_EMPTY_MSG = "'sort.order' can not be null or empty";
     public static final String SORT_FIELD_ORDER_SIZE_NOT_MATCH = "'sort.field' and 'sort.order' size do not match";
-    public static final String LIMIT_DESCRIPTION = "The maximum number of results to return from the given offset. If no limit is provided, then it will return 10 items. Max number of items which can be fetched by the query is 100. (If you wish to fetch large set of items, please use query_with_cursor API)";
+    public static final String LIMIT_DESCRIPTION = "The maximum number of results to return from the given offset. If no limit is provided, then it will return 10 items. Max number of items which can be fetched by the query is 1000. (If you wish to fetch large set of items, please use query_with_cursor API)";
     public static final String QUERY_DESCRIPTION = "The query string in Lucene query string syntax.";
     public static final String SORT_DESCRIPTION = "The fields and orders to return sorted results.";
     public static final String SORT_FIELD_DESCRIPTION = "The list of fields to sort the results.";
@@ -87,6 +87,7 @@ public final class SwaggerDoc {
     public static final String CURSOR_DESCRIPTION = "Search context to retrieve next batch of results.";
     public static final String AGGREGATEBY_DESCRIPTION = "The aggregateBy field returns the distinct values of the given field.";
     public static final String QUERYASOWNER_DESCRIPTION = "The queryAsOwner switches between viewer and owner to return results that you are entitled to view or results you are the owner of.";
+    public static final String TRACKTOTALCOUNT_DESCRIPTION = "Tracks accurate record count matching the query if 'true', partial count otherwise. Partial count queries are more performant. Default is 'false' and returns 10000 if matching records are higher than 10000.";
 
     // SPATIAL FILTER
     public static final String FIELD_VALIDATION_NON_NULL_MSG = "'spatialFilter.field' can not be null";

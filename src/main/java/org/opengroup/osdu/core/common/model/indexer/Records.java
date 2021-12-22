@@ -63,8 +63,13 @@ public class Records {
         private long version;
         private String kind;
         private Acl acl;
+        private Map<String, String> tags;
         private Legal legal;
         private RecordAncestry ancestry;
+        private String createUser;
+        private String createTime;
+        private String modifyUser;
+        private String modifyTime;
         private Map<String, Object> data;
         private List<Object> meta;
     }

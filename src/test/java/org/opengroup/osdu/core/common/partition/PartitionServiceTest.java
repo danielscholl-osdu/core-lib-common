@@ -44,8 +44,22 @@ public class PartitionServiceTest {
     CloseableHttpClient cacheHttpClient;
 
     public static final String ROOT_URL = "http://example.com";
-    public static final String VALID_JSON_RESPONSE = "{ 'endpoint': '1.1.1.1', 'connection': 'test-connection', 'id': 'tenant1'}";
+    public static final String VALID_JSON_RESPONSE = "{\n"
+        + "    \"endpoint\": {\n"
+        + "        \"sensitive\": false,\n"
+        + "        \"value\": \"1.1.1.1\"\n"
+        + "    },\n"
+        + "    \"connection\": {\n"
+        + "        \"sensitive\": false,\n"
+        + "        \"value\": \"test-connection\"\n"
+        + "    },\n"
+        + "    \"id\": {\n"
+        + "        \"sensitive\": false,\n"
+        + "        \"value\": \"tenant1\"\n"
+        + "    }\n"
+        + "}";
     public static final String PARTITION_ID = "tenant1";
+    public static final Property PARTITION_ID_PROPERTY = Property.builder().sensitive(false).value(PARTITION_ID).build();
     public static final String PARTITION_NOT_FOUND = "partiton tenant1 not found";
     public static final String BAD_REQUEST = "Bad request";
     public static final String LIST_PARTITION_RESPONSE = "[ \"default-dev\", \"opendes\" ]";
@@ -62,7 +76,7 @@ public class PartitionServiceTest {
         assertNotNull(partition);
         assertNotNull(partition.getProperties());
         assertEquals(3, partition.properties.size());
-        assertEquals(PARTITION_ID, partition.properties.get("id"));
+        assertEquals(PARTITION_ID_PROPERTY, partition.properties.get("id"));
     }
 
     @Test
@@ -96,7 +110,7 @@ public class PartitionServiceTest {
         assertNotNull(partition);
         assertNotNull(partition.getProperties());
         assertEquals(3, partition.properties.size());
-        assertEquals(PARTITION_ID, partition.properties.get("id"));
+        assertEquals(PARTITION_ID_PROPERTY, partition.properties.get("id"));
     }
 
     @Test

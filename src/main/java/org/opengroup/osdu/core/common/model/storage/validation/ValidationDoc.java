@@ -22,9 +22,9 @@ public class ValidationDoc {
 
 	// https://www.owasp.org/index.php/OWASP_Validation_Regex_Repository
 	public static final String EMAIL_REGEX = "^data\\.[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-	public static final String RECORD_ID_REGEX = "^[\\w\\-\\.]+:[\\w-\\.\\/]+:.+$";
-	public static final String RECORD_ID_WITH_VERSION_REGEX = "^[\\w\\-\\.]+:[\\w-\\.\\/]+:.+:[0-9]+$";
-	public static final String KIND_REGEX = "^[\\w\\-\\.]+:[\\w\\-\\.]+:[\\w\\-\\.\\/]+:[0-9]+.[0-9]+.[0-9]+$";
+	public static final String RECORD_ID_REGEX = "^[\\w\\-\\.]+:[\\w-\\.]+:[\\w\\-\\.\\:\\%]+$";
+	public static final String RECORD_ID_WITH_VERSION_REGEX = "^[\\w\\-\\.]+:[\\w-\\.]+:[\\w\\-\\.\\:\\%]+:[0-9]+$";
+	public static final String KIND_REGEX = "^[\\w\\-\\.]+:[\\w\\-\\.]+:[\\w\\-\\.]+:[0-9]+.[0-9]+.[0-9]+$";
 
 	public static final String DUPLICATE_RECORD_ID = "Same record cannot be updated twice: '%s'.";
 	public static final String INVALID_NULL_IN_ARRAY = "Invalid 'null' value found in array";
@@ -35,7 +35,7 @@ public class ValidationDoc {
 	public static final String INVALID_KIND = "Not a valid record kind. Found: ${validatedValue}";
 	public static final String INVALID_PARENT_RECORD_ID_FORMAT = "Invalid parent record format: '%s'. The following format is expected: {record-id}:{record-version}";
 	public static final String INVALID_PARENT_RECORD_VERSION_FORMAT = "Invalid parent record version: '%s'. Record version must be a numeric value";
-	public static final String INVALID_PATCH_OPERATION = "Invalid Patch Operation: can only be 'replace'";
+	public static final String INVALID_PATCH_OPERATION = "Invalid Patch Operation: can only be 'replace' or 'add' or 'remove'";
 	public static final String INVALID_PATCH_PATH = "Invalid Patch Path: can only be '/acl/viewers', '/acl/owners' or '/legal/legaltags'";
 	public static final String RECORD_ID_LIST_NOT_EMPTY = "The list of record IDs cannot be empty";
 	public static final String RECORD_ACL_NOT_EMPTY = "Record ACL cannot be empty";

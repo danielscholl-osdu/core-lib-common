@@ -14,9 +14,11 @@
 
 package org.opengroup.osdu.core.common.cache;
 
+import com.lambdaworks.redis.ClientOptions;
 import com.lambdaworks.redis.RedisClient;
 import com.lambdaworks.redis.RedisURI;
 import com.lambdaworks.redis.SetArgs;
+import com.lambdaworks.redis.SocketOptions;
 import com.lambdaworks.redis.api.StatefulRedisConnection;
 import com.lambdaworks.redis.api.sync.RedisCommands;
 import com.lambdaworks.redis.codec.CompressionCodec;
@@ -30,11 +32,14 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     private final RedisCommands<K, V> commands;
     private final int expireLengthSeconds;
 
-    public RedisCache(String host, int port, int expTimeSeconds, int database,
+    public RedisCache(String host, int port, int expTimeSeconds, int database, ClientOptions clientOptions,
                       Class<K> classOfK, Class<V> classOfV) {
         RedisURI uri = new RedisURI(host, port, 30, TimeUnit.SECONDS);
         uri.setDatabase(database);
         client = RedisClient.create(uri);
+        if (clientOptions != null) {
+            client.setOptions(clientOptions);
+        }
         connection = client.connect(
                 CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP));
         commands = connection.sync();
@@ -42,13 +47,26 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     }
 
     public RedisCache(String host, int port, String password, int expTimeSeconds, int database,
-                      Class<K> classOfK, Class<V> classOfV) {
+                      ClientOptions clientOptions, Class<K> classOfK, Class<V> classOfV) {
         RedisURI uri = RedisURI.Builder.redis(host, port).withTimeout(expTimeSeconds, TimeUnit.SECONDS).withPassword(password).withDatabase(database).withSsl(true).build();
         client = RedisClient.create(uri);
+        if (clientOptions != null) {
+            client.setOptions(clientOptions);
+        }
         connection = client.connect(
                 CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP));
         commands = connection.sync();
         expireLengthSeconds = expTimeSeconds;
+    }
+
+    public RedisCache(String host, int port, int expTimeSeconds, int database,
+                      Class<K> classOfK, Class<V> classOfV) {
+        this(host, port, expTimeSeconds, database, null, classOfK, classOfV);
+    }
+
+    public RedisCache(String host, int port, String password, int expTimeSeconds, int database,
+                      Class<K> classOfK, Class<V> classOfV) {
+        this(host, port, password, expTimeSeconds, database, null, classOfK, classOfV);
     }
 
     public RedisCache(String host, int port, int expTimeSeconds, Class<K> classOfK, Class<V> classOfV) {
@@ -63,6 +81,15 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     public void put(K key, V value) {
         SetArgs args = new SetArgs();
         args.ex(expireLengthSeconds);
+        commands.set(key, value, args);
+    }
+
+    /**
+     * Puts entry in cache with ttl measured in milliseconds
+     */
+    public void put(K key, long ttl, V value) {
+        SetArgs args = new SetArgs();
+        args.px(ttl);
         commands.set(key, value, args);
     }
 
@@ -87,5 +114,26 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     @Override
     public void clearAll() {
         this.commands.flushdb();
+    }
+
+    /**
+     * Updates a key's ttl in milliseconds
+     */
+    public boolean updateTtl(K key, long ttl) {
+        return commands.pexpire(key, ttl);
+    }
+
+    /**
+     * Gets the ttl for a key in milliseconds
+     */
+    public long getTtl(K key) {
+        return commands.pttl(key);
+    }
+
+    /**
+     * Gets redis INFO
+     */
+    public String info() {
+        return commands.info();
     }
 }

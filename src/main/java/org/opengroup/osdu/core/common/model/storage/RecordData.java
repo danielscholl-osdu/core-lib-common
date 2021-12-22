@@ -19,12 +19,16 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import lombok.Data;
 
 import static org.apache.commons.codec.binary.Base64.encodeBase64;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecordData {
 

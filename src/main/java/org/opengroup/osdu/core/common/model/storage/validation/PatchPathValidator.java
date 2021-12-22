@@ -25,7 +25,10 @@ public class PatchPathValidator implements ConstraintValidator<ValidPatchPath, S
 
     @Override
     public boolean isValid(String path, ConstraintValidatorContext context) {
-        if (!path.equals("/acl/viewers") && !path.equals("/acl/owners") && !path.equals("/legal/legaltags")) {
+        if (!path.equals("/acl/viewers")
+            && !path.equals("/acl/owners")
+            && !path.equals("/legal/legaltags")
+            && !path.equals("/tags")) {
             context.buildConstraintViolationWithTemplate(ValidationDoc.INVALID_PATCH_PATH).addConstraintViolation();
             return false;
         }

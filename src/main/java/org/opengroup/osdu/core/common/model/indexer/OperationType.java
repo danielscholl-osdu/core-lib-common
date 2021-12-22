@@ -16,6 +16,11 @@ package org.opengroup.osdu.core.common.model.indexer;
 
 public enum OperationType {
     /**
+     * A view operation
+     */
+    view("view"),
+
+    /**
      * A post operation
      */
     create("create"),
