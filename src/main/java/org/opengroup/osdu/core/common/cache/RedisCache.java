@@ -136,4 +136,32 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     public String info() {
         return commands.info();
     }
+
+    /**
+     * Increment the integer value of a key by one
+     */
+    public Long increment(K key) {
+        return this.incrementBy(key, 1L);
+    }
+
+    /**
+     * Increment the integer value of a key by the given amount
+     */
+    public Long incrementBy(K key, long amount) {
+        return commands.incrby(key, amount);
+    }
+
+    /**
+     * Decrement the integer value of a key by one
+     */
+    public Long decrement(K key) {
+        return this.decrementBy(key, 1L);
+    }
+
+    /**
+     * Decrement the integer value of a key by the given amount
+     */
+    public Long decrementBy(K key, long amount) {
+        return commands.decrby(key, amount);
+    }
 }
