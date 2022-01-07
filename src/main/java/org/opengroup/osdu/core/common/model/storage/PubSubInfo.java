@@ -14,17 +14,35 @@
 
 package org.opengroup.osdu.core.common.model.storage;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import org.opengroup.osdu.core.common.model.indexer.OperationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PubSubInfo {
 	private String id;
 	private String kind;
 	private OperationType op;
-	private String previousVersionsKind;
+
+	@JsonInclude(Include.NON_NULL)
+	@Builder.Default
+	private String recordUpdated = null;
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@Builder.Default
+	private String priorKind = null;
+
+	public PubSubInfo(String id, String kind, OperationType operationType) {
+		this.id = id;
+		this.kind = kind;
+		this.op = operationType;
+	}
 }
