@@ -32,10 +32,6 @@ public class PubSubInfo {
 	private String kind;
 	private OperationType op;
 
-	@JsonInclude(Include.NON_NULL)
-	@Builder.Default
-	private String recordUpdated = null;
-
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@Builder.Default
 	private String priorKind = null;
