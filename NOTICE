@@ -13,11 +13,6 @@ The following software have components provided under the terms of this license:
 - Apache HttpCore (from http://hc.apache.org/httpcomponents-core-ga)
 - Apache Log4j API (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api)
 - Apache Log4j to SLF4J Adapter (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-to-slf4j)
-- Apache Lucene (module: grouping) (from https://lucene.apache.org/)
-- Apache Lucene (module: highlighter) (from https://lucene.apache.org/)
-- Apache Lucene (module: join) (from https://lucene.apache.org/)
-- Apache Lucene (module: memory) (from https://lucene.apache.org/)
-- Apache Lucene (module: spatial3d) (from https://lucene.apache.org/)
 - Bean Validation API (from http://beanvalidation.org)
 - Byte Buddy (without dependencies) (from )
 - Byte Buddy Java agent (from https://repo1.maven.org/maven2/net/bytebuddy/byte-buddy-agent)
@@ -84,7 +79,7 @@ The following software have components provided under the terms of this license:
 - swagger-annotations (from https://repo1.maven.org/maven2/io/swagger/swagger-annotations)
 - swagger-jaxrs (from https://repo1.maven.org/maven2/io/swagger/swagger-jaxrs)
 - tomcat-embed-core (from http://tomcat.apache.org/)
-- tomcat-embed-websocket (from https://tomcat.apache.org/)
+- tomcat-embed-websocket (from http://tomcat.apache.org/)
 
 ========================================================================
 BSD-2-Clause
