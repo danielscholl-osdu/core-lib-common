@@ -72,7 +72,7 @@ public class RecordInfo {
                         deleteRecordMap.put(kind, new ArrayList<>());
                     }
                     deleteRecordMap.get(kind).add(msg.getId());
-                } else if (op == OperationType.create) {
+                } else if (op == OperationType.update) {
                     if (!Strings.isNullOrEmpty(msg.getPriorKind())) {
                         if (!deleteRecordMap.containsKey(msg.getPriorKind())) {
                             deleteRecordMap.put(msg.getPriorKind(), new ArrayList<>());
