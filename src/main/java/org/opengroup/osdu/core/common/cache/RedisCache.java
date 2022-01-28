@@ -18,14 +18,13 @@ import com.lambdaworks.redis.ClientOptions;
 import com.lambdaworks.redis.RedisClient;
 import com.lambdaworks.redis.RedisURI;
 import com.lambdaworks.redis.SetArgs;
-import com.lambdaworks.redis.SocketOptions;
 import com.lambdaworks.redis.api.StatefulRedisConnection;
 import com.lambdaworks.redis.api.sync.RedisCommands;
 import com.lambdaworks.redis.codec.CompressionCodec;
 
 import java.util.concurrent.TimeUnit;
 
-public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
+public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
 
     private final StatefulRedisConnection<K, V> connection;
     private final RedisClient client;
@@ -87,6 +86,7 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     /**
      * Puts entry in cache with ttl measured in milliseconds
      */
+    @Override
     public void put(K key, long ttl, V value) {
         SetArgs args = new SetArgs();
         args.px(ttl);
@@ -119,6 +119,7 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     /**
      * Updates a key's ttl in milliseconds
      */
+    @Override
     public boolean updateTtl(K key, long ttl) {
         return commands.pexpire(key, ttl);
     }
@@ -126,6 +127,7 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     /**
      * Gets the ttl for a key in milliseconds
      */
+    @Override
     public long getTtl(K key) {
         return commands.pttl(key);
     }
@@ -133,6 +135,7 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     /**
      * Gets redis INFO
      */
+    @Override
     public String info() {
         return commands.info();
     }
@@ -140,6 +143,7 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     /**
      * Increment the integer value of a key by one
      */
+    @Override
     public Long increment(K key) {
         return this.incrementBy(key, 1L);
     }
@@ -147,6 +151,7 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     /**
      * Increment the integer value of a key by the given amount
      */
+    @Override
     public Long incrementBy(K key, long amount) {
         return commands.incrby(key, amount);
     }
@@ -154,6 +159,7 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     /**
      * Decrement the integer value of a key by one
      */
+    @Override
     public Long decrement(K key) {
         return this.decrementBy(key, 1L);
     }
@@ -161,6 +167,7 @@ public class RedisCache<K, V> implements ICache<K, V>, AutoCloseable {
     /**
      * Decrement the integer value of a key by the given amount
      */
+    @Override
     public Long decrementBy(K key, long amount) {
         return commands.decrby(key, amount);
     }
