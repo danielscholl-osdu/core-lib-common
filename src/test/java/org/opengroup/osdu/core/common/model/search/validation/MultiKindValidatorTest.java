@@ -17,26 +17,35 @@ package org.opengroup.osdu.core.common.model.search.validation;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.validation.ConstraintValidatorContext;
-
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
+@RunWith(MockitoJUnitRunner.class)
 public class MultiKindValidatorTest {
 
-    @Mock
     private ConstraintValidatorContext context;
 
-    static MultiKindValidator sut;
+    @InjectMocks
+    private MultiKindValidator sut;
 
     @Before
     public  void setup(){
-        sut = new MultiKindValidator();
-        sut.initialize(null);
+        initMocks(this);
+
+        this.context = mock(ConstraintValidatorContext.class);
+        ConstraintValidatorContext.ConstraintViolationBuilder builder = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
+        when(this.context.buildConstraintViolationWithTemplate(anyString())).thenReturn(builder);
     }
 
     @Test
@@ -73,6 +82,11 @@ public class MultiKindValidatorTest {
     }
 
     @Test
+    public void simpleKindWithEmptyString() {
+        assertFalse(this.sut.isValid("", this.context));
+    }
+
+    @Test
     public void multiKindsWithInvalidFormat() {
         String kind1="A1:S1:E1:1.0.0";
         String kind2="A2:S2:E2:2.0.0";
@@ -99,6 +113,19 @@ public class MultiKindValidatorTest {
         kinds.add(kind1);
         kinds.add(kind2);
         kinds.add(kind3);
+        assertFalse(this.sut.isValid(kinds, this.context));
+    }
+
+    @Test
+    public void multiKindsWithEmptyArray() {
+        ArrayList kinds = new ArrayList();
+        assertFalse(this.sut.isValid(kinds, this.context));
+    }
+
+    @Test
+    public void multiKindsWithEmptyStringInArray() {
+        ArrayList kinds = new ArrayList();
+        kinds.add("");
         assertFalse(this.sut.isValid(kinds, this.context));
     }
 
