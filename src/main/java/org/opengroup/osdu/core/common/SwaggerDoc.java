@@ -69,7 +69,8 @@ public final class SwaggerDoc {
     // QUERIES
     public static final String KIND_REQUEST_DESCRIPTION = "'kind' to search";
     public static final String KIND_VALIDATION_CAN_NOT_BE_NULL_OR_EMPTY = "'kind' can not be null or empty";
-    public static final String KIND_EXAMPLE = "common:ihs:well:1.0.0";
+    public static final String KIND_VALIDATION_Not_SUPPORTED_TYPE = "'kind' must be string or string array";
+    public static final String KIND_EXAMPLE = "\"common:ihs:well:1.0.0\" or [\"common:ihs:well:1.0.0\", \"common:ihs:well:2.0.0\"]";
     public static final String LIMIT_VALIDATION_MIN_MSG = "'limit' must be equal or greater than 0";
     public static final String OFFSET_VALIDATION_MIN_MSG = "'offset' must be equal or greater than 0";
     public static final String SORT_FIELD_VALIDATION_NOT_EMPTY_MSG = "'sort.field' can not be null or empty";
