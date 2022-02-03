@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.core.common.model.indexer;
 
+import com.google.common.base.Strings;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,6 +38,7 @@ public class RecordInfo {
     private String id;
     private String kind;
     private String op;
+    private String priorKind;
 
     public static Map<String, Map<String, OperationType>> getUpsertRecordIds(List<RecordInfo> msgs) throws AppException {
 
@@ -70,6 +72,13 @@ public class RecordInfo {
                         deleteRecordMap.put(kind, new ArrayList<>());
                     }
                     deleteRecordMap.get(kind).add(msg.getId());
+                } else if (op == OperationType.update) {
+                    if (!Strings.isNullOrEmpty(msg.getPriorKind())) {
+                        if (!deleteRecordMap.containsKey(msg.getPriorKind())) {
+                            deleteRecordMap.put(msg.getPriorKind(), new ArrayList<>());
+                        }
+                        deleteRecordMap.get(msg.getPriorKind()).add(msg.getId());
+                    }
                 }
             }
         } catch (Exception e) {
