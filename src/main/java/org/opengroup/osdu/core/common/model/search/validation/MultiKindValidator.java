@@ -15,6 +15,7 @@
 
 package org.opengroup.osdu.core.common.model.search.validation;
 
+import org.opengroup.osdu.core.common.SwaggerDoc;
 import org.opengroup.osdu.core.common.util.KindParser;
 
 import javax.validation.ConstraintValidator;
@@ -37,21 +38,32 @@ public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, O
     public boolean isValid(Object kind, ConstraintValidatorContext context) {
         try {
             List<String> kinds = KindParser.parse(kind);
-            if(kinds.size() == 0)
+            if(kinds.size() == 0) {
+                context.buildConstraintViolationWithTemplate(SwaggerDoc.KIND_VALIDATION_CAN_NOT_BE_NULL_OR_EMPTY).addConstraintViolation();
                 return false;
+            }
 
             int totalLen = 0;
             for(int i = 0; i < kinds.size(); i++)
             {
                 String singleKind = kinds.get(i);
-                if(!singleKind.matches(MULTI_KIND_PATTERN))
+                if(!singleKind.matches(MULTI_KIND_PATTERN)) {
+                    context.buildConstraintViolationWithTemplate(SwaggerDoc.KIND_VALIDATION_Not_SUPPORTED_FORMAT).addConstraintViolation();
                     return false;
-
+                }
                 totalLen += singleKind.length() + 1; //1: length of the separate ','
             }
-            return (totalLen <= Max_KIND_LENGTH);
+
+            if(totalLen > Max_KIND_LENGTH) {
+                String msg = String.format(SwaggerDoc.KIND_VALIDATION_EXCEED_MAX_LENGTH, Max_KIND_LENGTH);
+                context.buildConstraintViolationWithTemplate(msg).addConstraintViolation();
+                return false;
+            }
+
+            return true;
         }
         catch (IllegalArgumentException ex) {
+            context.buildConstraintViolationWithTemplate(ex.getMessage()).addConstraintViolation();
             return false;
         }
     }
