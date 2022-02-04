@@ -39,7 +39,7 @@ public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, O
         try {
             List<String> kinds = KindParser.parse(kind);
             if(kinds.size() == 0) {
-                addConstraintViolation(SwaggerDoc.KIND_VALIDATION_CAN_NOT_BE_NULL_OR_EMPTY, context);
+                addConstraintViolation(SwaggerDoc.KIND_VALIDATION_CAN_NOT_BE_NULL_OR_EMPTY, kind, context);
                 return false;
             }
 
@@ -48,7 +48,7 @@ public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, O
             {
                 String singleKind = kinds.get(i);
                 if(!singleKind.matches(MULTI_KIND_PATTERN)) {
-                    addConstraintViolation(SwaggerDoc.KIND_VALIDATION_Not_SUPPORTED_FORMAT, context);
+                    addConstraintViolation(SwaggerDoc.KIND_VALIDATION_Not_SUPPORTED_FORMAT, kind, context);
                     return false;
                 }
                 totalLen += singleKind.length() + 1; //1: length of the separate ','
@@ -56,21 +56,22 @@ public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, O
 
             if(totalLen > Max_KIND_LENGTH) {
                 String msg = String.format(SwaggerDoc.KIND_VALIDATION_EXCEED_MAX_LENGTH, Max_KIND_LENGTH);
-                addConstraintViolation(msg, context);
+                addConstraintViolation(msg, kind, context);
                 return false;
             }
 
             return true;
         }
         catch (IllegalArgumentException ex) {
-            addConstraintViolation(ex.getMessage(), context);
+            addConstraintViolation(ex.getMessage(), kind, context);
             return false;
         }
     }
 
-    private void addConstraintViolation(String message, ConstraintValidatorContext context) {
+    private void addConstraintViolation(String message, Object kind, ConstraintValidatorContext context) {
         if(context != null) {
-            context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
+            String msg = message + ". Found: " + kind;
+            context.buildConstraintViolationWithTemplate(msg).addConstraintViolation();
         }
     }
 }
