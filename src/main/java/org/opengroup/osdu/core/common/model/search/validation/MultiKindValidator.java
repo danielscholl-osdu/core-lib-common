@@ -39,7 +39,7 @@ public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, O
         try {
             List<String> kinds = KindParser.parse(kind);
             if(kinds.size() == 0) {
-                context.buildConstraintViolationWithTemplate(SwaggerDoc.KIND_VALIDATION_CAN_NOT_BE_NULL_OR_EMPTY).addConstraintViolation();
+                addConstraintViolation(SwaggerDoc.KIND_VALIDATION_CAN_NOT_BE_NULL_OR_EMPTY, context);
                 return false;
             }
 
@@ -48,7 +48,7 @@ public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, O
             {
                 String singleKind = kinds.get(i);
                 if(!singleKind.matches(MULTI_KIND_PATTERN)) {
-                    context.buildConstraintViolationWithTemplate(SwaggerDoc.KIND_VALIDATION_Not_SUPPORTED_FORMAT).addConstraintViolation();
+                    addConstraintViolation(SwaggerDoc.KIND_VALIDATION_Not_SUPPORTED_FORMAT, context);
                     return false;
                 }
                 totalLen += singleKind.length() + 1; //1: length of the separate ','
@@ -56,15 +56,21 @@ public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, O
 
             if(totalLen > Max_KIND_LENGTH) {
                 String msg = String.format(SwaggerDoc.KIND_VALIDATION_EXCEED_MAX_LENGTH, Max_KIND_LENGTH);
-                context.buildConstraintViolationWithTemplate(msg).addConstraintViolation();
+                addConstraintViolation(msg, context);
                 return false;
             }
 
             return true;
         }
         catch (IllegalArgumentException ex) {
-            context.buildConstraintViolationWithTemplate(ex.getMessage()).addConstraintViolation();
+            addConstraintViolation(ex.getMessage(), context);
             return false;
+        }
+    }
+
+    private void addConstraintViolation(String message, ConstraintValidatorContext context) {
+        if(context != null) {
+            context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         }
     }
 }
