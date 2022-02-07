@@ -1,4 +1,3 @@
-
 // Copyright 2017-2022, Schlumberger
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,29 +21,26 @@ import java.util.List;
 
 public class KindParser {
     public static List<String> parse(Object kind) {
-        if(kind == null)
+        if (kind == null) {
             throw new IllegalArgumentException(SwaggerDoc.KIND_VALIDATION_CAN_NOT_BE_NULL_OR_EMPTY);
-
-        List<String> kinds;
-        if(kind instanceof String) {
-            kinds = new LinkedList<>();
-            kinds.add((String) kind);
         }
-        else if(kind instanceof List<?>){
+
+        List<String> kinds = new LinkedList<>();
+        if (kind instanceof String) {
+            kinds.add((String) kind);
+        } else if (kind instanceof List<?>) {
             kinds = (List<String>) kind;
             // The above case is subtle. It won't throw exception even if kind is a list of integers or mixed types.
             // Check the type of each item
-            for(int i = 0; i < kinds.size(); i++) {
-                if(!(kinds.get(i) instanceof String)) {
-                    throw new IllegalArgumentException(SwaggerDoc.KIND_VALIDATION_Not_SUPPORTED_TYPE);
+            for (int i = 0; i < kinds.size(); i++) {
+                if (!(kinds.get(i) instanceof String)) {
+                    throw new IllegalArgumentException(SwaggerDoc.KIND_VALIDATION_NOT_SUPPORTED_TYPE);
                 }
             }
-        }
-        else {
-            throw new IllegalArgumentException(SwaggerDoc.KIND_VALIDATION_Not_SUPPORTED_TYPE);
+        } else {
+            throw new IllegalArgumentException(SwaggerDoc.KIND_VALIDATION_NOT_SUPPORTED_TYPE);
         }
 
         return kinds;
     }
-
 }
