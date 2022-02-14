@@ -68,8 +68,11 @@ public final class SwaggerDoc {
     // REQUEST, RESPONSE & VALIDATIONS
     // QUERIES
     public static final String KIND_REQUEST_DESCRIPTION = "'kind' to search";
-    public static final String KIND_VALIDATION_CAN_NOT_BE_NULL_OR_EMPTY = "'kind' can not be null or empty";
-    public static final String KIND_EXAMPLE = "common:ihs:well:1.0.0";
+    public static final String KIND_VALIDATION_CAN_NOT_BE_NULL_OR_EMPTY = "Record kind can't be null or empty";
+    public static final String KIND_VALIDATION_NOT_SUPPORTED_TYPE = "Not a valid record kind type";
+    public static final String KIND_VALIDATION_NOT_SUPPORTED_FORMAT = "Not a valid record kind format";
+    public static final String KIND_VALIDATION_EXCEED_MAX_LENGTH = "The length of the record kind exceeds %d bytes";
+    public static final String KIND_EXAMPLE = "\"common:ihs:well:1.0.0\" or [\"common:ihs:well:1.0.0\", \"common:ihs:well:2.0.0\"]";
     public static final String LIMIT_VALIDATION_MIN_MSG = "'limit' must be equal or greater than 0";
     public static final String OFFSET_VALIDATION_MIN_MSG = "'offset' must be equal or greater than 0";
     public static final String SORT_FIELD_VALIDATION_NOT_EMPTY_MSG = "'sort.field' can not be null or empty";
