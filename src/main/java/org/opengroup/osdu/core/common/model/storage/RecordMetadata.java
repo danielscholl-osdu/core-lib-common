@@ -37,7 +37,7 @@ public class RecordMetadata {
 	private String kind;
 
 	@JsonIgnore
-	private String priorKind;
+	private String previousVersionKind;
 
 	private Acl acl;
 

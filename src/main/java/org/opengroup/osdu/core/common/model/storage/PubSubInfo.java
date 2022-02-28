@@ -34,7 +34,7 @@ public class PubSubInfo {
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@Builder.Default
-	private String priorKind = null;
+	private String previousVersionKind = null;
 
 	public PubSubInfo(String id, String kind, OperationType operationType) {
 		this.id = id;
