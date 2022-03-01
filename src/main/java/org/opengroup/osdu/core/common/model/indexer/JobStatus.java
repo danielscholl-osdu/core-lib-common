@@ -136,6 +136,6 @@ public class JobStatus {
                 });
 
         // dump all debug-info
-        this.jaxRsDpsLog.warning(this.debugInfos);
+        this.jaxRsDpsLog.debug(this.debugInfos);
     }
 }
