@@ -38,7 +38,7 @@ public class RecordInfo {
     private String id;
     private String kind;
     private String op;
-    private String priorKind;
+    private String previousVersionKind;
 
     public static Map<String, Map<String, OperationType>> getUpsertRecordIds(List<RecordInfo> msgs) throws AppException {
 
@@ -73,11 +73,11 @@ public class RecordInfo {
                     }
                     deleteRecordMap.get(kind).add(msg.getId());
                 } else if (op == OperationType.update) {
-                    if (!Strings.isNullOrEmpty(msg.getPriorKind())) {
-                        if (!deleteRecordMap.containsKey(msg.getPriorKind())) {
-                            deleteRecordMap.put(msg.getPriorKind(), new ArrayList<>());
+                    if (!Strings.isNullOrEmpty(msg.getPreviousVersionKind())) {
+                        if (!deleteRecordMap.containsKey(msg.getPreviousVersionKind())) {
+                            deleteRecordMap.put(msg.getPreviousVersionKind(), new ArrayList<>());
                         }
-                        deleteRecordMap.get(msg.getPriorKind()).add(msg.getId());
+                        deleteRecordMap.get(msg.getPreviousVersionKind()).add(msg.getId());
                     }
                 }
             }
