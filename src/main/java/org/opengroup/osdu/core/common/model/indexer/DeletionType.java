@@ -16,12 +16,12 @@ package org.opengroup.osdu.core.common.model.indexer;
 
 public enum DeletionType {
     /**
-     * A soft deletion
+     * A soft deletion operation
      */
     soft("soft"),
 
     /**
-     * A hard deletion
+     * A hard deletion operation
      */
     hard("hard");
 
