@@ -15,10 +15,8 @@
 package org.opengroup.osdu.core.common.logging;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHeaders;
 import org.opengroup.osdu.core.common.model.AppEngineHeaders;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
-import org.opengroup.osdu.core.common.model.http.HeadersToLog;
 import org.opengroup.osdu.core.common.model.http.Request;
 import org.opengroup.osdu.core.common.logging.audit.AuditPayload;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,6 +76,14 @@ public class JaxRsDpsLog implements AutoCloseable {
 		log.debug(loggerName, LOG_PREFIX + ".app", message, this.getLabels());
 	}
 
+	public void debug(List<String> messages) {
+		if (messages == null || messages.isEmpty()) {
+			return;
+		}
+
+		log.debug(LOG_PREFIX + ".app", prepareLoggingMessage(messages), this.getLabels());
+	}
+
 	public void warning(String message) {
 		log.warning(LOG_PREFIX + ".app", message, this.getLabels());
 	}
@@ -86,7 +92,7 @@ public class JaxRsDpsLog implements AutoCloseable {
 		log.warning(loggerName, LOG_PREFIX + ".app", message, this.getLabels());
 	}
 
-	private String prepareWarningMessage(List<String> messages) {
+	private String prepareLoggingMessage(List<String> messages) {
 		int sn = 0;
 		StringBuilder sb = new StringBuilder();
 		for (String s : messages) {
@@ -101,7 +107,7 @@ public class JaxRsDpsLog implements AutoCloseable {
 			return;
 		}
 
-		log.warning(LOG_PREFIX + ".app", prepareWarningMessage(messages), this.getLabels());
+		log.warning(LOG_PREFIX + ".app", prepareLoggingMessage(messages), this.getLabels());
 	}
 
 	public void warning(final String loggerName, final List<String> messages) {
@@ -109,7 +115,7 @@ public class JaxRsDpsLog implements AutoCloseable {
 			return;
 		}
 
-		log.warning(loggerName, LOG_PREFIX + ".app", prepareWarningMessage(messages), this.getLabels());
+		log.warning(loggerName, LOG_PREFIX + ".app", prepareLoggingMessage(messages), this.getLabels());
 	}
 
 	public void warning(String message, Exception e) {

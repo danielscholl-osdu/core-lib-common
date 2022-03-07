@@ -152,6 +152,14 @@ public class JaxRsDpsLogTest {
     }
 
     @Test
+    public void testDebugWithMessageList() {
+        doNothing().when(logger).debug(eq(APP_LOG_PREFIX), eq(MERGED_LOG_MESSAGE), eq(headers));
+        jaxRsDpsLog.debug(LOG_MESSAGES);
+        verify(logger, times(1)).debug(eq(APP_LOG_PREFIX), eq(MERGED_LOG_MESSAGE), eq(headers));
+        verify(dpsHeaders, times(1)).getHeaders();
+    }
+
+    @Test
     public void testWarning() {
         doNothing().when(logger).warning(eq(APP_LOG_PREFIX), eq(LOG_MESSAGE), eq(headers));
         jaxRsDpsLog.warning(LOG_MESSAGE);
