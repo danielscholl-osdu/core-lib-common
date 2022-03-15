@@ -23,6 +23,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -382,6 +384,83 @@ public class JsonUtilsTest {
 
         verify(mockJsonObject, times(1)).get("depth");
         verify(internalJsonObject, never()).addProperty(anyString(), any(Number.class));
+        verify(mockJsonObject, never()).addProperty(anyString(), any(Number.class));
+    }
+
+    // ---- JsonUtils.overrideNestedStringPropertyOfJsonObject tests ----
+
+    @Test
+    public void overrideNestedStringPropertyOfJsonObject_succeed_whenJsonObjectPresentedInPath() {
+        String propertyName = "depth.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+        String value = "testValue";
+        List<String> values = Collections.singletonList(value);
+
+        setupMocksForJsonPropertyTests(internalJsonObject);
+
+        overrideNestedStringPropertyOfJsonObject(propertyName, values, mockJsonObject);
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, times(1)).addProperty("value", value);
+    }
+
+    @Test
+    public void overrideNestedStringPropertyOfJsonObject_notHappened_whenJsonObjectContainsNonJsonObjectElement() {
+        String propertyName = "depth.value";
+        JsonObject internalJsonObject = mock(JsonObject.class);
+        String value = "testValue";
+        List<String> values = Collections.singletonList(value);
+
+        when(mockJsonObject.get("depth")).thenReturn(mockJsonPrimitive);
+        when(mockJsonPrimitive.isJsonObject()).thenReturn(false);
+
+        overrideNestedStringPropertyOfJsonObject(propertyName, values, mockJsonObject);
+
+        verify(mockJsonObject, times(1)).get("depth");
+        verify(internalJsonObject, never()).addProperty(anyString(), any(Number.class));
+        verify(mockJsonObject, never()).addProperty(anyString(), any(Number.class));
+    }
+
+    @Test
+    public void overrideNestedStringPropertyOfJsonObject_succeed_whenJsonObjectPresentedInNestedArray() {
+        String propertyName = "markers[].value";
+        String value1 = "value1";
+        String value2 = "value2";
+        String value3 = "value3";
+        List<String> values = Arrays.asList(value1, value2, value3);
+
+        setupJsonArrayMock(3);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+
+        overrideNestedStringPropertyOfJsonObject(propertyName, values, mockJsonObject);
+        verify(mockJsonObject, times(1)).addProperty("value", value1);
+        verify(mockJsonObject, times(1)).addProperty("value", value2);
+        verify(mockJsonObject, times(1)).addProperty("value", value3);
+    }
+
+    @Test
+    public void overrideOneNestedStringPropertyOfJsonObject_succeed_whenJsonObjectPresentedInNestedArray() {
+        String propertyName = "markers[1].value";
+        String value = "testValue";
+        List<String> values = Collections.singletonList(value);
+
+        setupJsonArrayMock(3);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+
+        overrideNestedStringPropertyOfJsonObject(propertyName, values, mockJsonObject);
+        verify(mockJsonObject, times(1)).addProperty("value", value);
+    }
+
+    @Test
+    public void overrideNestedStringPropertyOfJsonObject_notHappened_whenJsonObjectIndexOutOfBoundary() {
+        String propertyName = "markers[1].value";
+        String value = "testValue";
+        List<String> values = Collections.singletonList(value);
+
+        setupJsonArrayMock(1);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
+
+        overrideNestedStringPropertyOfJsonObject(propertyName, values, mockJsonObject);
         verify(mockJsonObject, never()).addProperty(anyString(), any(Number.class));
     }
 
