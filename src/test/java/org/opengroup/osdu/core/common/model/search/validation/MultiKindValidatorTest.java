@@ -28,6 +28,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -156,5 +157,6 @@ public class MultiKindValidatorTest {
         ArrayList kinds = new ArrayList();
         kinds.add(kind2);
         assertFalse(this.sut.isValid(kinds, this.context));
+        verify(this.context).buildConstraintViolationWithTemplate("Not a valid record kind format. Found: [\\$\\{2+2\\}]");
     }
 }
