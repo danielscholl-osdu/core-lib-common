@@ -149,4 +149,12 @@ public class MultiKindValidatorTest {
         assertTrue(totalLen > maxLength);
         assertFalse(this.sut.isValid(kinds, this.context));
     }
+
+    @Test
+    public void should_notInterpolate_when_KindHasExpressionLanguage() {
+        String kind2="${2+2}";
+        ArrayList kinds = new ArrayList();
+        kinds.add(kind2);
+        assertFalse(this.sut.isValid(kinds, this.context));
+    }
 }

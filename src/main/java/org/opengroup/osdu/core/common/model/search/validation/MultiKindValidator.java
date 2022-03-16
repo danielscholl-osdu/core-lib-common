@@ -15,6 +15,7 @@
 package org.opengroup.osdu.core.common.model.search.validation;
 
 import org.opengroup.osdu.core.common.SwaggerDoc;
+import org.opengroup.osdu.core.common.model.validation.ValidatorUtils;
 import org.opengroup.osdu.core.common.util.KindParser;
 
 import javax.validation.ConstraintValidator;
@@ -68,7 +69,7 @@ public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, O
         if (context != null) {
             String msg = message + ". Found: " + kind;
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(msg).addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ValidatorUtils.escapeString(msg)).addConstraintViolation();
         }
     }
 }
