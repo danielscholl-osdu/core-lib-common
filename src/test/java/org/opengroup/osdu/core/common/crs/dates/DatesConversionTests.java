@@ -399,4 +399,54 @@ public class DatesConversionTests {
         String resultPersistableReference = resultMeta.get("persistableReference").getAsString();
         Assert.assertEquals(BASE_DATETIME_DTM, resultPersistableReference);
     }
+
+    @Test
+    public void shouldReturnUpdatedRecordWhenDatePresentedIntoNestedJsonObject() {
+        String convertedDateValue = "2019-08-03T13:56:22.123Z";
+        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"acl\": {\"viewers\": [\"viewers@unittest.com\"],\"owners\": [\"owners@unittest.com\"]},\"legal\": {\"legaltags\": [\"unit-test-legal\"],\"otherRelevantDataCountries\": [\"US\"]},\"data\": {\"msg\": \"test record\",\"internal\":{\"creationDate\": \"August 3, 2019 13:56:22.123\"}},\"meta\": [{\"path\": \"\",\"kind\": \"DateTime\",\"persistableReference\": \"{\\\"type\\\": \\\"DTM\\\",\\\"format\\\": \\\"MMMM d, yyyy HH:mm:ss.fff\\\",\\\"timeZone\\\": \\\"UTC\\\"}\",\"propertyNames\": [\"internal.creationDate\"],\"name\": \"GCS_WGS_1984\"}]}";
+        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        List<ConversionRecord> conversionRecords = new ArrayList<>();
+        ConversionRecord conversionRecord = new ConversionRecord();
+        conversionRecord.setRecordJsonObject(record);
+        conversionRecords.add(conversionRecord);
+        this.datesConversion.convertDatesToISO(conversionRecords);
+        Assert.assertEquals(1, conversionRecords.size());
+        Assert.assertTrue(conversionRecords.get(0).getConversionMessages().size() == 0);
+        JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
+        JsonElement data = resultRecord.get("data");
+        String actualCreationDateValue = data.getAsJsonObject().get("internal").getAsJsonObject().get("creationDate").getAsString();
+        Assert.assertEquals(convertedDateValue, actualCreationDateValue);
+        JsonArray resultMetaArray = resultRecord.getAsJsonArray("meta");
+        Assert.assertEquals(1, resultMetaArray.size());
+        JsonObject resultMeta = (JsonObject)resultMetaArray.get(0);
+        String resultPersistableReference = resultMeta.get("persistableReference").getAsString();
+        Assert.assertEquals(BASE_DATETIME_DTM, resultPersistableReference);
+    }
+
+    @Test
+    public void shouldReturnUpdatedRecordWhenDatePresentedIntoNestedJsonArray() {
+        String convertedDateValue = "2019-08-03T13:56:22.123Z";
+        String originalDateValue = "August 3, 2019 13:56:22.123";
+        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"acl\": {\"viewers\": [\"viewers@unittest.com\"],\"owners\": [\"owners@unittest.com\"]},\"legal\": {\"legaltags\": [\"unit-test-legal\"],\"otherRelevantDataCountries\": [\"US\"]},\"data\": {\"msg\": \"test record\",\"internal\":[{\"creationDate\": \"August 3, 2019 13:56:22.123\"}, {\"creationDate\": \"August 3, 2019 13:56:22.123\"}]},\"meta\": [{\"path\": \"\",\"kind\": \"DateTime\",\"persistableReference\": \"{\\\"type\\\": \\\"DTM\\\",\\\"format\\\": \\\"MMMM d, yyyy HH:mm:ss.fff\\\",\\\"timeZone\\\": \\\"UTC\\\"}\",\"propertyNames\": [\"internal[0].creationDate\"],\"name\": \"GCS_WGS_1984\"}]}";
+        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        List<ConversionRecord> conversionRecords = new ArrayList<>();
+        ConversionRecord conversionRecord = new ConversionRecord();
+        conversionRecord.setRecordJsonObject(record);
+        conversionRecords.add(conversionRecord);
+        this.datesConversion.convertDatesToISO(conversionRecords);
+        Assert.assertEquals(1, conversionRecords.size());
+        Assert.assertTrue(conversionRecords.get(0).getConversionMessages().size() == 0);
+        JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
+        JsonElement data = resultRecord.get("data");
+        String convertedCreationDateValue = data.getAsJsonObject().get("internal").getAsJsonArray().get(0).getAsJsonObject().get("creationDate").getAsString();
+        Assert.assertEquals(convertedDateValue, convertedCreationDateValue);
+        String notConvertedCreationDateValue = data.getAsJsonObject().get("internal").getAsJsonArray().get(1).getAsJsonObject().get("creationDate").getAsString();
+        Assert.assertEquals(originalDateValue, notConvertedCreationDateValue);
+        JsonArray resultMetaArray = resultRecord.getAsJsonArray("meta");
+        Assert.assertEquals(1, resultMetaArray.size());
+        JsonObject resultMeta = (JsonObject)resultMetaArray.get(0);
+        String resultPersistableReference = resultMeta.get("persistableReference").getAsString();
+        Assert.assertEquals(BASE_DATETIME_DTM, resultPersistableReference);
+    }
+
 }

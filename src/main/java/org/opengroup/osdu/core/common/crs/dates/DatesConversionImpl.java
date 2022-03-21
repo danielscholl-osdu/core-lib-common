@@ -25,10 +25,13 @@ import org.opengroup.osdu.core.common.util.JsonUtils;
 
 import java.time.DateTimeException;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import static org.opengroup.osdu.core.common.model.units.ReferenceConverter.parseDateTimeReference;
+import static org.opengroup.osdu.core.common.util.JsonUtils.getJsonPropertyValueFromJsonObject;
+import static org.opengroup.osdu.core.common.util.JsonUtils.overrideNestedStringPropertyOfJsonObject;
 
 public class DatesConversionImpl {
     private static final String KIND = "kind";
@@ -130,21 +133,22 @@ public class DatesConversionImpl {
                     String name = propertyNames.get(i).getAsString();
                     String message = null;
                     try {
-                        JsonElement valueElement = dataBlock.get(name);
-                        if((valueElement == null) || (valueElement instanceof JsonNull)) {
-                            hasFailure = true;
-                            conversionMessages.add(String.format(DatesConversionServiceErrorMessages.MISSING_PROPERTY, name));
-                            continue;
+                        List<JsonElement> valueElements = getJsonPropertyValueFromJsonObject(name, dataBlock);
+                        for (JsonElement valueElement: valueElements) {
+                            if ((valueElement == null) || (valueElement instanceof JsonNull)) {
+                                hasFailure = true;
+                                conversionMessages.add(String.format(DatesConversionServiceErrorMessages.MISSING_PROPERTY, name));
+                                continue;
+                            }
+                            String value = dateTime.convertToIsoDateTime(valueElement.getAsString());
+                            if (value == null) {
+                                hasFailure = true;
+                                conversionMessages.add(String.format(DatesConversionServiceErrorMessages.INVALID_REFERENCE));
+                                continue;
+                            }
+                            overrideNestedStringPropertyOfJsonObject(name, Arrays.asList(value), dataBlock);
+                            datesConverted = true;
                         }
-                        String value = dateTime.convertToIsoDateTime(valueElement.getAsString());
-                        if (value == null) {
-                            hasFailure = true;
-                            conversionMessages.add(String.format(DatesConversionServiceErrorMessages.INVALID_REFERENCE));
-                            continue;
-                        }
-                        dataBlock.remove(name);
-                        dataBlock.addProperty(name, value);
-                        datesConverted = true;
 
                     } catch(IllegalArgumentException ccEx) {
                         message = String.format(DatesConversionServiceErrorMessages.INVALID_FORMATTER, ccEx.getMessage());
