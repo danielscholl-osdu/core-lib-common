@@ -152,6 +152,23 @@ public class JsonUtils {
             .ifPresent(json -> json.addProperty(nestedNames[nestedNames.length - 1], value.get(0)));
     }
 
+    public static void overrideNestedStringPropertyOfJsonObject(String propertyName, List<String> value, JsonObject jsonObject) {
+        String[] nestedNames = splitJsonPropertiesByDots(propertyName);
+
+        if (nestedNames[0].endsWith(PN_END) && isNestedArrayElementHomogeneous(nestedNames[0])) {
+            overrideNestedStringPropertyOfJsonObject(nestedNames, value, jsonObject);
+            return;
+        } else if (nestedNames[0].endsWith(PN_END)) {
+            overrideOneNestedStringPorpertyOfJsonObject(nestedNames, value, jsonObject);
+            return;
+        }
+
+        JsonObject targetJsonObject = buildNewJsonObject(nestedNames, jsonObject);
+
+        ofNullable(targetJsonObject)
+                .ifPresent(json -> json.addProperty(nestedNames[nestedNames.length - 1], value.get(0)));
+    }
+
     private static void overrideOneNestedNumberPorpertyOfJsonObject(String[] nestedNames, List<Number> values, JsonObject jsonObject) {
         String[] innerNestedNames = getInnerNestedPropertyNames(nestedNames);
         JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(nestedNames[0])) ;
@@ -169,7 +186,40 @@ public class JsonUtils {
         }
     }
 
+    private static void overrideOneNestedStringPorpertyOfJsonObject(String[] nestedNames, List<String> values, JsonObject jsonObject) {
+        String[] innerNestedNames = getInnerNestedPropertyNames(nestedNames);
+        JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(nestedNames[0])) ;
+        int elementIndex = getNestedArrayElementIndex(nestedNames[0]);
+
+        if (elementIndex < 0 || elementIndex >= elementArray.size()) {
+            return;
+        }
+
+        JsonObject element = elementArray.get(elementIndex).getAsJsonObject();
+        JsonObject targetJsonObject = buildNewJsonObject(innerNestedNames, element);
+
+        if (targetJsonObject != null) {
+            targetJsonObject.addProperty(innerNestedNames[innerNestedNames.length - 1], values.get(0));
+        }
+    }
+
     private static void overrideNestedNumberPropertyOfJsonObject(String[] nestedNames, List<Number> values, JsonObject jsonObject) {
+        JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(nestedNames[0])) ;
+        String[] innerNestedNames = getInnerNestedPropertyNames(nestedNames);
+
+        for (int i = 0; i < elementArray.size(); i++) {
+            JsonObject element = elementArray.get(i).getAsJsonObject();
+
+            JsonObject targetJsonObject = buildNewJsonObject(innerNestedNames, element);
+
+            if (targetJsonObject != null) {
+                targetJsonObject.addProperty(innerNestedNames[innerNestedNames.length - 1], values.get(i));
+            }
+        }
+
+    }
+
+    private static void overrideNestedStringPropertyOfJsonObject(String[] nestedNames, List<String> values, JsonObject jsonObject) {
         JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(nestedNames[0])) ;
         String[] innerNestedNames = getInnerNestedPropertyNames(nestedNames);
 
