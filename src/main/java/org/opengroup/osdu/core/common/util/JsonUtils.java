@@ -67,7 +67,7 @@ public class JsonUtils {
         JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(propertyNestedNames[0])) ;
         int elementIndex = getNestedArrayElementIndex(propertyNestedNames[0]);
 
-        if (elementIndex < 0 || elementIndex >= elementArray.size()) {
+        if (elementArray == null || elementIndex < 0 || elementIndex >= elementArray.size()) {
             result.add(null);
         } else {
             JsonElement element = getNestedJsonElement(innerNestedNames, elementArray.get(elementIndex).getAsJsonObject());
@@ -152,6 +152,11 @@ public class JsonUtils {
             .ifPresent(json -> json.addProperty(nestedNames[nestedNames.length - 1], value.get(0)));
     }
 
+    /**
+     * @param propertyName - property name with path split by dots e.g. date.value
+     * @param value        - the value of the property with String type
+     * @param jsonObject   - JsonObject which presumably contains the property
+     */
     public static void overrideNestedStringPropertyOfJsonObject(String propertyName, List<String> value, JsonObject jsonObject) {
         String[] nestedNames = splitJsonPropertiesByDots(propertyName);
 
@@ -174,7 +179,7 @@ public class JsonUtils {
         JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(nestedNames[0])) ;
         int elementIndex = getNestedArrayElementIndex(nestedNames[0]);
 
-        if (elementIndex < 0 || elementIndex >= elementArray.size()) {
+        if (elementArray == null || elementIndex < 0 || elementIndex >= elementArray.size()) {
             return;
         }
 
@@ -191,7 +196,7 @@ public class JsonUtils {
         JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(nestedNames[0])) ;
         int elementIndex = getNestedArrayElementIndex(nestedNames[0]);
 
-        if (elementIndex < 0 || elementIndex >= elementArray.size()) {
+        if (elementArray == null || elementIndex < 0 || elementIndex >= elementArray.size()) {
             return;
         }
 
