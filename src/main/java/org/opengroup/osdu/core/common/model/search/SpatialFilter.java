@@ -51,6 +51,10 @@ public class SpatialFilter {
     @ApiModelProperty(value = SwaggerDoc.QUERY_BY_GEO_POLYGON_DESCRIPTION)
     private ByGeoPolygon byGeoPolygon;
 
+    @Valid
+    @ApiModelProperty(value = SwaggerDoc.QUERY_BY_GEO_POLYGON_DESCRIPTION)
+    private ByIntersection byIntersection;
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
