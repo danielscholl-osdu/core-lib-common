@@ -99,7 +99,8 @@ public final class SwaggerDoc {
     public static final String DISTANCE_VALIDATION_MIN_MSG = "'distance' must be greater than 0";
     public static final String DISTANCE_VALIDATION_MAX_MSG = "'distance' cannot be greater than 1.5E203";
     public static final String DISTANCE_POINT_VALIDATION_NON_NULL_MSG = "'byDistance.coordinate' can not be null";
-    public static final String INTERSECTION_VALIDATION_NON_NULL_MSG = "'byIntersection.polygon' can not be null";
+    public static final String INTERSECTION_VALIDATION_NON_NULL_MSG = "'byIntersection.polygons' can not be null";
+    public static final String WITHIN_POLYGON_VALIDATION_NON_NULL_MSG = "'byWithinPolygon.points' can not be null";
     public static final String GEOPOLYGON_POINT_VALIDATION_NON_NULL_MSG = "'byGeoPolygon.point' list can not be null or empty";
     public static final String LATITUDE_VALIDATION_RANGE_MSG = "'latitude' value is out of the range [-90, 90]";
     public static final String LONGITUDE_VALIDATION_RANGE_MSG = "'longitude' value is out of the range [-180, 180]";
@@ -109,6 +110,7 @@ public final class SwaggerDoc {
     public static final String QUERY_BY_DISTANCE_DESCRIPTION = "Filters documents that include only hits that exist within a specific distance from a geo point.";
     public static final String QUERY_BY_GEO_POLYGON_DESCRIPTION = "A query allowing to filter hits that only fall within a polygon of points.";
     public static final String QUERY_BY_INTERSECTING_POLYGON_DESCRIPTION = "A query allowing to filter documents by intersecting polygons";
+    public static final String QUERY_BY_WITHIN_POLYGON_DESCRIPTION = "A query allowing to filter documents by checking if any points are within polygon on document";
     public static final String TOPLEFT_BOUNDING_BOX_DESCRIPTION = "Top left corner of the bounding box.";
     public static final String BOTTOMRIGHT_BOUNDING_BOX_DESCRIPTION = "Bottom right corner of the bounding box.";
     public static final String DISTANCE_DESCRIPTION = "The radius of the circle centered on the specified location. Points which fall into this circle are considered to be matches.";
