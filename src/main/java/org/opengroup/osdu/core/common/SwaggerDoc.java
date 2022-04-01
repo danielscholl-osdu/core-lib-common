@@ -108,6 +108,7 @@ public final class SwaggerDoc {
     public static final String QUERY_BY_BOUNDING_BOX_DESCRIPTION = "A query allowing to filter hits based on a point location within a bounding box.";
     public static final String QUERY_BY_DISTANCE_DESCRIPTION = "Filters documents that include only hits that exist within a specific distance from a geo point.";
     public static final String QUERY_BY_GEO_POLYGON_DESCRIPTION = "A query allowing to filter hits that only fall within a polygon of points.";
+    public static final String QUERY_BY_INTERSECTING_POLYGON_DESCRIPTION = "A query allowing to filter documents by intersecting polygons";
     public static final String TOPLEFT_BOUNDING_BOX_DESCRIPTION = "Top left corner of the bounding box.";
     public static final String BOTTOMRIGHT_BOUNDING_BOX_DESCRIPTION = "Bottom right corner of the bounding box.";
     public static final String DISTANCE_DESCRIPTION = "The radius of the circle centered on the specified location. Points which fall into this circle are considered to be matches.";
