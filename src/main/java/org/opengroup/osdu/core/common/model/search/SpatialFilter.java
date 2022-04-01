@@ -93,4 +93,14 @@ public class SpatialFilter {
         @ApiModelProperty(value = SwaggerDoc.POINTS_GEO_POLYGON_DESCRIPTION)
         private List<Point> points;
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ByIntersection {
+        @NotNull(message = SwaggerDoc.INTERSECTION_VALIDATION_NON_NULL_MSG)
+        @Valid
+        @ApiModelProperty(value = SwaggerDoc.POINTS_GEO_POLYGON_DESCRIPTION)
+        private List<Point> polygon;
+    }
 }

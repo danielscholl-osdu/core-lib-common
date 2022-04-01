@@ -99,6 +99,7 @@ public final class SwaggerDoc {
     public static final String DISTANCE_VALIDATION_MIN_MSG = "'distance' must be greater than 0";
     public static final String DISTANCE_VALIDATION_MAX_MSG = "'distance' cannot be greater than 1.5E203";
     public static final String DISTANCE_POINT_VALIDATION_NON_NULL_MSG = "'byDistance.coordinate' can not be null";
+    public static final String INTERSECTION_VALIDATION_NON_NULL_MSG = "'byIntersection.polygon' can not be null";
     public static final String GEOPOLYGON_POINT_VALIDATION_NON_NULL_MSG = "'byGeoPolygon.point' list can not be null or empty";
     public static final String LATITUDE_VALIDATION_RANGE_MSG = "'latitude' value is out of the range [-90, 90]";
     public static final String LONGITUDE_VALIDATION_RANGE_MSG = "'longitude' value is out of the range [-180, 180]";
