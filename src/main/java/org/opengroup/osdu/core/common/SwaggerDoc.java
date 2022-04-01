@@ -114,8 +114,10 @@ public final class SwaggerDoc {
     public static final String DISTANCE_DESCRIPTION = "The radius of the circle centered on the specified location. Points which fall into this circle are considered to be matches.";
     public static final String POINT_DISTANCE_DESCRIPTION = "Center point of the query.";
     public static final String POINTS_GEO_POLYGON_DESCRIPTION = "Polygon defined by a set of points.";
+    public static final String POLYGONS_DESCRIPTION = "List of polygons each defined by a set of points.";
     public static final String LATITUDE = "Latitude of point.";
     public static final String LONGITUDE = "Longitude of point.";
+    public static final String POLYGON = "List of points making up a polygon";
 
     // FILTER CACHE SYNC
     public static final String FILTER_CACHE_CRON_TAG = "Synchronize Attribute Filter Cache";
