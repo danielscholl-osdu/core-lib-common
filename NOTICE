@@ -8,7 +8,7 @@ Apache-2.0
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Apache Commons Codec (from https://commons.apache.org/proper/commons-codec/)
+- Apache Commons Codec (from http://commons.apache.org/proper/commons-codec/, https://commons.apache.org/proper/commons-codec/)
 - Apache Commons Lang (from http://commons.apache.org/proper/commons-lang/)
 - Apache Commons Logging (from http://commons.apache.org/logging/, http://commons.apache.org/proper/commons-logging/)
 - Apache HttpCore (from http://hc.apache.org/httpcomponents-core-ga, http://hc.apache.org/httpcomponents-core-ga/)
@@ -30,15 +30,15 @@ The following software have components provided under the terms of this license:
 - Javassist (from http://www.javassist.org/)
 - Objenesis (from http://objenesis.org)
 - PowerMock (from http://www.powermock.org, https://repo1.maven.org/maven2/org/powermock/powermock-api-mockito)
+- RxJava (from https://github.com/ReactiveX/RxJava)
 - SnakeYAML (from http://code.google.com/p/snakeyaml/, http://www.snakeyaml.org)
 - Spring Boot AutoConfigure (from https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-autoconfigure, https://spring.io/projects/spring-boot)
 - error-prone annotations (from https://repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations)
 - jackson-databind (from http://github.com/FasterXML/jackson, http://wiki.fasterxml.com/JacksonHome)
-- javax.inject (from http://code.google.com/p/atinject/)
+- javax.inject (from http://code.google.com/p/atinject/, https://repo1.maven.org/maven2/org/glassfish/hk2/external/javax.inject)
 - powermock-module-junit4 (from http://www.powermock.org)
 - powermock-module-junit4-common (from https://repo1.maven.org/maven2/org/powermock/powermock-module-junit4-common)
 - powermock-reflect (from https://repo1.maven.org/maven2/org/powermock/powermock-reflect)
-- rxjava (from https://github.com/ReactiveX/RxJava)
 - tomcat-embed-core (from http://tomcat.apache.org/)
 
 ========================================================================
@@ -47,7 +47,7 @@ BSD-2-Clause
 The following software have components provided under the terms of this license:
 
 - Hamcrest (from http://hamcrest.org/JavaHamcrest/)
-- Hamcrest Core (from https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core)
+- Hamcrest Core (from http://hamcrest.org/, https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core)
 - Reflections (from http://code.google.com/p/reflections/, http://github.com/ronmamo/reflections)
 
 ========================================================================
@@ -55,9 +55,9 @@ BSD-3-Clause
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Apache Commons Codec (from https://commons.apache.org/proper/commons-codec/)
+- Apache Commons Codec (from http://commons.apache.org/proper/commons-codec/, https://commons.apache.org/proper/commons-codec/)
 - Hamcrest (from http://hamcrest.org/JavaHamcrest/)
-- Hamcrest Core (from https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core)
+- Hamcrest Core (from http://hamcrest.org/, https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core)
 - Reflections (from http://code.google.com/p/reflections/, http://github.com/ronmamo/reflections)
 - SnakeYAML (from http://code.google.com/p/snakeyaml/, http://www.snakeyaml.org)
 
