@@ -51,6 +51,14 @@ public class SpatialFilter {
     @ApiModelProperty(value = SwaggerDoc.QUERY_BY_GEO_POLYGON_DESCRIPTION)
     private ByGeoPolygon byGeoPolygon;
 
+    @Valid
+    @ApiModelProperty(value = SwaggerDoc.QUERY_BY_INTERSECTING_POLYGON_DESCRIPTION)
+    private ByIntersection byIntersection;
+
+    @Valid
+    @ApiModelProperty(value = SwaggerDoc.QUERY_BY_INTERSECTING_POLYGON_DESCRIPTION)
+    private ByWithinPolygon byWithinPolygon;
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -89,6 +97,26 @@ public class SpatialFilter {
     public static class ByGeoPolygon {
 
         @NotEmpty(message = SwaggerDoc.GEOPOLYGON_POINT_VALIDATION_NON_NULL_MSG)
+        @Valid
+        @ApiModelProperty(value = SwaggerDoc.POINTS_GEO_POLYGON_DESCRIPTION)
+        private List<Point> points;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ByIntersection {
+        @NotNull(message = SwaggerDoc.INTERSECTION_VALIDATION_NON_NULL_MSG)
+        @Valid
+        @ApiModelProperty(value = SwaggerDoc.POLYGONS_DESCRIPTION)
+        private List<Polygon> polygons;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ByWithinPolygon {
+        @NotNull(message = SwaggerDoc.WITHIN_POLYGON_VALIDATION_NON_NULL_MSG)
         @Valid
         @ApiModelProperty(value = SwaggerDoc.POINTS_GEO_POLYGON_DESCRIPTION)
         private List<Point> points;

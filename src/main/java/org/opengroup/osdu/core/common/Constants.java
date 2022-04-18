@@ -58,6 +58,8 @@ public final class Constants {
     public static final String ANY_CRS_MULTILINE_STRING = "AnyCrsMultiLineString";
     public static final String PERSISTABLE_REFERENCE_CRS = "persistableReferenceCrs";
     public static final String ANY_CRS_FEATURE_COLLECTION = "AnyCrsFeatureCollection";
+    public static final String COORDINATE_REFERENCE_SYSTEM_ID = "CoordinateReferenceSystemID";
+    public static final String VERTICAL_UNIT_ID = "VerticalUnitID";
     public static final String ANY_CRS_GEOMETRY_COLLECTION = "AnyCrsGeometryCollection";
     public static final String PERSISTABLE_REFERENCE_UNIT_Z = "persistableReferenceUnitZ";
 
