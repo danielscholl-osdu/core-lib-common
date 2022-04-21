@@ -16,7 +16,7 @@ package org.opengroup.osdu.core.common.util;
 
 import org.opengroup.osdu.core.common.SwaggerDoc;
 
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
 public class KindParser {
@@ -25,9 +25,10 @@ public class KindParser {
             throw new IllegalArgumentException(SwaggerDoc.KIND_VALIDATION_CAN_NOT_BE_NULL_OR_EMPTY);
         }
 
-        List<String> kinds = new LinkedList<>();
+        List<String> kinds;
         if (kind instanceof String) {
-            kinds.add((String) kind);
+            // To remove extra spaces before and/or after the delimiter
+            kinds = Arrays.asList(((String)kind).trim().split("\\s*,\\s*"));
         } else if (kind instanceof List<?>) {
             kinds = (List<String>) kind;
             // The above case is subtle. It won't throw exception even if kind is a list of integers or mixed types.
