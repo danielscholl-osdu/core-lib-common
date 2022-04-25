@@ -71,6 +71,21 @@ public class MultiKindValidatorTest {
     }
 
     @Test
+    public void validMultiKindsSeparatedByComma() {
+        assertTrue(this.sut.isValid("A1:S1:E1:1.0.0,A2:S2:E2:2.0.0,A3:S3:E3:2.0.0", this.context));
+    }
+
+    @Test
+    public void validMultiKindsSeparatedByCommaAndWhitespace() {
+        assertTrue(this.sut.isValid("   A1:S1:E1:1.0.0 , A2:S2:E2:2.0.0,  A3:S3:E3:2.0.0  ", this.context));
+    }
+
+    @Test
+    public void invalidMultiKindsSeparatedByComma() {
+        assertFalse(this.sut.isValid("A1:S1:E1:1.0.0, ,A2:S2:E2:2.0.0,A3:S3:E3:2.0.0", this.context));
+    }
+
+    @Test
     public void simpleKindWithInvalidFormat() {
         assertFalse(this.sut.isValid("*:*:*:", this.context));
         assertFalse(this.sut.isValid("authority:source:entity:V1.0.0", this.context));

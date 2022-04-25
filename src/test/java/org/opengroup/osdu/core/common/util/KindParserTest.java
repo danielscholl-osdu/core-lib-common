@@ -75,4 +75,26 @@ public class KindParserTest {
         assertNotNull(query.kind);
         KindParser.parse(query.kind);
     }
+
+    @Test
+    public void validTypeOfMultiKindsSeparatedWithComma() {
+        Gson gson = new Gson();
+        String jsonText = "{ \"kind\": \"a:s:e:1.0.0,a:s:e:2.0.0\" }";
+        FakeQuery query = gson.fromJson(jsonText, FakeQuery.class);
+        List<String> kinds = KindParser.parse(query.kind);
+        assertEquals(2, kinds.size());
+        assertEquals("a:s:e:1.0.0", kinds.get(0));
+        assertEquals("a:s:e:2.0.0", kinds.get(1));
+    }
+
+    @Test
+    public void validTypeOfMultiKindsSeparatedWithCommaAndWhitespace() {
+        Gson gson = new Gson();
+        String jsonText = "{ \"kind\": \"  a:s:e:1.0.0  , a:s:e:2.0.0  \" }";
+        FakeQuery query = gson.fromJson(jsonText, FakeQuery.class);
+        List<String> kinds = KindParser.parse(query.kind);
+        assertEquals(2, kinds.size());
+        assertEquals("a:s:e:1.0.0", kinds.get(0));
+        assertEquals("a:s:e:2.0.0", kinds.get(1));
+    }
 }
