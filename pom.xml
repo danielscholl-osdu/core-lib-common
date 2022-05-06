@@ -30,7 +30,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.main.basedir>${project.basedir}</project.main.basedir>
     <spring-boot.version>2.4.12</spring-boot.version>
-    <jackson.version>2.13.2</jackson.version>
+    <jackson-bom.version>2.13.2</jackson-bom.version>
     <jackson-databind.version>2.13.2.2</jackson-databind.version>
     <netty-bom.version>4.1.70.Final</netty-bom.version>
     <snakeyaml.version>1.26</snakeyaml.version>
@@ -60,7 +60,7 @@
       <dependency>
         <groupId>com.fasterxml.jackson</groupId>
         <artifactId>jackson-bom</artifactId>
-        <version>${jackson.version}</version>
+        <version>${jackson-bom.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
