@@ -14,6 +14,8 @@
 
 package org.opengroup.osdu.core.common.cache;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 public interface ICache<K, O> {
 
     void put(K k, O o);
@@ -23,4 +25,15 @@ public interface ICache<K, O> {
     void delete(K k);
 
     void clearAll();
+
+    /**
+     * Increment and decrement operation expects O to be numerical (integral) value
+     */
+    default Long increment(K key) {
+        throw new NotImplementedException();
+    }
+
+    default Long decrement(K key) {
+        throw new NotImplementedException();
+    }
 }
