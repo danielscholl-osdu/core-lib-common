@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 
-class JsonCodec<K, V> implements RedisCodec<K, V> {
+public class JsonCodec<K, V> implements RedisCodec<K, V> {
 
     private final Class<K> classOfK;
     private final Class<V> classOfV;

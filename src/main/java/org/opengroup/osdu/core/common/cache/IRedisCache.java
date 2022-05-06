@@ -15,6 +15,8 @@
  */
 package org.opengroup.osdu.core.common.cache;
 
+import com.lambdaworks.redis.codec.RedisCodec;
+
 /**
  * Interface that extends ICache with Redis specific functionalities.
  * @param <K>
@@ -60,4 +62,9 @@ public interface IRedisCache<K, O> extends ICache<K, O> {
      * Decrement the integer value of a key by the given amount
      */
     Long decrementBy(K key, long amount);
+
+    /**
+     * Get codec for performing encoding and decoding of key and values present in redis cache
+     */
+    RedisCodec<K, O> getCodec(Class<K> classOfK, Class<O> classOfO);
 }
