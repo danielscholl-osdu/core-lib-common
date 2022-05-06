@@ -21,6 +21,7 @@ import com.lambdaworks.redis.SetArgs;
 import com.lambdaworks.redis.api.StatefulRedisConnection;
 import com.lambdaworks.redis.api.sync.RedisCommands;
 import com.lambdaworks.redis.codec.CompressionCodec;
+import com.lambdaworks.redis.codec.RedisCodec;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,8 +40,7 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
         if (clientOptions != null) {
             client.setOptions(clientOptions);
         }
-        connection = client.connect(
-                CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP));
+        connection = client.connect(this.getCodec(classOfK, classOfV));
         commands = connection.sync();
         expireLengthSeconds = expTimeSeconds;
     }
@@ -52,8 +52,7 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
         if (clientOptions != null) {
             client.setOptions(clientOptions);
         }
-        connection = client.connect(
-                CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP));
+        connection = client.connect(this.getCodec(classOfK, classOfV));
         commands = connection.sync();
         expireLengthSeconds = expTimeSeconds;
     }
@@ -170,5 +169,10 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
     @Override
     public Long decrementBy(K key, long amount) {
         return commands.decrby(key, amount);
+    }
+
+    @Override
+    public RedisCodec<K, V> getCodec(Class<K> classOfK, Class<V> classOfV) {
+        return CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP);
     }
 }
