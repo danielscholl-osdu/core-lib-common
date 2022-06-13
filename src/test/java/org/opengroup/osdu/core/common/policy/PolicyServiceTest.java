@@ -31,6 +31,10 @@ import org.opengroup.osdu.core.common.model.policy.BatchPolicyResponse;
 import org.opengroup.osdu.core.common.model.policy.PolicyRequest;
 import org.opengroup.osdu.core.common.model.policy.PolicyResponse;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 @RunWith(MockitoJUnitRunner.class)
 public class PolicyServiceTest {
 
@@ -64,6 +68,41 @@ public class PolicyServiceTest {
         policyRequest.setInput(getValidPolicy());
 
         PolicyResponse policyResponse = policyService.evaluatePolicy(policyRequest);
+        Assert.assertNotNull(policyResponse);
+        ArgumentCaptor<HttpRequest> httpRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.verify(httpClient, Mockito.times(1)).send(httpRequestCaptor.capture());
+    }
+
+    @Test
+    public void getCompiledPolicy_allow_translateESEndpoint() throws PolicyException {
+        HttpResponse httpResponse = new HttpResponse();
+        httpResponse.setResponseCode(200);
+        httpResponse.setBody("{\n" +
+                "        \"query\": {\n" +
+                "            \"bool\": {\n" +
+                "                \"should\": [\n" +
+                "                    {\"bool\": {\"filter\": [{\"terms\": {\"acl.owners\": [\"AAA\", \"BBB\"]}}]}},\n" +
+                "                    {\"bool\": {\"filter\": [{\"terms\": {\"acl.viewers\": [\"AAA\", \"BBB\"]}}]}}\n" +
+                "                ]\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }");
+        Mockito.when(httpClient.send(Matchers.any())).thenReturn(httpResponse);
+
+
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("groups", new String[]{"AAA", "BBB"});
+        Map<String, Object> input = new HashMap<>();
+        input.put("user", userData);
+        input.put("operation", "view");
+        ArrayList <String> unknownsList = new ArrayList<>();
+        unknownsList.add("input.record");
+
+        String policyResponse = policyService.getCompiledPolicy(
+                "data.search.allow == true",
+                unknownsList,
+                input
+        );
         Assert.assertNotNull(policyResponse);
         ArgumentCaptor<HttpRequest> httpRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
         Mockito.verify(httpClient, Mockito.times(1)).send(httpRequestCaptor.capture());

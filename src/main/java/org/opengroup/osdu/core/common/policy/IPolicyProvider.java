@@ -18,9 +18,14 @@ import org.opengroup.osdu.core.common.model.policy.BatchPolicyResponse;
 import org.opengroup.osdu.core.common.model.policy.PolicyRequest;
 import org.opengroup.osdu.core.common.model.policy.PolicyResponse;
 
+import java.util.List;
+import java.util.Map;
+
 public interface IPolicyProvider {
 
     PolicyResponse evaluatePolicy(PolicyRequest policy) throws PolicyException;
+
+    String getCompiledPolicy(String ruleToBeChecked, List<String> unknownsList, Map<String, Object> input) throws PolicyException;
 
     BatchPolicyResponse evaluateBatchPolicy(PolicyRequest policy) throws PolicyException;
 }
