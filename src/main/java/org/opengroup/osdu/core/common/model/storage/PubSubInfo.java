@@ -31,6 +31,7 @@ public class PubSubInfo {
 	private String id;
 	private String kind;
 	private OperationType op;
+	private String recordBlocks;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@Builder.Default

@@ -61,6 +61,12 @@ public class RecordMetadata {
 	// epoch time
 	private long modifyTime;
 
+	/**
+	* storing the hash of the data block
+	* @see org.opengroup.osdu.core.common.model.storage.RecordData
+	*/
+	private String dataHash;
+
 	public RecordMetadata(Record record) {
 		this.id = record.getId();
 		this.kind = record.getKind();
