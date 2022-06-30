@@ -31,6 +31,11 @@ public class PubSubInfo {
 	private String id;
 	private String kind;
 	private OperationType op;
+
+	/**
+	 * This specifies the changes that have been made to the record
+	 * e.g. "data" "data metadata" "data metadata+" "metadata-" ...
+	 */
 	private String recordBlocks;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
