@@ -86,7 +86,9 @@ The following software have components provided under the terms of this license:
 - powermock-module-junit4-common (from https://repo1.maven.org/maven2/org/powermock/powermock-module-junit4-common)
 - powermock-reflect (from https://repo1.maven.org/maven2/org/powermock/powermock-reflect)
 - swagger-annotations (from https://repo1.maven.org/maven2/io/swagger/core/v3/swagger-annotations, https://repo1.maven.org/maven2/io/swagger/swagger-annotations)
+- swagger-core (from https://repo1.maven.org/maven2/io/swagger/swagger-core)
 - swagger-jaxrs (from https://repo1.maven.org/maven2/io/swagger/swagger-jaxrs)
+- swagger-models (from https://repo1.maven.org/maven2/io/swagger/core/v3/swagger-models, https://repo1.maven.org/maven2/io/swagger/swagger-models)
 - tomcat-embed-core (from http://tomcat.apache.org/)
 - tomcat-embed-websocket (from http://tomcat.apache.org/, https://tomcat.apache.org/)
 
