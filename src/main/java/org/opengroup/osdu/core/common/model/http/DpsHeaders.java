@@ -40,6 +40,7 @@ public class DpsHeaders {
     public static final String FRAME_OF_REFERENCE = "frame-of-reference";
     public static final String USER_ID = "x-user-id";
     public static final String APP_ID = "x-app-id";
+    public static final String X_ON_BEHALF_OF = "x-on-behalf-of";
 
     private static final HashSet<String> headerKeys = new HashSet<>();
 
@@ -56,6 +57,7 @@ public class DpsHeaders {
         headerKeys.add(KIND_VERSION);
         headerKeys.add(USER_ID);
         headerKeys.add(APP_ID);
+        headerKeys.add(X_ON_BEHALF_OF);
     }
 
     private final Map<String, String> headers = new HashMap<>();
@@ -154,6 +156,10 @@ public class DpsHeaders {
 
     public String getUserId() {
         return this.getHeader(USER_ID);
+    }
+
+    public String getXOnBehalfOf() {
+        return this.getHeader(X_ON_BEHALF_OF);
     }
 
     public String getAppId() {
