@@ -26,6 +26,10 @@ import org.opengroup.osdu.core.common.model.policy.PolicyRequest;
 import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 import org.opengroup.osdu.core.common.model.policy.PolicyResponse;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class PolicyService implements IPolicyProvider {
 
     public PolicyService(PolicyAPIConfig config,
@@ -49,6 +53,18 @@ public class PolicyService implements IPolicyProvider {
         HttpResponse result = this.httpClient.send(
                 HttpRequest.post(policyRequest).url(url).headers(this.headers.getHeaders()).build());
         return this.getResult(result, PolicyResponse.class);
+    }
+
+    @Override
+    public String getCompiledPolicy(String ruleToCheck, List<String> unknownsList, Map<String, Object> input) throws PolicyException {
+        String url = this.createUrl("/translate");
+        Map<String, Object> compileQueryBody = new HashMap<>();
+        compileQueryBody.put("query", ruleToCheck);
+        compileQueryBody.put("unknowns", unknownsList);
+        compileQueryBody.put("input", input);
+        HttpResponse result = this.httpClient.send(
+                HttpRequest.post(compileQueryBody).url(url).headers(this.headers.getHeaders()).build());
+        return result.getBody();
     }
 
     @Override
