@@ -26,4 +26,11 @@ public class RecordProcessing {
 	private RecordData recordData;
 	private RecordMetadata recordMetadata;
 	private OperationType operationType;
+	private String recordBlocks;
+
+	public RecordProcessing(RecordData recordData, RecordMetadata recordMetadata, OperationType operationType) {
+		this.recordData = recordData;
+		this.recordMetadata = recordMetadata;
+		this.operationType = operationType;
+	}
 }
