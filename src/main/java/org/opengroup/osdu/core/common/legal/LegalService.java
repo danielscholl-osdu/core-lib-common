@@ -16,6 +16,7 @@ package org.opengroup.osdu.core.common.legal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.TimeZone;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.http.IHttpClient;
@@ -54,6 +55,7 @@ public class LegalService implements ILegalProvider {
     public LegalTag create(LegalTag lt) throws LegalException {
         String body;
         try {
+            objectMapper.setTimeZone(TimeZone.getDefault());
             body = objectMapper.writeValueAsString(lt);
         } catch (JsonProcessingException e) {
             throw new LegalException("Cannot build request from legal tag", null);

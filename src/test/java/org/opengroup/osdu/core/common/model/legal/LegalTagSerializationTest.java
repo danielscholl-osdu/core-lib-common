@@ -16,6 +16,7 @@ package org.opengroup.osdu.core.common.model.legal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.TimeZone;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -44,6 +45,7 @@ public class LegalTagSerializationTest {
         properties.setExportClassification("exportClassification");
         legalTag.setProperties(properties);
 
+        objectMapper.setTimeZone(TimeZone.getDefault());
         String result = objectMapper.writeValueAsString(legalTag);
 
         Assert.assertEquals("{\"id\":123,\"name\":\"name\",\"description\":\"desc\"," +
