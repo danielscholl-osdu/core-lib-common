@@ -25,8 +25,8 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Data
@@ -80,7 +80,7 @@ public class SpatialFilter {
     @AllArgsConstructor
     public static class ByDistance {
 
-        @Min(value = 0, message = SwaggerDoc.DISTANCE_VALIDATION_MIN_MSG)
+        @Positive(message = SwaggerDoc.DISTANCE_VALIDATION_MIN_MSG)
         @Max(value = (long) Double.MAX_VALUE, message = SwaggerDoc.DISTANCE_VALIDATION_MAX_MSG)
         @ApiModelProperty(value = SwaggerDoc.DISTANCE_DESCRIPTION, dataType = "java.lang.Double", example = "1500")
         private double distance;

@@ -75,6 +75,13 @@ public class SpatialFilterValidator implements ConstraintValidator<ValidSpatialF
             }
         }
 
+        if (spatialFilter.getByDistance() != null) {
+            double distance = spatialFilter.getByDistance().getDistance();
+            if (distance <= 0.0) {
+                    return getViolation(context, "'distance' must be greater than 0");
+            }
+        }
+
         return true;
     }
 
