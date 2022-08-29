@@ -38,7 +38,10 @@ import org.opengroup.osdu.core.common.model.legal.LegalException;
 import org.opengroup.osdu.core.common.model.legal.LegalTag;
 import org.opengroup.osdu.core.common.model.legal.Properties;
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LegalServiceTest {
@@ -129,5 +132,94 @@ public class LegalServiceTest {
         ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
         Mockito.verify(httpClient).send(captor.capture());
         assertEquals(ROOT_URL + "/legaltags/any",captor.getValue().getUrl());
+    }
+    
+    @Test
+    public void should_returnLegalTag_when_legalTagIsCreatedWithExtensionProperties() throws LegalException {
+        HttpResponse httpResponse = new HttpResponse();
+        httpResponse.setResponseCode(200);
+        httpResponse.setBody("{\n" +
+                "    \"name\": \"legaltagName\",\n" +
+                "    \"description\": \"\",\n" +
+                "    \"properties\": {\n" +
+                "        \"countryOfOrigin\": [\n" +
+                "            \"US\"\n" +
+                "        ],\n" +
+                "        \"contractId\": \"A1234\",\n" +
+                "        \"expirationDate\": \"2099-12-31\",\n" +
+                "        \"originator\": \"OSDU\",\n" +
+                "        \"dataType\": \"Third Party Data\",\n" +
+                "        \"securityClassification\": \"Public\",\n" +
+                "        \"personalData\": \"No Personal Data\",\n" +
+                "        \"exportClassification\": \"EAR99\",\n" +
+                "        \"extensionProperties\":{\n" +
+                "            \"EffectiveDate\":\"2022-06-01T00:00:00\",\n" +
+                "            \"AffiliateEnablementIndicator\":true,\n" +
+                "            \"AgreementParties\":[\n" +
+                "                {\n" +
+                "                    \"AgreementPartyType\":\"EnabledAffiliate\",\n" +
+                "                    \"AgreementParty\":\"osdu:master-data--Organisation:TestCompany\"\n" +
+                "                }\n" +
+                "            ]\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+        Mockito.when(httpClient.send(Matchers.any())).thenReturn(httpResponse);
+
+        LegalTag legalTag = new LegalTag();
+        legalTag.setName("legaltagName");
+        legalTag.setProperties(new Properties());
+        legalTag.getProperties().setCountryOfOrigin(Collections.singletonList("US"));
+        legalTag.getProperties().setContractId("A1234");
+        legalTag.getProperties().setExpirationDate(Date.valueOf("2099-12-31"));
+        legalTag.getProperties().setOriginator("OSDU");
+        legalTag.getProperties().setDataType("Third Party Data");
+        legalTag.getProperties().setSecurityClassification("Public");
+        legalTag.getProperties().setPersonalData("No Personal Data");
+        legalTag.getProperties().setExportClassification("EAR99");
+        
+        Map<String, Object> extensionProperties = new LinkedHashMap <String, Object>();
+        extensionProperties.put("EffectiveDate", "2022-06-01T00:00:00");
+        extensionProperties.put("AffiliateEnablementIndicator", true);
+        Map<String, Object> agreementParty = new LinkedHashMap <String, Object>();
+        agreementParty.put("AgreementPartyType", "EnabledAffiliate");
+        agreementParty.put("AgreementParty", "osdu:master-data--Organisation:TestCompany");
+        extensionProperties.put("AgreementParties", Arrays.asList(agreementParty));
+        legalTag.getProperties().setExtensionProperties(extensionProperties);
+
+        LegalTag returnedLegalTag = legalService.create(legalTag);
+        Assert.assertNotNull(returnedLegalTag);
+        ArgumentCaptor<HttpRequest> httpRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.verify(httpClient, Mockito.times(1)).send(httpRequestCaptor.capture());
+        JsonParser parser = new JsonParser();
+        JsonElement expectedJson = parser.parse("{\n" +
+                "    \"id\": -1,\n" +
+                "    \"name\": \"legaltagName\",\n" +
+                "    \"description\": \"\",\n" +
+                "    \"properties\": {\n" +
+                "        \"countryOfOrigin\": [\"US\"],\n" +
+                "        \"contractId\": \"A1234\",\n" +
+                "        \"expirationDate\": \"2099-12-31\",\n" +
+                "        \"originator\": \"OSDU\",\n" +
+                "        \"dataType\": \"Third Party Data\",\n" +
+                "        \"securityClassification\": \"Public\",\n" +
+                "        \"personalData\": \"No Personal Data\",\n" +
+                "        \"exportClassification\": \"EAR99\",\n" +
+                "        \"extensionProperties\":{\n" +
+                "            \"EffectiveDate\":\"2022-06-01T00:00:00\",\n" +
+                "            \"AffiliateEnablementIndicator\":true,\n" +
+                "            \"AgreementParties\":[\n" +
+                "                {\n" +
+                "                    \"AgreementPartyType\":\"EnabledAffiliate\",\n" +
+                "                    \"AgreementParty\":\"osdu:master-data--Organisation:TestCompany\"\n" +
+                "                }\n" +
+                "            ]\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"isValid\": false\n" +
+                "}");
+        JsonElement actualJson = parser.parse(httpRequestCaptor.getValue().getBody());
+        System.out.println(httpRequestCaptor.getValue().getBody());
+        Assert.assertEquals(expectedJson, actualJson);
     }
 }
