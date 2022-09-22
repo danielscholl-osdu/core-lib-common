@@ -62,10 +62,10 @@ public class RecordMetadata {
 	private long modifyTime;
 
 	/**
-	* storing the hash of the data block
+	* storing the hash of the data and meta block
 	* @see org.opengroup.osdu.core.common.model.storage.RecordData
 	*/
-	private String dataHash;
+	private Map<String, String> hash;
 
 	public RecordMetadata(Record record) {
 		this.id = record.getId();
