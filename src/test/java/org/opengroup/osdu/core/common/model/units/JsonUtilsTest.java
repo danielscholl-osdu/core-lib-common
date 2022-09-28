@@ -491,6 +491,20 @@ public class JsonUtilsTest {
         assertNull(splitJsonPropertiesByDots(null));
     }
 
+  @Test
+  public void getJsonPropertyValueFromJsonObject_shouldReturnEmptyListOfProperty_whenNestedArrayItemsPropertyIsNotPresented() {
+
+        String propertyName = "markers[].value";
+
+        when(mockJsonArray.isJsonArray()).thenReturn(true);
+        when(mockJsonObject.getAsJsonArray("markers")).thenReturn(null);
+        when(mockJsonObject.get("value")).thenReturn(null);
+
+        List<JsonElement> result = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
+
+        assertEquals(0, result.size());
+  }
+
     private void setupJsonObjectMock() {
         when(mockJsonObject.toString()).thenReturn(JSON_TO_STRING_VALUE);
     }
