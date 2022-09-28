@@ -219,7 +219,6 @@ public class LegalServiceTest {
                 "    \"isValid\": false\n" +
                 "}");
         JsonElement actualJson = parser.parse(httpRequestCaptor.getValue().getBody());
-        System.out.println(httpRequestCaptor.getValue().getBody());
         Assert.assertEquals(expectedJson, actualJson);
     }
 }
