@@ -23,6 +23,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class LegalTagSerializationTest {
 
@@ -120,5 +122,84 @@ public class LegalTagSerializationTest {
         LegalTag legalTag = objectMapper.readValue(input, LegalTag.class);
 
         Assert.assertEquals(Date.valueOf("2019-10-12").toLocalDate(), legalTag.getProperties().getExpirationDate().toLocalDate());
+    }
+    
+    @Test
+    public void shouldSuccessfullySerializeLegalTagWithExtensionProperties() throws JsonProcessingException {
+        final LegalTag legalTag = new LegalTag();
+        legalTag.setId(123L);
+        legalTag.setName("name");
+        legalTag.setDescription("desc");
+        final Properties properties = new Properties();
+        properties.setContractId("contrId");
+        properties.setDataType("dataType");
+        properties.setCountryOfOrigin(Arrays.asList("US", "BY"));
+        properties.setExpirationDate(Date.valueOf("2020-12-20"));
+        properties.setOriginator("company");
+        properties.setSecurityClassification("securityClassification");
+        properties.setPersonalData("data");
+        properties.setExportClassification("exportClassification");
+        
+        Map<String, Object> extensionProperties = new LinkedHashMap <String, Object>();
+        extensionProperties.put("EffectiveDate", "2022-06-01T00:00:00");
+        extensionProperties.put("AffiliateEnablementIndicator", true);
+        Map<String, Object> agreementParty = new LinkedHashMap <String, Object>();
+        agreementParty.put("AgreementPartyType", "EnabledAffiliate");
+        agreementParty.put("AgreementParty", "osdu:master-data--Organisation:TestCompany");
+        extensionProperties.put("AgreementParties", Arrays.asList(agreementParty));
+        properties.setExtensionProperties(extensionProperties);
+        
+        legalTag.setProperties(properties);
+
+        objectMapper.setTimeZone(TimeZone.getDefault());
+        String result = objectMapper.writeValueAsString(legalTag);
+
+        Assert.assertEquals("{\"id\":123,\"name\":\"name\",\"description\":\"desc\"," +
+                "\"properties\":{\"countryOfOrigin\":[\"US\",\"BY\"],\"contractId\":\"contrId\"," +
+                "\"expirationDate\":\"2020-12-20\",\"originator\":\"company\"," +
+                "\"dataType\":\"dataType\",\"securityClassification\":\"securityClassification\"," +
+                "\"personalData\":\"data\",\"exportClassification\":\"exportClassification\"," +
+                "\"extensionProperties\":{\"EffectiveDate\":\"2022-06-01T00:00:00\"," +
+                "\"AffiliateEnablementIndicator\":true," +
+                "\"AgreementParties\":[{\"AgreementPartyType\":\"EnabledAffiliate\"," +
+                "\"AgreementParty\":\"osdu:master-data--Organisation:TestCompany\"}]}}," +
+                "\"isValid\":false}", result);
+    }
+
+    @Test
+    public void shouldSuccessfullyDeserializeLegalTagWithExtensionProperties() throws IOException {
+        final String input = "{\"id\":123,\"name\":\"name\",\"description\":\"desc\"," +
+                "\"properties\":{\"countryOfOrigin\":[\"US\",\"BY\"],\"contractId\":\"contrId\"," +
+                "\"expirationDate\":\"2020-12-20\",\"originator\":\"company\"," +
+                "\"dataType\":\"dataType\",\"securityClassification\":\"securityClassification\"," +
+                "\"personalData\":\"data\",\"exportClassification\":\"exportClassification\"," +
+                "\"extensionProperties\":{\"EffectiveDate\":\"2022-06-01T00:00:00\"," +
+                "\"AffiliateEnablementIndicator\":true," +
+                "\"AgreementParties\":[{\"AgreementPartyType\":\"EnabledAffiliate\"," +
+                "\"AgreementParty\":\"osdu:master-data--Organisation:TestCompany\"}]}}," +
+                "\"isValid\":false}";
+
+        LegalTag legalTag = objectMapper.readValue(input, LegalTag.class);
+
+        Assert.assertEquals(new Long(123L), legalTag.getId());
+        Assert.assertEquals("name", legalTag.getName());
+        Assert.assertEquals("desc", legalTag.getDescription());
+        Assert.assertEquals("contrId", legalTag.getProperties().getContractId());
+        Assert.assertEquals(Arrays.asList("US","BY"), legalTag.getProperties().getCountryOfOrigin());
+        Assert.assertEquals(Date.valueOf("2020-12-20"), legalTag.getProperties().getExpirationDate());
+        Assert.assertEquals("company", legalTag.getProperties().getOriginator());
+        Assert.assertEquals("dataType", legalTag.getProperties().getDataType());
+        Assert.assertEquals("securityClassification", legalTag.getProperties().getSecurityClassification());
+        Assert.assertEquals("data", legalTag.getProperties().getPersonalData());
+        Assert.assertEquals("exportClassification", legalTag.getProperties().getExportClassification());
+        
+        Map<String, Object> extensionProperties = new LinkedHashMap <String, Object>();
+        extensionProperties.put("EffectiveDate", "2022-06-01T00:00:00");
+        extensionProperties.put("AffiliateEnablementIndicator", true);
+        Map<String, Object> agreementParty = new LinkedHashMap <String, Object>();
+        agreementParty.put("AgreementPartyType", "EnabledAffiliate");
+        agreementParty.put("AgreementParty", "osdu:master-data--Organisation:TestCompany");
+        extensionProperties.put("AgreementParties", Arrays.asList(agreementParty));        
+        Assert.assertEquals(extensionProperties, legalTag.getProperties().getExtensionProperties());
     }
 }

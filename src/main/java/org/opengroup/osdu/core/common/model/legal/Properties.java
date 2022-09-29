@@ -35,6 +35,7 @@ import org.opengroup.osdu.core.common.model.legal.validation.ValidSecurityClassi
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -78,6 +79,8 @@ public class Properties {
 
     @ValidExportClassification
     private String exportClassification;
+    
+    private Map<String, Object> extensionProperties;
 
 
     public Properties() {
