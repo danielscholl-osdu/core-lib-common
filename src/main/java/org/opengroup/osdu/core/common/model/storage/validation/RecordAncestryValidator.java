@@ -33,7 +33,7 @@ public class RecordAncestryValidator implements ConstraintValidator<ValidRecordA
     public boolean isValid(RecordAncestry recordAncestry, ConstraintValidatorContext context) {
         context.disableDefaultConstraintViolation();
 
-        if(recordAncestry == null){
+        if(recordAncestry != null && recordAncestry.getParents() == null){
             context.buildConstraintViolationWithTemplate(ValidationDoc.INVALID_PAYLOAD)
                     .addConstraintViolation();
             return false;
