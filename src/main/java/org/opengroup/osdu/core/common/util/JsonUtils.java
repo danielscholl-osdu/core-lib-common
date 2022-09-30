@@ -20,6 +20,7 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Optional.ofNullable;
 
@@ -83,6 +84,9 @@ public class JsonUtils {
         String[] innerNestedNames = getInnerNestedPropertyNames(propertyNestedNames);
         JsonArray elementArray = jsonObject.getAsJsonArray(getNestedJsonArrayName(propertyNestedNames[0])) ;
 
+        if (Objects.isNull(elementArray)) {
+            return result;
+        }
         for (int i = 0; i < elementArray.size(); i++) {
             JsonObject element = elementArray.get(i).getAsJsonObject();
             JsonElement elementValue = getNestedJsonElement(innerNestedNames, element);
