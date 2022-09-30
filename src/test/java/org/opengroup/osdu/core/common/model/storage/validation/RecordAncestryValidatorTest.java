@@ -82,6 +82,13 @@ public class RecordAncestryValidatorTest {
     }
 
     @Test
+    public void should_returnTure_ifnullRecordAncestry() {
+        RecordAncestry recordAncestry = null;
+
+        assertTrue(this.sut.isValid(recordAncestry, this.context));
+    }
+
+    @Test
     public void should_returnFalse_ifWrongFormatVersionParentRecords() {
         RecordAncestry recordAncestry = new RecordAncestry();
         Set<String> parents = new HashSet<>();
