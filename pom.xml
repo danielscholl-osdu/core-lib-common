@@ -31,9 +31,9 @@
     <project.main.basedir>${project.basedir}</project.main.basedir>
     <spring-boot.version>2.7.2</spring-boot.version>
     <jackson-bom.version>2.13.2</jackson-bom.version>
-    <jackson-databind.version>2.13.2.2</jackson-databind.version>
+    <jackson-databind.version>2.13.4</jackson-databind.version>
     <netty-bom.version>4.1.70.Final</netty-bom.version>
-    <snakeyaml.version>1.26</snakeyaml.version>
+    <snakeyaml.version>1.31</snakeyaml.version>
     <commons-codec.version>1.14</commons-codec.version>
     <json-smart.version>2.4.7</json-smart.version>
     <gson.version>2.9.1</gson.version>
@@ -60,6 +60,8 @@
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>2.5</maven-surefire-plugin.version>
     <spring-webmvc.version>5.3.22</spring-webmvc.version>
+    <spring-security-web.version>5.7.2</spring-security-web.version>
+    <json.version>20220924</json.version>
   </properties>
 
   <licenses>
@@ -112,6 +114,11 @@
         <version>${json-smart.version}</version>
       </dependency>
       <!--</editor-fold>-->
+      <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>${json.version}</version>
+      </dependency>
       <!--<editor-fold desc="Overriding spring-boot-bom. <gson-2.8.9 is vulnerable in WhiteSource.">-->
       <dependency>
         <groupId>com.google.code.gson</groupId>
@@ -119,6 +126,12 @@
         <version>${gson.version}</version>
       </dependency>
       <!--</editor-fold>-->
+
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-web</artifactId>
+        <version>${spring-security-web.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>commons-codec</groupId>
