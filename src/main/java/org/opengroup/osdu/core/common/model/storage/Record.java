@@ -35,6 +35,7 @@ import org.opengroup.osdu.core.common.model.entitlements.validation.ValidAcl;
 import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidKind;
 import org.opengroup.osdu.core.common.model.legal.validation.ValidLegal;
+import org.opengroup.osdu.core.common.model.storage.validation.ValidRecordAncestry;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidationDoc;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -76,6 +77,7 @@ public class Record {
 	@JsonInclude(Include.ALWAYS)
 	private Map<String, Object> data;
 
+	@ValidRecordAncestry
 	private RecordAncestry ancestry;
 
 	private Map<String, Object>[] meta;

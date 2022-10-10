@@ -23,6 +23,5 @@ import lombok.Data;
 @Data
 public class RecordAncestry {
 
-    @ValidNotNullCollection
     private Set<String> parents;
 }
