@@ -46,8 +46,27 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
     }
 
     public RedisCache(String host, int port, String password, int expTimeSeconds, int database,
-                      ClientOptions clientOptions, Class<K> classOfK, Class<V> classOfV) {
+        ClientOptions clientOptions, Class<K> classOfK, Class<V> classOfV) {
         RedisURI uri = RedisURI.Builder.redis(host, port).withTimeout(expTimeSeconds, TimeUnit.SECONDS).withPassword(password).withDatabase(database).withSsl(true).build();
+        client = RedisClient.create(uri);
+        if (clientOptions != null) {
+            client.setOptions(clientOptions);
+        }
+        connection = client.connect(this.getCodec(classOfK, classOfV));
+        commands = connection.sync();
+        expireLengthSeconds = expTimeSeconds;
+    }
+
+    public RedisCache(String host, int port, String password, int expTimeSeconds, int database, boolean withSsl,
+        ClientOptions clientOptions, Class<K> classOfK, Class<V> classOfV) {
+        RedisURI uri = RedisURI.Builder
+            .redis(host, port)
+            .withTimeout(expTimeSeconds, TimeUnit.SECONDS)
+            .withPassword(password)
+            .withDatabase(database)
+            .withSsl(withSsl)
+            .build();
+
         client = RedisClient.create(uri);
         if (clientOptions != null) {
             client.setOptions(clientOptions);
@@ -67,12 +86,22 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
         this(host, port, password, expTimeSeconds, database, null, classOfK, classOfV);
     }
 
+    public RedisCache(String host, int port, String password, int expTimeSeconds, int database, boolean withSsl,
+        Class<K> classOfK, Class<V> classOfV) {
+        this(host, port, password, expTimeSeconds, database, withSsl, null, classOfK, classOfV);
+    }
+
     public RedisCache(String host, int port, int expTimeSeconds, Class<K> classOfK, Class<V> classOfV) {
         this(host, port, expTimeSeconds, 0, classOfK, classOfV);
     }
 
     public RedisCache(String host, int port, String password, int expTimeSeconds, Class<K> classOfK, Class<V> classOfV) {
         this(host, port, password, expTimeSeconds, 0, classOfK, classOfV);
+    }
+
+    public RedisCache(String host, int port, String password, int expTimeSeconds, boolean withSsl,
+        Class<K> classOfK, Class<V> classOfV) {
+        this(host, port, password, expTimeSeconds, 0, withSsl, null, classOfK, classOfV);
     }
 
     @Override
