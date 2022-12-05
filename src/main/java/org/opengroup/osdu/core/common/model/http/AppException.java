@@ -53,7 +53,7 @@ public class AppException extends RuntimeException {
 
     public AppException(int status, String reason, String message, Exception originalException) {
         this(status, reason, message, null, originalException, null);
-   }
+    }
 
     public AppException(int status, String reason, String message, String[] errors, Exception originalException) {
         this(status, reason, message, null, originalException, errors);

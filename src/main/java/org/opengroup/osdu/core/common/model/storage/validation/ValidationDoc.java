@@ -25,7 +25,6 @@ public class ValidationDoc {
 	public static final String RECORD_ID_REGEX = "^[\\w\\-\\.]+:[\\w-\\.]+:[\\w\\-\\.\\:\\%]+$";
 	public static final String RECORD_ID_WITH_VERSION_REGEX = "^[\\w\\-\\.]+:[\\w-\\.]+:[\\w\\-\\.\\:\\%]+:[0-9]+$";
 	public static final String KIND_REGEX = "^[\\w\\-\\.]+:[\\w\\-\\.]+:[\\w\\-\\.]+:[0-9]+.[0-9]+.[0-9]+$";
-
 	public static final String DUPLICATE_RECORD_ID = "Same record cannot be updated twice: '%s'.";
 	public static final String INVALID_NULL_IN_ARRAY = "Invalid 'null' value found in array";
 	public static final String INVALID_PAYLOAD = "Invalid payload.";
@@ -52,4 +51,5 @@ public class ValidationDoc {
 	public static final String RECORDS_MAX = "Up to 500 records can be ingested at a time";
 	public static final String RECORDS_RETRIEVAL_MAX = "No more than 100 records can be retrieved in a single request";
 	public static final String RECORDS_RETRIEVAL_MAX_V2 = "No more than 20 records can be retrieved in a single request";
+
 }
