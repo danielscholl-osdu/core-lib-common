@@ -22,6 +22,8 @@ public final class Constants {
 
     public static final String INDEXER_QUEUE_IDENTIFIER = "indexer-queue-osdu";
 
+    public static final String ID = "id";
+    public static final String APPLICATION = "application";
     public static final String CRS = "crs";
     public static final String TYPE = "type";
     public static final String KIND = "kind";
