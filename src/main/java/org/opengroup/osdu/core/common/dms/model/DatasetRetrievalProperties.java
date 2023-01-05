@@ -30,4 +30,5 @@ import java.util.Map;
 public class DatasetRetrievalProperties {
     private String datasetRegistryId;
     private Map<String, Object> retrievalProperties;
+    private String providerKey;
 }
