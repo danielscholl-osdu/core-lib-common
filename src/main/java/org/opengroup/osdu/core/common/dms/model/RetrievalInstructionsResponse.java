@@ -27,7 +27,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class RetrievalInstructionsResponse {
-    private String providerKey;
+
     private List<DatasetRetrievalProperties> datasets;
 
     public RetrievalInstructionsResponse() {
