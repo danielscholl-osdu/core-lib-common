@@ -22,6 +22,11 @@ import org.springframework.web.context.annotation.RequestScope;
 public class RequestStatus {
 
     /*
+     * indexer-queue should not retry to call indexer
+     */
+    public static final short NO_RETRY = 288;
+
+    /*
     * schema merge conflict
     * */
     public static final short SCHEMA_CONFLICT = 289;
