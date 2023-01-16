@@ -104,6 +104,7 @@ public final class SwaggerDoc {
     public static final String GEOPOLYGON_POINT_VALIDATION_NON_NULL_MSG = "'byGeoPolygon.point' list can not be null or empty";
     public static final String LATITUDE_VALIDATION_RANGE_MSG = "'latitude' value is out of the range [-90, 90]";
     public static final String LONGITUDE_VALIDATION_RANGE_MSG = "'longitude' value is out of the range [-180, 180]";
+    public static final String LONGITUDE_VALIDATION_EXTENDED_RANGE_MSG = "'longitude' value is out of the range [-360, 360]";
     public static final String FIELD_DESCRIPTION = "geo-point field in the index on which filtering will be performed. Use GET schema API to find which fields supports spatial search.";
     public static final String SPATIAL_FILTER_DESCRIPTION = "A spatial filter to apply.";
     public static final String QUERY_BY_BOUNDING_BOX_DESCRIPTION = "A query allowing to filter hits based on a point location within a bounding box.";

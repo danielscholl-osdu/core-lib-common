@@ -14,14 +14,35 @@
 
 package org.opengroup.osdu.core.common.model.search.validation;
 
+import org.opengroup.osdu.core.common.SwaggerDoc;
 import org.opengroup.osdu.core.common.model.search.Point;
+import org.opengroup.osdu.core.common.model.search.Polygon;
 import org.opengroup.osdu.core.common.model.search.SpatialFilter;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SpatialFilterValidator implements ConstraintValidator<ValidSpatialFilter, SpatialFilter> {
+
+    private static final long LONGITUDE_MAX_STANDARD = 180;
+    private static final long LONGITUDE_MIN_STANDARD = -180;
+    private static final long LONGITUDE_MAX_EXTENDED = 360;
+    private static final long LONGITUDE_MIN_EXTENDED = -360;
+
+    /**
+     *  enabledExtendedRangeForLongitude
+     *  should be set to true if you want let the Point longitude value be in range between -360 and 360.
+     *  Default range is between -180 and 180
+     */
+    @Value("${validation.spatial.longitude.enableExtendedRange:false}")
+    private boolean enabledExtendedRangeForLongitude;
 
     @Override
     public void initialize(ValidSpatialFilter validSpatialFilter) {
@@ -50,6 +71,11 @@ public class SpatialFilterValidator implements ConstraintValidator<ValidSpatialF
             double bottom = spatialFilter.getByBoundingBox().getBottomRight().getLatitude();
             double right = spatialFilter.getByBoundingBox().getBottomRight().getLongitude();
 
+            if (!applyPointLongitudeValidation(Arrays.asList(spatialFilter.getByBoundingBox().getTopLeft(),
+                    spatialFilter.getByBoundingBox().getBottomRight()), context)) {
+                return false;
+            }
+
             if (top < bottom) {
                 return getViolation(context, String.format("top corner is below bottom corner: %s vs. %s", top, bottom));
             } else if (left > right) {
@@ -63,6 +89,9 @@ public class SpatialFilterValidator implements ConstraintValidator<ValidSpatialF
 
         if (spatialFilter.getByGeoPolygon() != null) {
             List<Point> points = spatialFilter.getByGeoPolygon().getPoints();
+            if (!applyPointLongitudeValidation(points, context)) {
+                return false;
+            }
             Point start = points.get(0);
             if (start.equals(points.get(points.size() - 1))) {
                 if (points.size() < 4) {
@@ -76,12 +105,66 @@ public class SpatialFilterValidator implements ConstraintValidator<ValidSpatialF
         }
 
         if (spatialFilter.getByDistance() != null) {
+            if(!applyPointLongitudeValidation(Collections.singletonList(spatialFilter.getByDistance().getPoint()), context)) {
+                return false;
+            }
             double distance = spatialFilter.getByDistance().getDistance();
             if (distance <= 0.0) {
                     return getViolation(context, "'distance' must be greater than 0");
             }
         }
 
+        if (spatialFilter.getByIntersection() != null) {
+            List<Polygon> polygons = Optional.ofNullable(spatialFilter.getByIntersection().getPolygons())
+                    .orElse(Collections.emptyList());
+            if(!applyPointLongitudeValidation(polygons.stream()
+                    .flatMap(polygon -> polygon.getPoints().stream())
+                    .collect(Collectors.toList()), context)){
+                return false;
+            }
+        }
+
+        if(spatialFilter.getByWithinPolygon() != null) {
+            if (!applyPointLongitudeValidation(spatialFilter.getByWithinPolygon().getPoints(), context)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean applyPointLongitudeValidation(List<Point> points, ConstraintValidatorContext context) {
+        if (enabledExtendedRangeForLongitude) {
+            return applyExtendedLongitudeValidation(points, context);
+        } else {
+            return applyStandardLongitudeValidation(points, context);
+        }
+    }
+
+    private boolean applyStandardLongitudeValidation(List<Point> points, ConstraintValidatorContext context) {
+        if (points != null) {
+            for (Point point : points) {
+                if (point != null) {
+                    if (point.getLongitude() > LONGITUDE_MAX_STANDARD ||
+                            point.getLongitude() < LONGITUDE_MIN_STANDARD) {
+                        return getViolation(context, SwaggerDoc.LONGITUDE_VALIDATION_RANGE_MSG);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean applyExtendedLongitudeValidation(List<Point> points, ConstraintValidatorContext context) {
+        if (points != null) {
+            for (Point point : points) {
+                if (point != null) {
+                    if (point.getLongitude() > LONGITUDE_MAX_EXTENDED ||
+                            point.getLongitude() < LONGITUDE_MIN_EXTENDED) {
+                        return getViolation(context, SwaggerDoc.LONGITUDE_VALIDATION_EXTENDED_RANGE_MSG);
+                    }
+                }
+            }
+        }
         return true;
     }
 

@@ -33,8 +33,6 @@ public class Point {
     @ApiModelProperty(value = SwaggerDoc.LATITUDE, dataType = "java.lang.Double", example = "37.450727")
     private double latitude;
 
-    @Max(value = 180, message = SwaggerDoc.LONGITUDE_VALIDATION_RANGE_MSG)
-    @Min(value = -180, message = SwaggerDoc.LONGITUDE_VALIDATION_RANGE_MSG)
     @ApiModelProperty(value = SwaggerDoc.LONGITUDE, dataType = "java.lang.Double", example = "-122.174762")
     private double longitude;
 
