@@ -29,14 +29,14 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.main.basedir>${project.basedir}</project.main.basedir>
-    <spring-boot.version>2.7.2</spring-boot.version>
-    <jackson-bom.version>2.13.4</jackson-bom.version>
-    <jackson-databind.version>2.13.4</jackson-databind.version>
+    <spring-boot.version>2.7.7</spring-boot.version>
+    <jackson-bom.version>2.14.1</jackson-bom.version>
+    <jackson-databind.version>2.14.1</jackson-databind.version>
     <netty-bom.version>4.1.70.Final</netty-bom.version>
-    <snakeyaml.version>1.31</snakeyaml.version>
-    <commons-codec.version>1.14</commons-codec.version>
-    <json-smart.version>2.4.7</json-smart.version>
-    <gson.version>2.9.1</gson.version>
+    <snakeyaml.version>1.33</snakeyaml.version>
+    <commons-codec.version>1.15</commons-codec.version>
+    <json-smart.version>2.4.8</json-smart.version>
+    <gson.version>2.10.1</gson.version>
     <log4j2.version>2.17.1</log4j2.version>
     <lombok.version>1.18.24</lombok.version>
     <javax-inject.version>1</javax-inject.version>
@@ -60,8 +60,9 @@
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>2.5</maven-surefire-plugin.version>
     <spring-webmvc.version>5.3.22</spring-webmvc.version>
-    <spring-security-web.version>5.7.2</spring-security-web.version>
+    <spring-security-web.version>5.7.6</spring-security-web.version>
     <json.version>20220924</json.version>
+    <jna-platform.version>5.13.0</jna-platform.version>
   </properties>
 
   <licenses>
@@ -142,6 +143,11 @@
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
         <version>${snakeyaml.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.java.dev.jna</groupId>
+        <artifactId>jna-platform</artifactId>
+        <version>${jna-platform.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
