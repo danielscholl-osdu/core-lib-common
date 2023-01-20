@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnProperty(prefix = "featureFlag", name = "strategy")
 public class FeatureFlagConfig {
     @Autowired
     private DpsHeaders headers;
@@ -22,7 +23,7 @@ public class FeatureFlagConfig {
 
     IPartitionProvider partitionProvider;
 
-    @Value("${PARTITION_API}")
+    @Value("${PARTITION_API:not_used}")
     private String partitionAPIEndpoint;
 
     @Bean
