@@ -51,9 +51,9 @@ public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, O
                     addConstraintViolation(SwaggerDoc.KIND_VALIDATION_NOT_SUPPORTED_FORMAT, kind, context);
                     return false;
                 }
-                if(elasticIndexNameResolver.hasIndexNameAliasForKind(singleKind)) {
+                if(elasticIndexNameResolver.isIndexAliasSupported(singleKind)) {
                     // The length of the alias starting with 'a' is not more than 11 characters
-                    totalLen += elasticIndexNameResolver.getIndexNameAliasFromKind(singleKind).length();
+                    totalLen += elasticIndexNameResolver.getIndexAliasFromKind(singleKind).length();
                 }
                 else {
                     // The length of the kind is about 45 characters on average

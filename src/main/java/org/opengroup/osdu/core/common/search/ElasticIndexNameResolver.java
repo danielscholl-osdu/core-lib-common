@@ -68,7 +68,7 @@ public class ElasticIndexNameResolver {
      * @param kind a kind with valid format
      * @return true if index name alias is supported for the given kind; otherwise, returns false
      */
-    public boolean hasIndexNameAliasForKind(String kind) {
+    public boolean isIndexAliasSupported(String kind) {
         return !Strings.isNullOrEmpty(kind) && (kind.matches(KIND_COMPLETE_VERSION_PATTERN) || kind.matches(KIND_MAJOR_VERSION_PATTERN));
     }
 
@@ -77,8 +77,8 @@ public class ElasticIndexNameResolver {
      * @param kind a kind with valid format
      * @return a string started with 'a' if index name alias is supported for the given kind; otherwise, returns null
      */
-    public String getIndexNameAliasFromKind(String kind) {
-        if(hasIndexNameAliasForKind(kind)) {
+    public String getIndexAliasFromKind(String kind) {
+        if(isIndexAliasSupported(kind)) {
             String indexName = getIndexNameFromKind(kind);
             return String.format("a%d", indexName.hashCode());
         }
