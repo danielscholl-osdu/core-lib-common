@@ -20,7 +20,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ElasticIndexNameResolverTest {
@@ -41,5 +41,29 @@ public class ElasticIndexNameResolverTest {
     @Test
     public void test_correct_kind_from_index() {
         assertEquals("tenant1:welldb-v2:wellbore:2.0.0", this.sut.getKindFromIndexName("tenant1-welldb-v2-wellbore-2.0.0"));
+    }
+
+    @Test
+    public void has_index_name_alias() {
+        assertTrue(this.sut.hasIndexNameAliasForKind("tenant1:welldb-v2:wellbore:2.0.0"));
+        assertTrue(this.sut.hasIndexNameAliasForKind("tenant1:welldb-v2:wellbore:2.*.*"));
+    }
+
+    @Test
+    public void has_not_index_name_alias() {
+        assertFalse(this.sut.hasIndexNameAliasForKind("tenant1:welldb-v2:wellbore:2.*"));
+        assertFalse(this.sut.hasIndexNameAliasForKind("tenant1:welldb-v2:wellbore:2.*.0"));
+        assertFalse(this.sut.hasIndexNameAliasForKind("tenant1:welldb-v2:wellbore:2.0.*"));
+        assertFalse(this.sut.hasIndexNameAliasForKind("tenant1:welldb-v2:wellbore:*.0.0"));
+        assertFalse(this.sut.hasIndexNameAliasForKind("tenant1:welldb-v2:wellbore:*.*.0"));
+        assertFalse(this.sut.hasIndexNameAliasForKind("tenant1:welldb-v2:wellbore:*.*.*"));
+    }
+
+    @Test
+    public void test_index_name_alias() {
+        assertEquals("a-1640400723", this.sut.getIndexNameAliasFromKind("tenant1:welldb-v2:wellbore:2.0.0"));
+        assertEquals("a-1640406495", this.sut.getIndexNameAliasFromKind("tenant1:welldb-v2:wellbore:2.*.*"));
+        assertNull(this.sut.getIndexNameAliasFromKind("tenant1:welldb-v2:wellbore:2.*"));
+        assertNull(this.sut.getIndexNameAliasFromKind("tenant1:welldb-v2:wellbore:2.0.*"));
     }
 }

@@ -16,6 +16,7 @@ package org.opengroup.osdu.core.common.model.search.validation;
 
 import org.opengroup.osdu.core.common.SwaggerDoc;
 import org.opengroup.osdu.core.common.model.validation.ValidatorUtils;
+import org.opengroup.osdu.core.common.search.ElasticIndexNameResolver;
 import org.opengroup.osdu.core.common.util.KindParser;
 
 import javax.validation.ConstraintValidator;
@@ -25,6 +26,7 @@ import java.util.List;
 public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, Object> {
 
     private static final String MULTI_KIND_PATTERN = "[\\w-\\.\\*]+:[\\w-\\.\\*]+:[\\w-\\.\\*]+:[(\\d+.)+(\\d+.)+(\\d+)\\*]+$";
+    private final ElasticIndexNameResolver elasticIndexNameResolver = new ElasticIndexNameResolver();
 
     // ElasticSearch sets the index names (that are transformed kind names) in the URI. Max. length of a URI is 4096.
     // Assuming max. length of the rest parts in a URI is 256, then MAX_KIND_LENGTH = 4096 - 256
@@ -49,7 +51,15 @@ public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, O
                     addConstraintViolation(SwaggerDoc.KIND_VALIDATION_NOT_SUPPORTED_FORMAT, kind, context);
                     return false;
                 }
-                totalLen += singleKind.length() + 1; //1: length of the separate ','
+                if(elasticIndexNameResolver.hasIndexNameAliasForKind(singleKind)) {
+                    // The length of the alias starting with 'a' is not more than 11 characters
+                    totalLen += elasticIndexNameResolver.getIndexNameAliasFromKind(singleKind).length();
+                }
+                else {
+                    // The length of the kind is about 45 characters on average
+                    totalLen += singleKind.length();
+                }
+                totalLen += 1; //1: length of the separate ','
             }
 
             if (totalLen > MAX_KIND_LENGTH) {

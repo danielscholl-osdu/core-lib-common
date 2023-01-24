@@ -148,22 +148,47 @@ public class MultiKindValidatorTest {
     @Test
     public void multiKindsWithTooManyItems() {
         int maxLength = 3840;
-        String kind1="A1:S1:E1:1.0.0";
+        // The following kind does not have alias index name
+        String kind1="osdu:wks:master-data-wellbore:1.0.*";
+        int count = maxLength/(kind1.length() + 1);
 
-        String kind = kind1;
         ArrayList kinds = new ArrayList();
-        int totalLen = 0;
-        while(totalLen <= maxLength - kind1.length()) {
-            kinds.add(kind);
-            totalLen += kind1.length() + 1;
+        int n = 0;
+        while(n++ < count) {
+            kinds.add(kind1);
         }
-        assertTrue(totalLen <= maxLength);
         assertTrue(this.sut.isValid(kinds, this.context));
 
-        kinds.add(kind);
-        totalLen += kind1.length() + 1;
-        assertTrue(totalLen > maxLength);
+        kinds.add(kind1);
         assertFalse(this.sut.isValid(kinds, this.context));
+    }
+
+    @Test
+    public void multiKindsWithAliaseNames() {
+        // Compare it with the above test case: multiKindsWithTooManyItems()
+        int maxLength = 3840;
+        // The following kind has alias index name
+        String kind1="osdu:wks:master-data-wellbore:1.0.0";
+        String kind2="osdu:wks:master-data-wellbore:1.*.*";
+        int count = maxLength/(kind1.length() + 1);
+
+        ArrayList kind1s = new ArrayList();
+        ArrayList kind2s = new ArrayList();
+        int n = 0;
+        while(n++ < count) {
+            kind1s.add(kind1);
+            kind2s.add(kind2);
+        }
+        assertTrue(this.sut.isValid(kind1s, this.context));
+        assertTrue(this.sut.isValid(kind2s, this.context));
+
+        kind1s.add(kind1);
+        kind2s.add(kind2);
+
+        // It is still valid though the total length of the original kinds exceed the limit
+        // but with the aliases, the total length will be much shorter
+        assertTrue(this.sut.isValid(kind1s, this.context));
+        assertTrue(this.sut.isValid(kind2s, this.context));
     }
 
     @Test

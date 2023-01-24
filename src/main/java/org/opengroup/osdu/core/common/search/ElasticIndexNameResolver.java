@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.core.common.search;
 
+import com.google.api.client.util.Strings;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -32,9 +33,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * */
 @Component
 public class ElasticIndexNameResolver {
+    private static final String KIND_COMPLETE_VERSION_PATTERN = "[\\w-\\.\\*]+:[\\w-\\.\\*]+:[\\w-\\.\\*]+:(\\d+\\.\\d+\\.\\d+)$";
+    private static final String KIND_MAJOR_VERSION_PATTERN = "[\\w-\\.\\*]+:[\\w-\\.\\*]+:[\\w-\\.\\*]+:(\\d+\\.\\*\\.\\*)$";
 
     private final Map<String, String> KIND_INDEX_MAP = new ConcurrentHashMap();
     private final Map<String, String> INDEX_KIND_MAP = new ConcurrentHashMap();
+
 
     public String getIndexNameFromKind(String kind) {
 
@@ -58,4 +62,28 @@ public class ElasticIndexNameResolver {
 
         return indexName.replace("-", ":").toLowerCase();
     }
+
+    /**
+     *
+     * @param kind a kind with valid format
+     * @return true if index name alias is supported for the given kind; otherwise, returns false
+     */
+    public boolean hasIndexNameAliasForKind(String kind) {
+        return !Strings.isNullOrEmpty(kind) && (kind.matches(KIND_COMPLETE_VERSION_PATTERN) || kind.matches(KIND_MAJOR_VERSION_PATTERN));
+    }
+
+    /**
+     *
+     * @param kind a kind with valid format
+     * @return a string started with 'a' if index name alias is supported for the given kind; otherwise, returns null
+     */
+    public String getIndexNameAliasFromKind(String kind) {
+        if(hasIndexNameAliasForKind(kind)) {
+            String indexName = getIndexNameFromKind(kind);
+            return String.format("a%d", indexName.hashCode());
+        }
+
+        return null;
+    }
+
 }
