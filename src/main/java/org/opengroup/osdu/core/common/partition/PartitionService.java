@@ -36,17 +36,12 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.opengroup.osdu.core.common.http.HttpResponse;
-import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.http.RequestStatus;
 import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class PartitionService implements IPartitionProvider {
-
-    @Autowired
-    private JaxRsDpsLog logger;
     private final String rootUrl;
     private final DpsHeaders headers;
     CloseableHttpClient cacheHttpClient;
@@ -183,9 +178,6 @@ public class PartitionService implements IPartitionProvider {
     }
 
     private PartitionException generatePartitionException(HttpResponse result) {
-        logger.error(String.format("Error making request to Partition service, response code: %s", result.getResponseCode()));
-        logger.error(String.format("Error making request to Partition service, response body: %s", result.getBody()));
-        logger.error(String.format("Error making request to Partition service, response exception"), result.getException());
         return new PartitionException(
                 "Error making request to Partition service. Check the inner HttpResponse for more info.", result);
     }
