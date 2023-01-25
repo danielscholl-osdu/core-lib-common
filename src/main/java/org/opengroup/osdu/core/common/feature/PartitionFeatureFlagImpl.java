@@ -25,10 +25,15 @@ public class PartitionFeatureFlagImpl implements IFeatureFlag {
             PartitionInfo partitionInfo = partitionProvider.get(dpsHeaders.getPartitionId());
             return getFeatureFlagStatus(partitionInfo, featureName);
         } catch (PartitionException pe) {
-            this.logger.error(String.format("PartitionException, error message: %s", pe.getMessage()));
-            this.logger.error(String.format("PartitionException, localized message: %s", pe.getLocalizedMessage()));
-            this.logger.error(String.format("PartitionException, error code: %s", pe.getResponse().getResponseCode()));
-            this.logger.error(String.format("PartitionException, full error: %s", pe.toString()));
+            try {
+                this.logger.error("PartitionException, log with error", pe);
+                this.logger.error(String.format("PartitionException, raw error: %s", pe.toString()));
+                this.logger.error(String.format("PartitionException, error message: %s", pe.getMessage()));
+                this.logger.error(String.format("PartitionException, localized message: %s", pe.getLocalizedMessage()));
+                this.logger.error(String.format("PartitionException, error code: %s", pe.getResponse().getResponseCode()));
+            } catch (Exception e) {
+                this.logger.error("Error in logging the PartitionException", e);
+            }
         } catch (Exception e) {
             this.logger.error(String.format("Unknown error getting feature flag status for dataPartitionId: %s", dpsHeaders.getPartitionId()), e);
         }
