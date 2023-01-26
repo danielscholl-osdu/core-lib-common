@@ -26,12 +26,13 @@ public class PartitionFeatureFlagImpl implements IFeatureFlag {
             PartitionInfo partitionInfo = partitionProvider.get(dpsHeaders.getPartitionId());
             return getFeatureFlagStatus(partitionInfo, featureName);
         } catch (PartitionException pe) {
-            this.logger.error("PartitionException, full http request string: " + pe.getResponse().getRequest().toString());
-            this.logger.error("PartitionException, full http response string: " + pe.getResponse().toString());
-            this.logger.error("PartitionException, full http request object: " + pe.getResponse().getRequest());
-            this.logger.error("PartitionException, full http response object: " + pe.getResponse());
+            try {
+                this.logger.error("PartitionException HTTP Response info" + pe.getResponse());
+            } catch (Exception re) {
+                this.logger.error("Failed to log HTTP response info for PartitionException");
+            }
         } catch (Exception e) {
-            this.logger.error(String.format("Unknown error getting feature flag status for dataPartitionId: %s", dpsHeaders.getPartitionId()), e);
+                this.logger.error(String.format("Unknown error getting feature flag status for dataPartitionId: %s", dpsHeaders.getPartitionId()), e);
         }
         return false;
     }
