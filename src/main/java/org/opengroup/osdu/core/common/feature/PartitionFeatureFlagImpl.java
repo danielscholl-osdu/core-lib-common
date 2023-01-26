@@ -1,5 +1,6 @@
 package org.opengroup.osdu.core.common.feature;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -25,6 +26,11 @@ public class PartitionFeatureFlagImpl implements IFeatureFlag {
             PartitionInfo partitionInfo = partitionProvider.get(dpsHeaders.getPartitionId());
             return getFeatureFlagStatus(partitionInfo, featureName);
         } catch (PartitionException pe) {
+            if (pe == null || pe.equals(null)) {
+                this.logger.error("PartitionException is null");
+            } else if (Strings.isNullOrEmpty(pe.toString())) {
+                this.logger.error("PartitionException is empty");
+            }
             try {
                 this.logger.error("PartitionException, log with error", pe);
                 this.logger.error("PartitionException, raw error: " + pe.toString());
