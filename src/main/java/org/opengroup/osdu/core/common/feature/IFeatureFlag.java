@@ -1,6 +1,7 @@
 package org.opengroup.osdu.core.common.feature;
 
-public interface IFeatureFlag {
-    public boolean isFeatureEnabled(String featureName);
+import org.opengroup.osdu.core.common.partition.PartitionException;
 
+public interface IFeatureFlag {
+    public boolean isFeatureEnabled(String featureName) throws PartitionException;
 }
