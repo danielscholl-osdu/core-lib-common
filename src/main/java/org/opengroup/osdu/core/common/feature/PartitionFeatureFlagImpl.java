@@ -27,10 +27,10 @@ public class PartitionFeatureFlagImpl implements IFeatureFlag {
         } catch (PartitionException pe) {
             try {
                 this.logger.error("PartitionException, log with error", pe);
-                this.logger.error(String.format("PartitionException, raw error: %s", pe.toString()));
-                this.logger.error(String.format("PartitionException, error message: %s", pe.getMessage()));
-                this.logger.error(String.format("PartitionException, localized message: %s", pe.getLocalizedMessage()));
-                this.logger.error(String.format("PartitionException, error code: %s", pe.getResponse().getResponseCode()));
+                this.logger.error("PartitionException, raw error: " + pe.toString());
+                this.logger.error("PartitionException, error message: " + pe.getMessage());
+                this.logger.error("PartitionException, localized message: " + pe.getLocalizedMessage());
+                this.logger.error("PartitionException, error code: " + pe.getResponse().getResponseCode());
             } catch (Exception e) {
                 this.logger.error("Error in logging the PartitionException", e);
             }
