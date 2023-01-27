@@ -3,6 +3,7 @@ package org.opengroup.osdu.core.common.feature;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.apache.http.HttpStatus;
 import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
@@ -15,7 +16,11 @@ import org.opengroup.osdu.core.common.partition.PartitionInfo;
 import org.opengroup.osdu.core.common.util.IServiceAccountJwtClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
 
+@Component
+@ConditionalOnProperty(prefix = "featureFlag", name = "strategy", havingValue = "dataPartition")
 public class PartitionFeatureFlagImpl implements IFeatureFlag {
     private final JaxRsDpsLog logger;
     @Autowired
@@ -46,8 +51,8 @@ public class PartitionFeatureFlagImpl implements IFeatureFlag {
             PartitionInfo partitionInfo = partitionProvider.get(headers.getPartitionId());
             return getFeatureFlagStatus(partitionInfo, featureName);
         } catch (PartitionException e) {
-            this.logger.error(String.format("Error getting feature flag status for dataPartitionId: %s", headers.getPartitionId()), e);
-            throw new AppException(e.getHttpResponse().getResponseCode(), String.format("Error getting feature flag value for property %s, partition %s ", featureName, headers.getPartitionId()), e.getMessage(), e);
+            this.logger.error(String.format("Error getting feature flag status for dataPartitionId: %s, exception http response: %s", headers.getPartitionId(), e.getResponse().toString()));
+            throw new AppException(HttpStatus.SC_INTERNAL_SERVER_ERROR, String.format("Error getting feature flag value for property %s, partition %s ", featureName, headers.getPartitionId()), e.getMessage(), e);
         }
     }
 
