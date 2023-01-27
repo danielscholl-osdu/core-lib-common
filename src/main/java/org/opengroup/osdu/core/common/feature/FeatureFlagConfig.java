@@ -1,5 +1,6 @@
 package org.opengroup.osdu.core.common.feature;
 
+import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.partition.IPartitionFactory;
 import org.opengroup.osdu.core.common.partition.IPartitionProvider;
@@ -21,6 +22,9 @@ public class FeatureFlagConfig {
     @Autowired
     private DpsHeaders headers;
 
+    @Autowired
+    private JaxRsDpsLog logger;
+
     IPartitionProvider partitionProvider;
 
     private IServiceAccountJwtClient tokenService;
@@ -38,7 +42,7 @@ public class FeatureFlagConfig {
         DpsHeaders partitionHeaders = DpsHeaders.createFromMap(headers.getHeaders());
         partitionHeaders.put(DpsHeaders.AUTHORIZATION, tokenService.getIdToken(headers.getPartitionId()));
         partitionProvider = iPartitionFactory.create(partitionHeaders);
-        return new PartitionFeatureFlagImpl(partitionProvider, partitionHeaders);
+        return new PartitionFeatureFlagImpl(partitionProvider, logger, partitionHeaders);
     }
 
     @Bean
