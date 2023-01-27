@@ -22,7 +22,8 @@ import org.springframework.stereotype.Component;
 @Component
 @ConditionalOnProperty(prefix = "featureFlag", name = "strategy", havingValue = "dataPartition")
 public class PartitionFeatureFlagImpl implements IFeatureFlag {
-    private final JaxRsDpsLog logger;
+    @Autowired
+    private JaxRsDpsLog logger;
     @Autowired
     private DpsHeaders headers;
     @Autowired
@@ -30,10 +31,6 @@ public class PartitionFeatureFlagImpl implements IFeatureFlag {
 
     @Value("${PARTITION_API:not_used}")
     private String partitionAPIEndpoint;
-
-    public PartitionFeatureFlagImpl(JaxRsDpsLog logger) {
-        this.logger = logger;
-    }
 
     @Override
     public boolean isFeatureEnabled(String featureName) {
