@@ -42,7 +42,6 @@ import org.opengroup.osdu.core.common.model.http.RequestStatus;
 import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class PartitionService implements IPartitionProvider {
-
     private final String rootUrl;
     private final DpsHeaders headers;
     CloseableHttpClient cacheHttpClient;
@@ -128,7 +127,7 @@ public class PartitionService implements IPartitionProvider {
         Map<String, String> dpsHeader = this.headers.getHeaders();
         request.addHeader(DpsHeaders.AUTHORIZATION, dpsHeader.get(DpsHeaders.AUTHORIZATION));
         request.addHeader(DpsHeaders.CONTENT_TYPE, dpsHeader.get(DpsHeaders.CONTENT_TYPE));
-
+        request.addHeader(DpsHeaders.CORRELATION_ID, dpsHeader.get(DpsHeaders.CORRELATION_ID));
         try {
             try (CloseableHttpResponse response = cacheHttpClient.execute(request)) {
                 HttpResponse output = new HttpResponse();

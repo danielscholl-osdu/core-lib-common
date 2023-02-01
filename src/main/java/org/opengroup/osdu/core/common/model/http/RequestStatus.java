@@ -42,4 +42,9 @@ public class RequestStatus {
      * if call to upstream server times out
      */
     public static final short SOCKET_TIMEOUT = 509;
+
+    /*
+     * indexer-queue should not retry to call indexer
+     */
+    public static final short NO_RETRY = 512;
 }
