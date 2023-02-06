@@ -38,6 +38,9 @@ public class RecordData {
 	@JsonInclude(Include.NON_NULL)
 	private Map<String, Object>[] meta;
 
+	private String modifyUser;
+	private long modifyTime;
+
 	public RecordData(Record record) {
 		this.data = record.getData();
 		this.meta = record.getMeta();
