@@ -91,6 +91,16 @@ public class HttpClientTest {
         assertEquals(url, response.getRequest().getUrl());
     }
 
+    @Test
+    public void should_notEncodeReservedCharacters_when_queryComponentsContainsReservedCharacter() throws Exception {
+        String url = "http://test.com?userId=abc+123";
+        HttpRequest rq = HttpRequest.post().body(BODY).url(url).headers(HEADERS).build();
+        createMockHtppConnection(200, rq);
+        HttpResponse response = this.sut.send(rq);
+
+        assertEquals(url, response.getRequest().getUrl());
+    }
+
 //      REMOVED RETRY LOGIC FROM HTTPCLIENT FOR NOW AS TOO SLOW - ADD THIS BACK IN WHEN PERFORMANT VERSION FOUND
 //    @Test
 //    public void should_retryByDefault_when_makingRequestThatReturns501() throws Exception {
