@@ -21,6 +21,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.tomcat.util.json.JSONParser;
+import org.apache.tomcat.util.json.ParseException;
 import org.opengroup.osdu.core.common.model.entitlements.Acl;
 import org.opengroup.osdu.core.common.model.legal.Legal;
 import org.opengroup.osdu.core.common.model.storage.RecordAncestry;
@@ -132,13 +134,15 @@ public class PersistenceHelper {
 		if(!jsonRecordObject.has("modifyTime") && recordMetadata.getModifyTime() != 0){
 			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(recordMetadata.getModifyTime())));
 		}else{
-			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(jsonRecordObject.getAsJsonObject("modifyTime").getAsLong())));
+			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong())));
 		}
 		/*if(recordMetadata.getModifyTime() != 0) {
 			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(recordMetadata.getModifyTime())));
 		}*/
 		return jsonRecordObject;
 	}
+
+
 
 	private static String formatDateTime(Date date) {
 		try {
