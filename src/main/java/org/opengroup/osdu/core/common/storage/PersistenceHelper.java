@@ -138,8 +138,6 @@ public class PersistenceHelper {
 		return jsonRecordObject;
 	}
 
-
-
 	private static String formatDateTime(Date date) {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
