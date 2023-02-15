@@ -41,6 +41,11 @@ public class RecordData {
 	private String modifyUser;
 	private long modifyTime;
 
+	public RecordData(Map<String, Object> data, Map<String, Object>[] meta){
+		this.data = data;
+		this.meta= meta;
+	}
+
 	public RecordData(Record record) {
 		this.data = record.getData();
 		this.meta = record.getMeta();

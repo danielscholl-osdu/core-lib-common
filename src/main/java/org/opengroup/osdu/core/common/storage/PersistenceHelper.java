@@ -125,20 +125,16 @@ public class PersistenceHelper {
 		if(recordMetadata.getCreateTime() != 0) {
 			jsonRecordObject.addProperty("createTime", formatDateTime(new Date(recordMetadata.getCreateTime())));
 		}
-		if(!jsonRecordObject.has("modifyUser") && !Strings.isNullOrEmpty(recordMetadata.getModifyUser())){
-			jsonRecordObject.addProperty("modifyUser", recordMetadata.getModifyUser());
-		}
-		/*if (!Strings.isNullOrEmpty(recordMetadata.getModifyUser())) {
-			jsonRecordObject.addProperty("modifyUser", recordMetadata.getModifyUser());
-		}*/
-		if(!jsonRecordObject.has("modifyTime") && recordMetadata.getModifyTime() != 0){
-			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(recordMetadata.getModifyTime())));
-		}else{
-			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong())));
-		}
-		/*if(recordMetadata.getModifyTime() != 0) {
-			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(recordMetadata.getModifyTime())));
-		}*/
+        if (!jsonRecordObject.has("modifyUser") && !Strings.isNullOrEmpty(recordMetadata.getModifyUser())) {
+            jsonRecordObject.addProperty("modifyUser", recordMetadata.getModifyUser());
+        }
+
+        if (jsonRecordObject.has("modifyTime")) {
+            jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong())));
+        } else if (recordMetadata.getModifyTime() != 0) {
+            jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(recordMetadata.getModifyTime())));
+        }
+
 		return jsonRecordObject;
 	}
 
