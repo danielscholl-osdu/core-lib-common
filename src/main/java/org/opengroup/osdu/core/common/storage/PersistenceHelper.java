@@ -125,25 +125,26 @@ public class PersistenceHelper {
 		if(recordMetadata.getCreateTime() != 0) {
 			jsonRecordObject.addProperty("createTime", formatDateTime(new Date(recordMetadata.getCreateTime())));
 		}
-		System.out.printf("json record object== " + jsonRecordObject);
-		System.out.println("record metadata modify user === " + recordMetadata.getModifyUser());
-		if (jsonRecordObject.has("modifyUser") && Strings.isNullOrEmpty(jsonRecordObject.getAsJsonPrimitive("modifyUser").getAsString())) {
+		//Remove if present as null in record data. e.g. To handle first version of the record
+		if (jsonRecordObject.has("modifyUser")
+				&& jsonRecordObject.get("modifyUser").isJsonNull()) {
 			jsonRecordObject.remove("modifyUser");
-		} else if (!jsonRecordObject.has("modifyUser") && !Strings.isNullOrEmpty(recordMetadata.getModifyUser())) {
-			System.out.println("inside modify user if");
+		}
+		//Add modifyUser from record metadata if absent in blob, to support backward compatibility
+		else if (!jsonRecordObject.has("modifyUser") && !Strings.isNullOrEmpty(recordMetadata.getModifyUser())) {
 			jsonRecordObject.addProperty("modifyUser", recordMetadata.getModifyUser());
 		}
 
-		System.out.println("record metadata modify time === " + recordMetadata.getModifyTime());
+		//Remove if present as 0 in record data. e.g. To handle first version of the record
 		if (jsonRecordObject.has("modifyTime") && jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong() == 0) {
-			System.out.println("inside removeeeeeeeeeeeee");
 			jsonRecordObject.remove("modifyTime");
-		} else if (jsonRecordObject.has("modifyTime") && jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong() != 0) {
-			System.out.println("inside modify time if");
+		}
+		//If modifyTime present in blob, convert it into formatted date
+		else if (jsonRecordObject.has("modifyTime") && jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong() != 0) {
 			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong())));
-		} else if (recordMetadata.getModifyTime() != 0) {
-			System.out.println("inside modify time else");
-
+		}
+		//Add modifyTime from record metadata if absent in blob, to support backward compatibility
+		else if (recordMetadata.getModifyTime() != 0) {
 			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(recordMetadata.getModifyTime())));
 		}
 
