@@ -125,14 +125,23 @@ public class PersistenceHelper {
 		if(recordMetadata.getCreateTime() != 0) {
 			jsonRecordObject.addProperty("createTime", formatDateTime(new Date(recordMetadata.getCreateTime())));
 		}
+		System.out.printf("json record object== "+jsonRecordObject);
+		System.out.println("record metadata modify user === "+recordMetadata.getModifyUser());
+
         if (!jsonRecordObject.has("modifyUser") && !Strings.isNullOrEmpty(recordMetadata.getModifyUser())) {
-            jsonRecordObject.addProperty("modifyUser", recordMetadata.getModifyUser());
+			System.out.println("inside modify user if");
+			jsonRecordObject.addProperty("modifyUser", recordMetadata.getModifyUser());
         }
 
+		System.out.println("record metadata modify time === "+recordMetadata.getModifyTime());
+
         if (jsonRecordObject.has("modifyTime")) {
-            jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong())));
+			System.out.println("inside modify time if");
+			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong())));
         } else if (recordMetadata.getModifyTime() != 0) {
-            jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(recordMetadata.getModifyTime())));
+			System.out.println("inside modify time else");
+
+			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(recordMetadata.getModifyTime())));
         }
 
 		return jsonRecordObject;
