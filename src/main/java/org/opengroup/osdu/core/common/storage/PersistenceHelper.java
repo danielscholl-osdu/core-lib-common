@@ -125,24 +125,27 @@ public class PersistenceHelper {
 		if(recordMetadata.getCreateTime() != 0) {
 			jsonRecordObject.addProperty("createTime", formatDateTime(new Date(recordMetadata.getCreateTime())));
 		}
-		System.out.printf("json record object== "+jsonRecordObject);
-		System.out.println("record metadata modify user === "+recordMetadata.getModifyUser());
-
-        if (!jsonRecordObject.has("modifyUser") && !Strings.isNullOrEmpty(recordMetadata.getModifyUser())) {
+		System.out.printf("json record object== " + jsonRecordObject);
+		System.out.println("record metadata modify user === " + recordMetadata.getModifyUser());
+		if (jsonRecordObject.has("modifyUser") && Strings.isNullOrEmpty(jsonRecordObject.getAsJsonPrimitive("modifyUser").getAsString())) {
+			jsonRecordObject.remove("modifyUser");
+		} else if (!jsonRecordObject.has("modifyUser") && !Strings.isNullOrEmpty(recordMetadata.getModifyUser())) {
 			System.out.println("inside modify user if");
 			jsonRecordObject.addProperty("modifyUser", recordMetadata.getModifyUser());
-        }
+		}
 
-		System.out.println("record metadata modify time === "+recordMetadata.getModifyTime());
-
-        if (jsonRecordObject.has("modifyTime")) {
+		System.out.println("record metadata modify time === " + recordMetadata.getModifyTime());
+		if (jsonRecordObject.has("modifyTime") && jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong() == 0) {
+			System.out.println("inside removeeeeeeeeeeeee");
+			jsonRecordObject.remove("modifyTime");
+		} else if (jsonRecordObject.has("modifyTime") && jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong() != 0) {
 			System.out.println("inside modify time if");
 			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong())));
-        } else if (recordMetadata.getModifyTime() != 0) {
+		} else if (recordMetadata.getModifyTime() != 0) {
 			System.out.println("inside modify time else");
 
 			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(recordMetadata.getModifyTime())));
-        }
+		}
 
 		return jsonRecordObject;
 	}
