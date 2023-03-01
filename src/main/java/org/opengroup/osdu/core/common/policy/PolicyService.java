@@ -64,7 +64,7 @@ public class PolicyService implements IPolicyProvider {
         compileQueryBody.put("input", input);
         HttpResponse result = this.httpClient.send(
                 HttpRequest.post(compileQueryBody).url(url).headers(this.headers.getHeaders()).build());
-        return result.getBody();
+        return this.getResult(result);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class PolicyService implements IPolicyProvider {
 
     private <T> T getResult(HttpResponse result, Class<T> type) throws PolicyException {
         if (!result.isSuccessCode()) {
-            throw this.generatePolicyException(result);
+            throw this.generatePolicyException(result, null);
         }
 
         try {
@@ -94,8 +94,23 @@ public class PolicyService implements IPolicyProvider {
         }
     }
 
-    private PolicyException generatePolicyException(HttpResponse result) {
-        return new PolicyException(
-                "Error making request to Policy service. Check the inner HttpResponse for more info.", result);
+    private String getResult(HttpResponse result) throws PolicyException {
+        if (!result.isSuccessCode()) {
+            String errorReason = null;
+            Exception exception = result.getException();
+            if (exception != null){
+                errorReason = exception.getMessage();
+            }
+            throw this.generatePolicyException(result, errorReason);
+        }
+        return result.getBody();
+    }
+
+    private PolicyException generatePolicyException(HttpResponse result, String errorReason) {
+        String errorMessage = "Error making request to Policy service. Check the inner HttpResponse for more info.";
+        if (StringUtils.isNotBlank(errorReason)) {
+            errorMessage = errorMessage + " Reason: " + errorReason;
+        }
+        return new PolicyException(errorMessage, result);
     }
 }
