@@ -15,6 +15,8 @@
 package org.opengroup.osdu.core.common.http;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -119,10 +121,8 @@ abstract class AbstractHttpClient implements IHttpClient {
     }
 
     private String encodeUrl(String url) throws MalformedURLException, URISyntaxException {
-        URL temp = new URL(url);
-        URI uri = new URI(temp.getProtocol(), temp.getUserInfo(), temp.getHost(), temp.getPort(),
-                temp.getPath(), temp.getQuery(), temp.getRef());
-        return uri.toASCIIString();
+        UriComponents uriComponents = UriComponentsBuilder.fromUriString(url).build();
+        return uriComponents.toUriString();
     }
 
     private void supportPatchMethod() {
