@@ -21,6 +21,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.tomcat.util.json.JSONParser;
+import org.apache.tomcat.util.json.ParseException;
 import org.opengroup.osdu.core.common.model.entitlements.Acl;
 import org.opengroup.osdu.core.common.model.legal.Legal;
 import org.opengroup.osdu.core.common.model.storage.RecordAncestry;
@@ -123,12 +125,29 @@ public class PersistenceHelper {
 		if(recordMetadata.getCreateTime() != 0) {
 			jsonRecordObject.addProperty("createTime", formatDateTime(new Date(recordMetadata.getCreateTime())));
 		}
-		if (!Strings.isNullOrEmpty(recordMetadata.getModifyUser())) {
+		//Remove if present as null in record data. e.g. To handle first version of the record
+		if (jsonRecordObject.has("modifyUser")
+				&& jsonRecordObject.get("modifyUser").isJsonNull()) {
+			jsonRecordObject.remove("modifyUser");
+		}
+		//Add modifyUser from record metadata if absent in blob, to support backward compatibility
+		else if (!jsonRecordObject.has("modifyUser") && !Strings.isNullOrEmpty(recordMetadata.getModifyUser())) {
 			jsonRecordObject.addProperty("modifyUser", recordMetadata.getModifyUser());
 		}
-		if(recordMetadata.getModifyTime() != 0) {
+
+		//Remove if present as 0 in record data. e.g. To handle first version of the record
+		if (jsonRecordObject.has("modifyTime") && jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong() == 0) {
+			jsonRecordObject.remove("modifyTime");
+		}
+		//If modifyTime present in blob, convert it into formatted date
+		else if (jsonRecordObject.has("modifyTime") && jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong() != 0) {
+			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(jsonRecordObject.getAsJsonPrimitive("modifyTime").getAsLong())));
+		}
+		//Add modifyTime from record metadata if absent in blob, to support backward compatibility
+		else if (recordMetadata.getModifyTime() != 0) {
 			jsonRecordObject.addProperty("modifyTime", formatDateTime(new Date(recordMetadata.getModifyTime())));
 		}
+
 		return jsonRecordObject;
 	}
 
