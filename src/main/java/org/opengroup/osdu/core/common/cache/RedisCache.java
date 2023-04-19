@@ -57,6 +57,20 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
         expireLengthSeconds = expTimeSeconds;
     }
 
+    public RedisCache(String host, int port, String password, int expTimeSeconds, int commandExecutionTimeout, int database,
+                      ClientOptions clientOptions, Class<K> classOfK, Class<V> classOfV) {
+        // Timeout parameter in RedisURL class sets the command timeout for synchronous command execution. A zero timeout value indicates to not time out.
+        // https://lettuce.io/core/release/api/io/lettuce/core/RedisURI.html#getTimeout--
+        RedisURI uri = RedisURI.Builder.redis(host, port).withTimeout(commandExecutionTimeout, TimeUnit.SECONDS).withPassword(password).withDatabase(database).withSsl(true).build();
+        client = RedisClient.create(uri);
+        if (clientOptions != null) {
+            client.setOptions(clientOptions);
+        }
+        connection = client.connect(this.getCodec(classOfK, classOfV));
+        commands = connection.sync();
+        expireLengthSeconds = expTimeSeconds;
+    }
+
     public RedisCache(String host, int port, String password, int expTimeSeconds, int database, boolean withSsl,
         ClientOptions clientOptions, Class<K> classOfK, Class<V> classOfV) {
         RedisURI uri = RedisURI.Builder
