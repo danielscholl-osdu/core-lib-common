@@ -97,6 +97,12 @@ public class EntitlementsService implements IEntitlementsService {
     }
 
     @Override
+    public Groups getGroupsOnBehalf(String memberId, String type) throws EntitlementsException {
+        String pathAnquery = String.format("/members/%s/groups?type=%s", memberId, type);
+        return get(pathAnquery, Groups.class);
+    }
+
+    @Override
     public Groups getCrossPartitionGroups() throws EntitlementsException {
     return get("/cross/groups", Groups.class);
     }

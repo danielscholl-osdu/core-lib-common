@@ -33,6 +33,8 @@ public interface IEntitlementsService {
     GroupInfo updateGroup(String existingGroupEmail, List<UpdateGroupOperation> updateGroupRequest) throws EntitlementsException;
   
     Groups getGroups() throws EntitlementsException;
+
+    Groups getGroupsOnBehalf(String memberId, String type) throws EntitlementsException;
   
     void deleteGroup(String groupEmail) throws EntitlementsException;
   
