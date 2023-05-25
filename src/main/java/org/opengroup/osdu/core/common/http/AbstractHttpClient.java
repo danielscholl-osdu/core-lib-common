@@ -100,7 +100,13 @@ abstract class AbstractHttpClient implements IHttpClient {
         conn.setInstanceFollowRedirects(request.followRedirects);
         conn.setConnectTimeout(request.connectionTimeout);
 
-        request.headers.forEach(conn::setRequestProperty);
+        for (Map.Entry<String, String> header : request.headers.entrySet()) {
+            if (header.getKey() == "Content-Length") {
+                conn.setFixedLengthStreamingMode(0); //set Content-Length = 0
+            } else {
+                conn.setRequestProperty(header.getKey(), header.getValue());
+            }
+        }
 
         if (request.httpMethod.equals(HttpRequest.POST) ||
                 request.httpMethod.equals(HttpRequest.PUT) ||
