@@ -51,14 +51,14 @@ public class HttpClientTest {
     }
 
     @Test
-    public void shuould_throwAppExceptionWithMsg_when_responseThrowsExceptionDuringConnectionCreation() {
+    public void should_throwAppExceptionWithMsg_when_responseThrowsExceptionDuringConnectionCreation() {
         HttpResponse response = this.sut.send(HttpRequest.post().url("invalidURL").headers(HEADERS).body(BODY).build());
         assertTrue(response.hasException());
         assertEquals(MalformedURLException.class, response.getException().getClass());
     }
 
     @Test
-    public void shuould_return403_when_sendingToPublicApiWithoutkey() {
+    public void should_return403_when_sendingToPublicApiWithoutkey() {
         HttpResponse response = this.sut.send(
                 HttpRequest.get().url("https://www.googleapis.com/customsearch/v1?q=hello").headers(HEADERS).build()
         );
