@@ -57,6 +57,7 @@ public class HttpClientTest {
         assertEquals(MalformedURLException.class, response.getException().getClass());
     }
 
+
     @Test
     public void should_return403_when_sendingToPublicApiWithoutkey() {
         HttpResponse response = this.sut.send(

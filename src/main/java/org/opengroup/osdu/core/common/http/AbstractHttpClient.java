@@ -103,7 +103,7 @@ abstract class AbstractHttpClient implements IHttpClient {
 
         for (Map.Entry<String, String> header : request.headers.entrySet()) {
             if (header.getKey() == "Content-Length") {
-                conn.setFixedLengthStreamingMode(0); //set Content-Length = 0
+                conn.setFixedLengthStreamingMode(Integer.parseInt(header.getValue()));
             } else {
                 conn.setRequestProperty(header.getKey(), header.getValue());
             }
