@@ -189,13 +189,6 @@ The following software have components provided under the terms of this license:
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
 
 ========================================================================
-GPL-3.0-or-later
-========================================================================
-The following software have components provided under the terms of this license:
-
-- Java Architecture for XML Binding (from http://jaxb.java.net/, https://repo1.maven.org/maven2/javax/xml/bind/jaxb-api)
-
-========================================================================
 LGPL-2.1-only
 ========================================================================
 The following software have components provided under the terms of this license:
