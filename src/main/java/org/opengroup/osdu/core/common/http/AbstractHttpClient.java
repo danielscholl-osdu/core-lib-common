@@ -102,7 +102,7 @@ abstract class AbstractHttpClient implements IHttpClient {
         conn.setConnectTimeout(request.connectionTimeout);
 
         for (Map.Entry<String, String> header : request.headers.entrySet()) {
-            if (header.getKey() == "Content-Length") {
+            if (header.getKey().equalsIgnoreCase("Content-Length")) {
                 conn.setFixedLengthStreamingMode(Integer.parseInt(header.getValue()));
             } else {
                 conn.setRequestProperty(header.getKey(), header.getValue());
