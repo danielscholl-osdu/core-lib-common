@@ -32,6 +32,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 abstract class AbstractHttpClient implements IHttpClient {
@@ -100,7 +101,13 @@ abstract class AbstractHttpClient implements IHttpClient {
         conn.setInstanceFollowRedirects(request.followRedirects);
         conn.setConnectTimeout(request.connectionTimeout);
 
-        request.headers.forEach(conn::setRequestProperty);
+        for (Map.Entry<String, String> header : request.headers.entrySet()) {
+            if (header.getKey().equalsIgnoreCase("Content-Length")) {
+                conn.setFixedLengthStreamingMode(Long.parseLong(header.getValue()));
+            } else {
+                conn.setRequestProperty(header.getKey(), header.getValue());
+            }
+        }
 
         if (request.httpMethod.equals(HttpRequest.POST) ||
                 request.httpMethod.equals(HttpRequest.PUT) ||

@@ -51,14 +51,15 @@ public class HttpClientTest {
     }
 
     @Test
-    public void shuould_throwAppExceptionWithMsg_when_responseThrowsExceptionDuringConnectionCreation() {
+    public void should_throwAppExceptionWithMsg_when_responseThrowsExceptionDuringConnectionCreation() {
         HttpResponse response = this.sut.send(HttpRequest.post().url("invalidURL").headers(HEADERS).body(BODY).build());
         assertTrue(response.hasException());
         assertEquals(MalformedURLException.class, response.getException().getClass());
     }
 
+
     @Test
-    public void shuould_return403_when_sendingToPublicApiWithoutkey() {
+    public void should_return403_when_sendingToPublicApiWithoutkey() {
         HttpResponse response = this.sut.send(
                 HttpRequest.get().url("https://www.googleapis.com/customsearch/v1?q=hello").headers(HEADERS).build()
         );
@@ -133,7 +134,30 @@ public class HttpClientTest {
         assertEquals(BODY, response.getRequest().body);
         assertTrue(response.IsNotFoundCode());
     }
+    @Test
+    public void should_return411_when_makingPostRequestWithoutBodyAndContentLengthNotSetToZero() throws Exception {
 
+        HttpRequest rq = HttpRequest.post().url(URL).headers(HEADERS).build();
+        createMockHtppConnection(411, rq);
+        HttpResponse response = this.sut.send(rq);
+
+        assertEquals(rq, response.getRequest());
+        assertEquals("Content-Length is missing", response.getBody());
+        assertEquals(411, response.getResponseCode());
+        assertEquals("application/json", response.getContentType());
+    }
+    @Test
+    public void should_return200_when_makingPostRequestWithoutBodyAndContentLengthSetToZero() throws Exception {
+        HEADERS.put("Content-Length", Long.toString(0));
+        HttpRequest rq = HttpRequest.post().url(URL).headers(HEADERS).build();
+        createMockHtppConnection(200, rq);
+        HttpResponse response = this.sut.send(rq);
+
+        assertEquals(rq, response.getRequest());
+        assertEquals("{\"name\":\"test data\"}", response.getBody());
+        assertEquals(200, response.getResponseCode());
+        assertEquals("application/json", response.getContentType());
+    }
     @Test
     public void should_convertObjectToJson_when_makingPostRequest() throws Exception {
 
@@ -235,8 +259,13 @@ public class HttpClientTest {
 
     private HttpURLConnection getHttpURLConnection(int returnCode) throws IOException {
         OutputStream outputStream = mock(OutputStream.class);
-        InputStream inputStream = new ByteArrayInputStream("{\"name\":\"test data\"}".getBytes());
+        InputStream inputStream;
+        if (returnCode == 411) {
+            inputStream = new ByteArrayInputStream("Content-Length is missing".getBytes());
 
+        } else {
+            inputStream = new ByteArrayInputStream("{\"name\":\"test data\"}".getBytes());
+        }
         HttpURLConnection connection = mock(HttpURLConnection.class);
         when(connection.getOutputStream()).thenReturn(outputStream);
         when(connection.getInputStream()).thenReturn(inputStream);
