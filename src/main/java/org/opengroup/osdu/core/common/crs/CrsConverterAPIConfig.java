@@ -25,6 +25,15 @@ public class CrsConverterAPIConfig {
 
     String apiKey;
 
+    @Builder.Default
+    private int connectTimeout = 60000;
+
+    @Builder.Default
+    private int connectionRequestTimeout = 60000;
+
+    @Builder.Default
+    private int socketTimeout = 60000;
+
     public static CrsConverterAPIConfig Default() {
         return CrsConverterAPIConfig.builder().build();
     }

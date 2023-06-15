@@ -14,14 +14,17 @@
 
 package org.opengroup.osdu.core.common.crs;
 
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
-import org.opengroup.osdu.core.common.http.HttpClient;
 
 public class CrsConverterFactory implements ICrsConverterFactory {
 
     private final CrsConverterAPIConfig config;
     private final HttpResponseBodyMapper mapper;
+    private CloseableHttpClient httpClient;
 
     public CrsConverterFactory(CrsConverterAPIConfig config, HttpResponseBodyMapper mapper) {
         if (config == null) {
@@ -29,6 +32,13 @@ public class CrsConverterFactory implements ICrsConverterFactory {
         }
         this.config = config;
         this.mapper = mapper;
+
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(config.getConnectTimeout())
+                .setConnectionRequestTimeout(config.getConnectionRequestTimeout())
+                .setSocketTimeout(config.getSocketTimeout()).build();
+
+        this.httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
     }
 
     @Override
@@ -36,6 +46,20 @@ public class CrsConverterFactory implements ICrsConverterFactory {
         if (headers == null) {
             throw new NullPointerException("headers cannot be null");
         }
-        return new CrsConverterService(this.config, new HttpClient(), headers, mapper);
+        return new CrsConverterService(this.config, headers, mapper, httpClient);
+    }
+
+    @Override
+    public ICrsConverterService createWithCustomSocketTimeout(DpsHeaders headers, int socketTimeout) {
+        if (headers == null) {
+            throw new NullPointerException("headers cannot be null");
+        } else {
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setConnectTimeout(config.getConnectTimeout())
+                    .setSocketTimeout(socketTimeout)
+                    .setSocketTimeout(config.getSocketTimeout()).build();
+            this.httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
+            return new CrsConverterService(this.config, headers, mapper, httpClient);
+        }
     }
 }

@@ -18,4 +18,5 @@ import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 
 public interface ICrsConverterFactory {
     ICrsConverterService create(DpsHeaders headers);
+    ICrsConverterService createWithCustomSocketTimeout(DpsHeaders headers, int socketTimeout);
 }
