@@ -14,7 +14,7 @@
 
 package org.opengroup.osdu.core.common.cache;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 
 public interface ICache<K, O> {
 
@@ -30,10 +30,10 @@ public interface ICache<K, O> {
      * Increment and decrement operation expects O to be numerical (integral) value
      */
     default Long increment(K key) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("");
     }
 
     default Long decrement(K key) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("");
     }
 }

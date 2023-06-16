@@ -15,6 +15,7 @@
 package org.opengroup.osdu.core.common.legal;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
@@ -24,11 +25,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.http.HttpClient;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
@@ -80,7 +80,7 @@ public class LegalServiceTest {
                 "        \"exportClassification\": \"EAR99\"\n" +
                 "    }\n" +
                 "}");
-        Mockito.when(httpClient.send(Matchers.any())).thenReturn(httpResponse);
+        Mockito.when(httpClient.send(any())).thenReturn(httpResponse);
 
         LegalTag legalTag = new LegalTag();
         legalTag.setName("legaltagName");
@@ -123,7 +123,7 @@ public class LegalServiceTest {
     public void testUrlNormalization () throws LegalException {
         HttpResponse httpResponse = new HttpResponse();
         httpResponse.setResponseCode(200);
-        Mockito.when(httpClient.send(Matchers.any())).thenReturn(httpResponse);
+        Mockito.when(httpClient.send(any())).thenReturn(httpResponse);
         String malformedUrl = " \n  " + ROOT_URL + "\n // \t \f \r";
         Mockito.when(legalAPIConfig.getRootUrl()).thenReturn(malformedUrl);
         legalService = new LegalService(legalAPIConfig,httpClient,headers,responseBodyMapper);
@@ -164,7 +164,7 @@ public class LegalServiceTest {
                 "        }\n" +
                 "    }\n" +
                 "}");
-        Mockito.when(httpClient.send(Matchers.any())).thenReturn(httpResponse);
+        Mockito.when(httpClient.send(any())).thenReturn(httpResponse);
 
         LegalTag legalTag = new LegalTag();
         legalTag.setName("legaltagName");

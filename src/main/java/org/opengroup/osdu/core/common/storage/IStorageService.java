@@ -17,6 +17,7 @@ package org.opengroup.osdu.core.common.storage;
 import org.opengroup.osdu.core.common.model.storage.*;
 
 import java.util.Collection;
+import org.opengroup.osdu.core.common.model.storage.Record;
 
 public interface IStorageService {
 

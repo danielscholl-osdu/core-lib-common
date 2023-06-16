@@ -24,6 +24,7 @@ import org.opengroup.osdu.core.common.model.storage.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import org.opengroup.osdu.core.common.model.storage.Record;
 import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class StorageService implements IStorageService {

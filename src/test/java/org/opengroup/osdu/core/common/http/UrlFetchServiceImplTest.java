@@ -19,7 +19,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.junit.Before;
@@ -30,7 +29,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.http.HttpResponse;
@@ -43,7 +42,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
+
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -74,7 +73,6 @@ public class UrlFetchServiceImplTest {
     @Before
     public void setup() {
         HEADERS.put(HEADER_NAME, HEADER_VALUE);
-//        mockStatic(HttpClients.class);
     }
 
     @Test
@@ -83,19 +81,12 @@ public class UrlFetchServiceImplTest {
         InputStream stream = new ByteArrayInputStream(RESPONSE.getBytes(StandardCharsets.UTF_8));
 
         StatusLine statusLine = mock(StatusLine.class);
-        when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_OK);
 
         HttpEntity entity = mock(HttpEntity.class);
-        when(entity.getContent()).thenReturn(stream);
 
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
-        when(response.getStatusLine()).thenReturn(statusLine);
-        when(response.getEntity()).thenReturn(entity);
 
         CloseableHttpClient httpClient = mock(CloseableHttpClient.class);
-        when(httpClient.execute(any(HttpPost.class))).thenReturn(response);
-
-//        when(HttpClients.createDefault()).thenReturn(httpClient);
 
         HttpResponse httpResponse = mock(HttpResponse.class);
         when(httpResponse.getResponseCode()).thenReturn(200);
@@ -145,19 +136,13 @@ public class UrlFetchServiceImplTest {
         InputStream stream = new ByteArrayInputStream(RESPONSE.getBytes(StandardCharsets.UTF_8));
 
         StatusLine statusLine = mock(StatusLine.class);
-        when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_OK);
 
         HttpEntity entity = mock(HttpEntity.class);
-        when(entity.getContent()).thenReturn(stream);
 
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
-        when(response.getStatusLine()).thenReturn(statusLine);
-        when(response.getEntity()).thenReturn(entity);
 
         CloseableHttpClient httpClient = mock(CloseableHttpClient.class);
-        when(httpClient.execute(any(HttpPost.class))).thenReturn(response);
 
-        //when(HttpClients.createDefault()).thenReturn(httpClient);
 
         HttpResponse httpResponse = mock(HttpResponse.class);
         when(httpResponse.getResponseCode()).thenReturn(200);
@@ -232,19 +217,13 @@ public class UrlFetchServiceImplTest {
         InputStream stream = new ByteArrayInputStream(RESPONSE.getBytes(StandardCharsets.UTF_8));
 
         StatusLine statusLine = mock(StatusLine.class);
-        when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_OK);
 
         HttpEntity entity = mock(HttpEntity.class);
-        when(entity.getContent()).thenReturn(stream);
 
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
-        when(response.getStatusLine()).thenReturn(statusLine);
-        when(response.getEntity()).thenReturn(entity);
 
         CloseableHttpClient httpClient = mock(CloseableHttpClient.class);
-        when(httpClient.execute(any(HttpPost.class))).thenReturn(response);
 
-//        when(HttpClients.createDefault()).thenReturn(httpClient);
 
         HttpResponse httpResponse = mock(HttpResponse.class);
         when(httpResponse.getResponseCode()).thenReturn(200);

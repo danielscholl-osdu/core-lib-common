@@ -14,138 +14,114 @@
 
 package org.opengroup.osdu.core.common.http;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
+import java.net.http.HttpClient;
+import java.net.http.HttpClient.Redirect;
+import java.net.http.HttpHeaders;
+import java.net.http.HttpRequest.BodyPublisher;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpRequest.Builder;
+import java.net.http.HttpResponse.BodyHandler;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 abstract class AbstractHttpClient implements IHttpClient {
 
-    @Override
-    public HttpResponse send(HttpRequest request) {
+  private static final Set<String> DISALLOWED_HEADERS_SET;
 
-        HttpResponse output = new HttpResponse();
-        output.setRequest(request);
-        HttpURLConnection conn = null;
-        try {
-            supportPatchMethod();
-            request.setUrl(encodeUrl(request.getUrl()));
+  static {
+    DISALLOWED_HEADERS_SET = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+    DISALLOWED_HEADERS_SET.addAll(
+        Set.of("connection", "content-length", "expect", "host", "upgrade"));
+  }
 
-            long start = System.currentTimeMillis();
-            conn = this.createConnection(request);
-            this.sendRequest(conn, request.body);
+  @Override
+  public HttpResponse send(HttpRequest request) {
 
-            output.setResponseCode(conn.getResponseCode());
-            output.setContentType(conn.getContentType());
-            output.setHeaders(conn.getHeaderFields());
+    HttpResponse output = new HttpResponse();
+    output.setRequest(request);
+    try {
+      request.setUrl(encodeUrl(request.getUrl()).toString());
 
-            if (output.isSuccessCode()) {
-                output.setBody(getBody(conn.getInputStream()));
+      URL url = new URL(request.getUrl());
 
-            } else {
-                output.setBody(getBody(conn.getErrorStream()));
-            }
+      Builder httpRequstBuilder = java.net.http.HttpRequest.newBuilder()
+          .uri(encodeUrl(request.getUrl()));
 
-            output.setLatency(System.currentTimeMillis() - start);
-        } catch (IOException e) {
-            System.err.println(String.format("Unexpected error sending to URL %s METHOD %s. error %s", request.url,
-                    request.httpMethod, e));
-            output.setException(e);
-        } catch (URISyntaxException e) {
-            output.setException(e);
-        } finally {
-            if (conn != null)
-                conn.disconnect();
+      for (Map.Entry<String, String> header : request.headers.entrySet()) {
+        if (!DISALLOWED_HEADERS_SET.contains(header.getKey().toLowerCase())) {
+          httpRequstBuilder.header(header.getKey(), header.getValue());
         }
+      }
 
-        return output;
+      if (request.httpMethod.equals(HttpRequest.POST) ||
+          request.httpMethod.equals(HttpRequest.PUT) ||
+          request.httpMethod.equals(HttpRequest.PATCH)) {
+        BodyPublisher bodyPublisher;
+        if (Objects.nonNull(request.getBody())) {
+          bodyPublisher = BodyPublishers.ofString(request.getBody());
+        } else {
+          bodyPublisher = BodyPublishers.noBody();
+        }
+        httpRequstBuilder.method(request.httpMethod, bodyPublisher);
+      } else {
+        BodyPublisher bodyPublisher = BodyPublishers.noBody();
+        httpRequstBuilder.method(request.httpMethod, bodyPublisher);
+      }
+
+      HttpClient httpClient = buildClient(request);
+
+      BodyHandler<String> stringBodyHandler = BodyHandlers.ofString();
+
+      long start = System.currentTimeMillis();
+
+      java.net.http.HttpResponse<String> httpResponse = httpClient.send(
+          httpRequstBuilder.build(),
+          stringBodyHandler
+      );
+
+      HttpHeaders headers = httpResponse.headers();
+      headers.firstValue("content-type").ifPresent(output::setContentType);
+      output.setResponseCode(httpResponse.statusCode());
+      output.setHeaders(headers.map());
+      output.setBody(httpResponse.body());
+      output.setLatency(System.currentTimeMillis() - start);
+
+    } catch (IOException e) {
+      System.err.println(
+          String.format("Unexpected error sending to URL %s METHOD %s. error %s", request.url,
+              request.httpMethod, e));
+      output.setException(e);
+    } catch (InterruptedException e) {
+      output.setException(e);
+      Thread.currentThread().interrupt();
     }
+    return output;
+  }
 
-    private String getBody(InputStream stream) throws IOException {
-        if(stream == null) {
-            return "";
-        }
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(stream))) {
-            String inputLine;
-            StringBuilder resp = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                resp.append(inputLine);
-            }
-            return resp.toString();
-        }
-    }
+  HttpClient buildClient(HttpRequest request) {
+    HttpClient.Builder httpClientBuilder = HttpClient.newBuilder();
+    httpClientBuilder.followRedirects(request.followRedirects ? Redirect.ALWAYS : Redirect.NEVER);
+    httpClientBuilder.connectTimeout(
+        Duration.of(request.getConnectionTimeout(), ChronoUnit.MILLIS));
+    return httpClientBuilder.build();
+  }
 
-    HttpURLConnection createConnection(HttpRequest request)
-            throws IOException {
+  private URI encodeUrl(String url){
+    UriComponents uriComponents = UriComponentsBuilder.fromUriString(url).build();
+    String uriString = uriComponents.toUriString();
+    return URI.create(uriString);
+  }
 
-        HttpURLConnection conn = null;
-
-        URL url = new URL(request.url);
-        conn = (HttpURLConnection) url.openConnection();
-        conn.setInstanceFollowRedirects(request.followRedirects);
-        conn.setConnectTimeout(request.connectionTimeout);
-
-        for (Map.Entry<String, String> header : request.headers.entrySet()) {
-            if (header.getKey().equalsIgnoreCase("Content-Length")) {
-                conn.setFixedLengthStreamingMode(Long.parseLong(header.getValue()));
-            } else {
-                conn.setRequestProperty(header.getKey(), header.getValue());
-            }
-        }
-
-        if (request.httpMethod.equals(HttpRequest.POST) ||
-                request.httpMethod.equals(HttpRequest.PUT) ||
-                request.httpMethod.equals(HttpRequest.PATCH)) {
-            conn.setDoOutput(true); //only set if we have a body on request
-        }
-        conn.setRequestMethod(request.httpMethod);
-
-        return conn;
-    }
-
-    private void sendRequest(HttpURLConnection connection, String body) throws IOException {
-        if (!StringUtils.isBlank(body)) {
-            try (OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream())) {
-                writer.write(body);
-            }
-        }
-    }
-
-    private String encodeUrl(String url) throws MalformedURLException, URISyntaxException {
-        UriComponents uriComponents = UriComponentsBuilder.fromUriString(url).build();
-        return uriComponents.toUriString();
-    }
-
-    private void supportPatchMethod() {
-        try {
-            Field methodsField = HttpURLConnection.class.getDeclaredField("methods");
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(methodsField, methodsField.getModifiers() & ~Modifier.FINAL);
-            methodsField.setAccessible(true);
-            String[] oldMethods = (String[]) methodsField.get(null);
-            Set<String> methodsSet = new LinkedHashSet<>(Arrays.asList(oldMethods));
-            methodsSet.addAll(Arrays.asList(HttpRequest.PATCH));
-            String[] newMethods = methodsSet.toArray(new String[0]);
-            methodsField.set(null, newMethods);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        }
-    }
 }

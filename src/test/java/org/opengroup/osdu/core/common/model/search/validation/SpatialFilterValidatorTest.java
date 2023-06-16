@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.util.ReflectionUtils;
 
 import javax.validation.ConstraintValidatorContext;
@@ -69,7 +69,6 @@ public class SpatialFilterValidatorTest {
     public void should_allowOnlyOneSpatialFilter_when_called() {
         when(this.spatialFilter.getByBoundingBox()).thenReturn(this.byBoundingBox);
         when(this.spatialFilter.getByDistance()).thenReturn(this.byDistance);
-        Mockito.when(this.spatialFilter.getByGeoPolygon()).thenReturn(this.byGeoPolygon);
         assertFalse(sut.isValid(this.spatialFilter, this.constraintValidatorContext));
     }
 

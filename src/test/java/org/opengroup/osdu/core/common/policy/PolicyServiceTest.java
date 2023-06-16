@@ -14,6 +14,8 @@
 
 package org.opengroup.osdu.core.common.policy;
 
+import static org.mockito.ArgumentMatchers.any;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -21,7 +23,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.http.HttpClient;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
@@ -61,7 +63,7 @@ public class PolicyServiceTest {
                 "        \"allow\": true\n" +
                 "    }\n" +
                 "}");
-        Mockito.when(httpClient.send(Matchers.any())).thenReturn(httpResponse);
+        Mockito.when(httpClient.send(any())).thenReturn(httpResponse);
 
         PolicyRequest policyRequest = new PolicyRequest();
         policyRequest.setPolicyId("storage");
@@ -87,7 +89,7 @@ public class PolicyServiceTest {
                 "            }\n" +
                 "        }\n" +
                 "    }");
-        Mockito.when(httpClient.send(Matchers.any())).thenReturn(httpResponse);
+        Mockito.when(httpClient.send(any())).thenReturn(httpResponse);
 
 
         Map<String, Object> userData = new HashMap<>();
@@ -117,7 +119,7 @@ public class PolicyServiceTest {
                 "        \"allowed_records\": [\"opendes:doc:e06d768d3e1c496da3274014fdc70ec9\"]\n" +
                 "    }\n" +
                 "}");
-        Mockito.when(httpClient.send(Matchers.any())).thenReturn(httpResponse);
+        Mockito.when(httpClient.send(any())).thenReturn(httpResponse);
 
         PolicyRequest policyRequest = new PolicyRequest();
         policyRequest.setPolicyId("search");
