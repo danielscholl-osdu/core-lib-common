@@ -26,7 +26,7 @@ public class CrsConverterAPIConfig {
     String apiKey;
 
     @Builder.Default
-    private int connectTimeout = 60000;
+    private int connectTimeout = 5000;
 
     @Builder.Default
     private int connectionRequestTimeout = 60000;

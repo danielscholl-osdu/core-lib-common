@@ -36,7 +36,8 @@ public class CrsConverterFactory implements ICrsConverterFactory {
         RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectTimeout(config.getConnectTimeout())
                 .setConnectionRequestTimeout(config.getConnectionRequestTimeout())
-                .setSocketTimeout(config.getSocketTimeout()).build();
+                .setSocketTimeout(config.getSocketTimeout())
+                .build();
 
         this.httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
     }
@@ -46,7 +47,7 @@ public class CrsConverterFactory implements ICrsConverterFactory {
         if (headers == null) {
             throw new NullPointerException("headers cannot be null");
         }
-        return new CrsConverterService(this.config, headers, mapper, httpClient);
+        return new CrsConverterService(this.config, httpClient, headers, mapper);
     }
 
     @Override
@@ -56,10 +57,12 @@ public class CrsConverterFactory implements ICrsConverterFactory {
         } else {
             RequestConfig requestConfig = RequestConfig.custom()
                     .setConnectTimeout(config.getConnectTimeout())
+                    .setConnectionRequestTimeout(config.getConnectionRequestTimeout())
                     .setSocketTimeout(socketTimeout)
-                    .setSocketTimeout(config.getSocketTimeout()).build();
+                    .build();
+
             this.httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
-            return new CrsConverterService(this.config, headers, mapper, httpClient);
+            return new CrsConverterService(this.config, httpClient, headers, mapper);
         }
     }
 }
