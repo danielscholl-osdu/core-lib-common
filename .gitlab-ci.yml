@@ -18,7 +18,7 @@ include:
     file: 'standard-setup.yml'
 
   - project: 'osdu/platform/ci-cd-pipelines'
-    ref: 'master'
+    ref: "az/td-jdk-17-migration"
     file: 'build/maven.yml'
 
   - project: 'osdu/platform/ci-cd-pipelines'
