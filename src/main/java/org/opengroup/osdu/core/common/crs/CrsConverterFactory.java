@@ -1,4 +1,4 @@
-// Copyright 2017-2019, Schlumberger
+// Copyright 2017-2023, Schlumberger
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -51,16 +51,10 @@ public class CrsConverterFactory implements ICrsConverterFactory {
     }
 
     @Override
-    public ICrsConverterService createWithCustomSocketTimeout(DpsHeaders headers, int socketTimeout) {
+    public ICrsConverterService create(DpsHeaders headers, RequestConfig requestConfig) {
         if (headers == null) {
             throw new NullPointerException("headers cannot be null");
         } else {
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setConnectTimeout(config.getConnectTimeout())
-                    .setConnectionRequestTimeout(config.getConnectionRequestTimeout())
-                    .setSocketTimeout(socketTimeout)
-                    .build();
-
             this.httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
             return new CrsConverterService(this.config, httpClient, headers, mapper);
         }
