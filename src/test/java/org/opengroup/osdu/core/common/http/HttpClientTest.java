@@ -24,7 +24,6 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.http.HttpHeaders;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +54,7 @@ public class HttpClientTest {
     public void should_throwAppExceptionWithMsg_when_responseThrowsExceptionDuringConnectionCreation() {
         HttpResponse response = this.sut.send(HttpRequest.post().url("invalidURL").headers(HEADERS).body(BODY).build());
         assertTrue(response.hasException());
-        assertEquals(MalformedURLException.class, response.getException().getClass());
+        assertEquals(IllegalArgumentException.class, response.getException().getClass());
     }
 
 

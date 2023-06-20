@@ -30,10 +30,10 @@ public interface ICache<K, O> {
      * Increment and decrement operation expects O to be numerical (integral) value
      */
     default Long increment(K key) {
-        throw new NotImplementedException("");
+        throw new NotImplementedException("Method not implemented!");
     }
 
     default Long decrement(K key) {
-        throw new NotImplementedException("");
+        throw new NotImplementedException("Method not implemented!");
     }
 }

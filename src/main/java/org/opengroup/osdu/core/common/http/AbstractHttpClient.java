@@ -15,10 +15,7 @@
 package org.opengroup.osdu.core.common.http;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpHeaders;
@@ -54,8 +51,6 @@ abstract class AbstractHttpClient implements IHttpClient {
     try {
       request.setUrl(encodeUrl(request.getUrl()).toString());
 
-      URL url = new URL(request.getUrl());
-
       Builder httpRequstBuilder = java.net.http.HttpRequest.newBuilder()
           .uri(encodeUrl(request.getUrl()));
 
@@ -65,20 +60,13 @@ abstract class AbstractHttpClient implements IHttpClient {
         }
       }
 
-      if (request.httpMethod.equals(HttpRequest.POST) ||
-          request.httpMethod.equals(HttpRequest.PUT) ||
-          request.httpMethod.equals(HttpRequest.PATCH)) {
-        BodyPublisher bodyPublisher;
-        if (Objects.nonNull(request.getBody())) {
-          bodyPublisher = BodyPublishers.ofString(request.getBody());
-        } else {
-          bodyPublisher = BodyPublishers.noBody();
-        }
-        httpRequstBuilder.method(request.httpMethod, bodyPublisher);
+      BodyPublisher bodyPublisher;
+      if (isRequestMethodWithBody(request) && Objects.nonNull(request.getBody())) {
+        bodyPublisher = BodyPublishers.ofString(request.getBody());
       } else {
-        BodyPublisher bodyPublisher = BodyPublishers.noBody();
-        httpRequstBuilder.method(request.httpMethod, bodyPublisher);
+        bodyPublisher = BodyPublishers.noBody();
       }
+      httpRequstBuilder.method(request.httpMethod, bodyPublisher);
 
       HttpClient httpClient = buildClient(request);
 
@@ -98,7 +86,7 @@ abstract class AbstractHttpClient implements IHttpClient {
       output.setBody(httpResponse.body());
       output.setLatency(System.currentTimeMillis() - start);
 
-    } catch (IOException e) {
+    } catch (IOException | IllegalArgumentException e) {
       System.err.println(
           String.format("Unexpected error sending to URL %s METHOD %s. error %s", request.url,
               request.httpMethod, e));
@@ -110,6 +98,12 @@ abstract class AbstractHttpClient implements IHttpClient {
     return output;
   }
 
+  private static boolean isRequestMethodWithBody(HttpRequest request) {
+    return request.httpMethod.equals(HttpRequest.POST) ||
+        request.httpMethod.equals(HttpRequest.PUT) ||
+        request.httpMethod.equals(HttpRequest.PATCH);
+  }
+
   HttpClient buildClient(HttpRequest request) {
     HttpClient.Builder httpClientBuilder = HttpClient.newBuilder();
     httpClientBuilder.followRedirects(request.followRedirects ? Redirect.ALWAYS : Redirect.NEVER);
@@ -118,7 +112,7 @@ abstract class AbstractHttpClient implements IHttpClient {
     return httpClientBuilder.build();
   }
 
-  private URI encodeUrl(String url){
+  private URI encodeUrl(String url) {
     UriComponents uriComponents = UriComponentsBuilder.fromUriString(url).build();
     String uriString = uriComponents.toUriString();
     return URI.create(uriString);
