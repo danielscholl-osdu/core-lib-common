@@ -95,19 +95,20 @@ public class CrsConverterService implements ICrsConverterService {
         }
         httpRequest.setEntity(entity);
         headers.getHeaders().forEach(httpRequest::addHeader);
+        long start = System.currentTimeMillis();
         try {
             try (CloseableHttpResponse response = httpClient.execute(httpRequest)) {
                 HttpResponse output = new HttpResponse();
                 output.setResponseCode(response.getStatusLine().getStatusCode());
-                StringBuilder responseBuilder = new StringBuilder();
+                StringBuilder responseBody = new StringBuilder();
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
                     String responsePayloadLine;
                     while ((responsePayloadLine = br.readLine()) != null) {
-                        responseBuilder.append(responsePayloadLine);
+                        responseBody.append(responsePayloadLine);
                     }
                 }
-                String responseBody = responseBuilder.toString();
-                output.setBody(responseBody);
+                output.setBody(responseBody.toString());
+                output.setLatency(System.currentTimeMillis() - start);
                 return output;
             }
         } catch (SocketTimeoutException e) {
