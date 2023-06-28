@@ -27,4 +27,5 @@ public class DatesConversionServiceErrorMessages {
     public static final String INVALID_FORMATTER = "DateTime conversion: Invalid DateTime format. %s. No conversion applied.";
     public static final String INVALID_DATETIME_VALUE = "DateTime conversion: \"%s\" could not be parsed for property %s. %s. No conversion applied.";
     public static final String ERROR_PARSING_VALUE = "DateTime conversion: Error parsing \"%s\". No conversion applied.";
+    public static final String UNSUPPORTED_OP = "DateTime conversion: UnsupportedOperationException occurred when trying to convert a %s?";
 }

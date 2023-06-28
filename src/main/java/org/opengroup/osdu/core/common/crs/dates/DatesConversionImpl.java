@@ -164,6 +164,8 @@ public class DatesConversionImpl {
                         }
                     } catch(DateTimeException ccEx) {
                         message = String.format(DatesConversionServiceErrorMessages.INVALID_TIMEZONE, ccEx.getMessage());
+                    } catch (UnsupportedOperationException ccEx) {
+                        message = String.format(DatesConversionServiceErrorMessages.UNSUPPORTED_OP, ccEx.getMessage());
                     }
 
                     if(message != null) {
