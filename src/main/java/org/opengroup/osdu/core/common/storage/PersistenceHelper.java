@@ -171,16 +171,11 @@ public class PersistenceHelper {
 
 			JsonElement subFieldParentElement = data.get(subFieldParent);
 
-			if (subFieldParentElement.isJsonObject()) {
-				JsonElement parentObjectValue = getDataSubProperty(subFieldChild,
-						subFieldParentElement.getAsJsonObject());
-
-				if (parentObjectValue != null) {
-					return parentObjectValue;
-				}
+			if (subFieldParentElement == null || !subFieldParentElement.isJsonObject()) {
+				return null;
 			}
 
-			return null;
+			return getDataSubProperty(subFieldChild, subFieldParentElement.getAsJsonObject());
 		}
 
 		return data.get(field);
