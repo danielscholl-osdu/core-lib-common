@@ -14,6 +14,14 @@
 
 package org.opengroup.osdu.core.common.http;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.message.BasicHeader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,12 +33,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -51,19 +59,20 @@ public class HttpClientTest {
     }
 
     @Test
-    public void shuould_throwAppExceptionWithMsg_when_responseThrowsExceptionDuringConnectionCreation() {
+    public void should_throwAppExceptionWithMsg_when_responseThrowsExceptionDuringConnectionCreation() {
         HttpResponse response = this.sut.send(HttpRequest.post().url("invalidURL").headers(HEADERS).body(BODY).build());
         assertTrue(response.hasException());
-        assertEquals(MalformedURLException.class, response.getException().getClass());
+        assertEquals(ClientProtocolException.class, response.getException().getClass());
     }
 
+
     @Test
-    public void shuould_return403_when_sendingToPublicApiWithoutkey() {
+    public void should_return403_when_sendingToPublicApiWithoutkey() {
         HttpResponse response = this.sut.send(
                 HttpRequest.get().url("https://www.googleapis.com/customsearch/v1?q=hello").headers(HEADERS).build()
         );
         assertEquals(403, response.getResponseCode());
-        assertEquals("application/json; charset=UTF-8", response.getContentType());
+        assertEquals("application/json", response.getContentType());
         assertTrue(response.toString(), response.getLatency() > 0);
         assertTrue(response.getHeaders().size() > 0);
     }
@@ -133,7 +142,30 @@ public class HttpClientTest {
         assertEquals(BODY, response.getRequest().body);
         assertTrue(response.IsNotFoundCode());
     }
+    @Test
+    public void should_return411_when_makingPostRequestWithoutBodyAndContentLengthNotSetToZero() throws Exception {
 
+        HttpRequest rq = HttpRequest.post().url(URL).headers(HEADERS).build();
+        createMockHtppConnection(411, rq);
+        HttpResponse response = this.sut.send(rq);
+
+        assertEquals(rq, response.getRequest());
+        assertEquals("Content-Length is missing", response.getBody());
+        assertEquals(411, response.getResponseCode());
+        assertEquals("application/json", response.getContentType());
+    }
+    @Test
+    public void should_return200_when_makingPostRequestWithoutBodyAndContentLengthSetToZero() throws Exception {
+        HEADERS.put("Content-Length", Long.toString(0));
+        HttpRequest rq = HttpRequest.post().url(URL).headers(HEADERS).build();
+        createMockHtppConnection(200, rq);
+        HttpResponse response = this.sut.send(rq);
+
+        assertEquals(rq, response.getRequest());
+        assertEquals("{\"name\":\"test data\"}", response.getBody());
+        assertEquals(200, response.getResponseCode());
+        assertEquals("application/json", response.getContentType());
+    }
     @Test
     public void should_convertObjectToJson_when_makingPostRequest() throws Exception {
 
@@ -229,21 +261,31 @@ public class HttpClientTest {
     }
 
     private void createMockHtppConnection(int returnCode, HttpRequest request) throws IOException {
-        HttpURLConnection connection = getHttpURLConnection(returnCode);
-        when(this.sut.createConnection(request)).thenReturn(connection);
+        CloseableHttpClient httpClient = getHttpClient(returnCode);
+        when(this.sut.getHttpClient(request)).thenReturn(httpClient);
     }
 
-    private HttpURLConnection getHttpURLConnection(int returnCode) throws IOException {
-        OutputStream outputStream = mock(OutputStream.class);
-        InputStream inputStream = new ByteArrayInputStream("{\"name\":\"test data\"}".getBytes());
-
-        HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getOutputStream()).thenReturn(outputStream);
-        when(connection.getInputStream()).thenReturn(inputStream);
-        when(connection.getErrorStream()).thenReturn(inputStream);
-        when(connection.getResponseCode()).thenReturn(returnCode);
-        when(connection.getContentType()).thenReturn("application/json");
-        return connection;
+    private CloseableHttpClient getHttpClient(int returnCode) throws IOException {
+        InputStream inputStream;
+        CloseableHttpClient mockClient = mock(CloseableHttpClient.class);
+        CloseableHttpResponse mockResponse = mock(CloseableHttpResponse.class);
+        HttpEntity mockHttpEntity = mock(HttpEntity.class);
+        StatusLine mockStatusLine = mock(StatusLine.class);
+        if (returnCode == 411) {
+            inputStream = new ByteArrayInputStream("Content-Length is missing".getBytes());
+        } else {
+            inputStream = new ByteArrayInputStream("{\"name\":\"test data\"}".getBytes());
+        }
+        BasicHeader basicHeader = new BasicHeader("content-type",
+            ContentType.APPLICATION_JSON.getMimeType());
+        when(mockHttpEntity.getContent()).thenReturn(inputStream);
+        when(mockHttpEntity.getContentType()).thenReturn(basicHeader);
+        when(mockResponse.getAllHeaders()).thenReturn(new Header[]{basicHeader});
+        when(mockResponse.getEntity()).thenReturn(mockHttpEntity);
+        when(mockResponse.getStatusLine()).thenReturn(mockStatusLine);
+        when(mockStatusLine.getStatusCode()).thenReturn(returnCode);
+        when(mockClient.execute(any())).thenReturn(mockResponse);
+        return mockClient;
     }
 
 }

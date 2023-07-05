@@ -1,4 +1,4 @@
-// Copyright 2017-2019, Schlumberger
+// Copyright 2017-2023, Schlumberger
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,11 @@
 
 package org.opengroup.osdu.core.common.crs;
 
+import org.apache.http.client.config.RequestConfig;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 
 public interface ICrsConverterFactory {
     ICrsConverterService create(DpsHeaders headers);
+
+    ICrsConverterService create(DpsHeaders headers, RequestConfig requestConfig);
 }

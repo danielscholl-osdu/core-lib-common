@@ -241,6 +241,23 @@ public class DatesConversionTests {
     }
 
     @Test
+    public void shouldReturnOriginalRecordWhenGivenDifferentDateTimeFormatterThanActualValues() {
+        String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"acl\": {\"viewers\": [\"viewers@unittest.com\"],\"owners\": [\"owners@unittest.com\"]},\"legal\": {\"legaltags\": [\"unit-test-legal\"],\"otherRelevantDataCountries\": [\"US\"]},\"data\": {\"msg\": \"test record\",\"creationDate\": {\"creationDate\": \"2023-04-01T04:58:26.000Z\",\"someString\": \"someValue\"}},\"meta\": [{\"path\": \"\",\"kind\": \"DateTime\",\"persistableReference\": \"{\\\"type\\\": \\\"DAT\\\",\\\"format\\\": \\\"dd-MM-yyyy\\\"}\",\"propertyNames\": [\"creationDate\"],\"name\": \"GCS_WGS_1984\"}]}";
+        JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);
+        List<ConversionRecord> conversionRecords = new ArrayList<>();
+        ConversionRecord conversionRecord = new ConversionRecord();
+        conversionRecord.setRecordJsonObject(record);
+        conversionRecords.add(conversionRecord);
+        this.datesConversion.convertDatesToISO(conversionRecords);
+        Assert.assertEquals(1, conversionRecords.size());
+        Assert.assertTrue(conversionRecords.get(0).getConvertStatus() == ConvertStatus.ERROR);
+        String message = String.format(DatesConversionServiceErrorMessages.UNSUPPORTED_OP, "JsonObject");
+        Assert.assertTrue(conversionRecords.get(0).getConversionMessages().get(0).equalsIgnoreCase(message));
+        JsonObject resultRecord = conversionRecords.get(0).getRecordJsonObject();
+        Assert.assertEquals(record, resultRecord);
+    }
+
+    @Test
     public void shouldReturnOriginalRecordWhenGivenInvalidMonthValue() {
         String stringRecord = "{\"id\": \"unit-test-1\",\"kind\": \"unit:test:1.0.0\",\"acl\": {\"viewers\": [\"viewers@unittest.com\"],\"owners\": [\"owners@unittest.com\"]},\"legal\": {\"legaltags\": [\"unit-test-legal\"],\"otherRelevantDataCountries\": [\"US\"]},\"data\": {\"msg\": \"test record\",\"creationDate\": \"26/03/2019 04:12:22\"},\"meta\": [{\"path\": \"\",\"kind\": \"DateTime\",\"persistableReference\": \"{\\\"type\\\": \\\"DAT\\\",\\\"format\\\": \\\"MM/dd/yyyy HH:mm:ss\\\"}\",\"propertyNames\": [\"creationDate\"],\"name\": \"GCS_WGS_1984\"}]}";
         JsonObject record = (JsonObject) this.jsonParser.parse(stringRecord);

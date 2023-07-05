@@ -14,26 +14,42 @@
 
 package org.opengroup.osdu.core.common.http;
 
-import org.apache.commons.lang3.StringUtils;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
+import org.springframework.http.MediaType;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
+@Slf4j
 abstract class AbstractHttpClient implements IHttpClient {
 
     @Override
@@ -41,104 +57,121 @@ abstract class AbstractHttpClient implements IHttpClient {
 
         HttpResponse output = new HttpResponse();
         output.setRequest(request);
-        HttpURLConnection conn = null;
         try {
-            supportPatchMethod();
-            request.setUrl(encodeUrl(request.getUrl()));
 
-            long start = System.currentTimeMillis();
-            conn = this.createConnection(request);
-            this.sendRequest(conn, request.body);
+            URI uri = new URIBuilder(encodeUrl(request.getUrl())).build();
 
-            output.setResponseCode(conn.getResponseCode());
-            output.setContentType(conn.getContentType());
-            output.setHeaders(conn.getHeaderFields());
-
-            if (output.isSuccessCode()) {
-                output.setBody(getBody(conn.getInputStream()));
-
-            } else {
-                output.setBody(getBody(conn.getErrorStream()));
+            if (isRequestMethodWithBody(request) && Objects.isNull(request.getBody())){
+                request.setBody("");
             }
 
-            output.setLatency(System.currentTimeMillis() - start);
-        } catch (IOException e) {
-            System.err.println(String.format("Unexpected error sending to URL %s METHOD %s. error %s", request.url,
-                    request.httpMethod, e));
-            output.setException(e);
-        } catch (URISyntaxException e) {
-            output.setException(e);
-        } finally {
-            if (conn != null)
-                conn.disconnect();
-        }
+            HttpRequestBase requestBase = isRequestMethodWithBody(request)
+                ? getBodyHttpBase(request, uri)
+                : getNoBodyHttpBase(request, uri);
 
+            try (CloseableHttpClient httpclient = getHttpClient(request)) {
+
+                long start = System.currentTimeMillis();
+                CloseableHttpResponse response = httpclient.execute(requestBase);
+                HttpEntity entity = response.getEntity();
+                if (Objects.nonNull(entity)) {
+                    StringBuilder responseBuilder = new StringBuilder();
+                    try (BufferedReader br = new BufferedReader(
+                        new InputStreamReader(entity.getContent()))) {
+                        String responsePayloadLine;
+                        while ((responsePayloadLine = br.readLine()) != null) {
+                            responseBuilder.append(responsePayloadLine);
+                        }
+                    }
+                    String responseBody = responseBuilder.toString();
+                    output.setContentType(
+                        ContentType.getOrDefault(response.getEntity()).getMimeType());
+                    output.setBody(responseBody);
+                }
+                Header[] allHeaders = response.getAllHeaders();
+                HashMap<String, List<String>> headersMap = new HashMap<>();
+                for (Header header : allHeaders) {
+                    headersMap.put(header.getName(), Collections.singletonList(header.getValue()));
+                }
+                output.setResponseCode(response.getStatusLine().getStatusCode());
+                output.setLatency(System.currentTimeMillis() - start);
+                output.setHeaders(headersMap);
+            }
+
+        } catch (URISyntaxException | IOException e) {
+            log.error("Unexpected error sending to URL {} METHOD {} error {}", request.url,
+                request.httpMethod, e);
+            output.setException(e);
+        }
         return output;
     }
 
-    private String getBody(InputStream stream) throws IOException {
-        if(stream == null) {
-            return "";
+    CloseableHttpClient getHttpClient(HttpRequest request) {
+        RequestConfig requestConfig = RequestConfig.custom()
+            .setConnectTimeout(request.connectionTimeout)
+            .setRedirectsEnabled(request.followRedirects)
+            .setConnectionRequestTimeout(request.connectionTimeout)
+            .setSocketTimeout(request.connectionTimeout)
+            .build();
+
+        List<Header> httpHeaders = new ArrayList<>();
+        for (String key : request.getHeaders().keySet()) {
+            httpHeaders.add(new BasicHeader(key, request.getHeaders().get(key)));
         }
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(stream))) {
-            String inputLine;
-            StringBuilder resp = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                resp.append(inputLine);
-            }
-            return resp.toString();
+        if (!request.getHeaders().containsKey(HttpHeaders.ACCEPT)) {
+            httpHeaders.add(
+                new BasicHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON.toString()));
         }
+
+        return HttpClients.custom()
+            .setDefaultHeaders(httpHeaders)
+            .setDefaultRequestConfig(requestConfig)
+            .build();
     }
 
-    HttpURLConnection createConnection(HttpRequest request)
-            throws IOException {
-
-        HttpURLConnection conn = null;
-
-        URL url = new URL(request.url);
-        conn = (HttpURLConnection) url.openConnection();
-        conn.setInstanceFollowRedirects(request.followRedirects);
-        conn.setConnectTimeout(request.connectionTimeout);
-
-        request.headers.forEach(conn::setRequestProperty);
-
-        if (request.httpMethod.equals(HttpRequest.POST) ||
-                request.httpMethod.equals(HttpRequest.PUT) ||
-                request.httpMethod.equals(HttpRequest.PATCH)) {
-            conn.setDoOutput(true); //only set if we have a body on request
-        }
-        conn.setRequestMethod(request.httpMethod);
-
-        return conn;
-    }
-
-    private void sendRequest(HttpURLConnection connection, String body) throws IOException {
-        if (!StringUtils.isBlank(body)) {
-            try (OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream())) {
-                writer.write(body);
-            }
-        }
-    }
-
-    private String encodeUrl(String url) throws MalformedURLException, URISyntaxException {
+    private String encodeUrl(String url) {
         UriComponents uriComponents = UriComponentsBuilder.fromUriString(url).build();
         return uriComponents.toUriString();
     }
 
-    private void supportPatchMethod() {
-        try {
-            Field methodsField = HttpURLConnection.class.getDeclaredField("methods");
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(methodsField, methodsField.getModifiers() & ~Modifier.FINAL);
-            methodsField.setAccessible(true);
-            String[] oldMethods = (String[]) methodsField.get(null);
-            Set<String> methodsSet = new LinkedHashSet<>(Arrays.asList(oldMethods));
-            methodsSet.addAll(Arrays.asList(HttpRequest.PATCH));
-            String[] newMethods = methodsSet.toArray(new String[0]);
-            methodsField.set(null, newMethods);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new IllegalStateException(e);
+    private HttpRequestBase getBodyHttpBase(HttpRequest request, URI uri)
+        throws ClientProtocolException {
+        StringEntity stringEntity = new StringEntity(request.body, StandardCharsets.UTF_8);
+        switch (request.httpMethod) {
+            case HttpRequest.POST:
+                HttpPost post = new HttpPost(uri);
+                post.setEntity(stringEntity);
+                return post;
+            case HttpRequest.PUT:
+                HttpPut put = new HttpPut(uri);
+                put.setEntity(stringEntity);
+                return put;
+            case HttpRequest.PATCH:
+                HttpPatch httpPatch = new HttpPatch(uri);
+                httpPatch.setEntity(stringEntity);
+                return httpPatch;
+            default:
+                throw new ClientProtocolException("Invalid HTTP method: " + request.httpMethod);
         }
+    }
+
+    private static HttpRequestBase getNoBodyHttpBase(HttpRequest request, URI uri)
+        throws ClientProtocolException {
+        switch (request.httpMethod) {
+            case HttpRequest.GET:
+                return new HttpGet(uri);
+            case HttpRequest.DELETE:
+                return new HttpDelete(uri);
+            case HttpRequest.HEAD:
+                return new HttpHead(uri);
+            default:
+                throw new ClientProtocolException("Invalid HTTP method: " + request.httpMethod);
+        }
+    }
+
+    private static boolean isRequestMethodWithBody(HttpRequest request) {
+        return request.httpMethod.equals(HttpRequest.POST) ||
+            request.httpMethod.equals(HttpRequest.PUT) ||
+            request.httpMethod.equals(HttpRequest.PATCH);
     }
 }

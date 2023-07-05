@@ -174,6 +174,36 @@ public class PersistenceHelperTests {
     }
 
     @Test
+    public void should_returnRecord_when_providingInvalidNestedDataAttributes() {
+        List<String> attributes = new ArrayList<>();
+        attributes.add("invalid.state");
+
+        Acl acl = new Acl();
+        acl.setViewers(new String[] { "viewers1", "viewers2" });
+        acl.setOwners(new String[] { "owners1", "owners2" });
+
+        AddressData address = new AddressData("houston", "TX", "USA");
+
+        Map<String, Object> originalData = new HashMap<>();
+        originalData.put("address", address);
+
+        Record originalRecord = new Record();
+        originalRecord.setId("ID1");
+        originalRecord.setAcl(acl);
+        originalRecord.setVersion(123L);
+        originalRecord.setData(originalData);
+        originalRecord.setKind("anyKind");
+
+        JsonParser jsonParser = new JsonParser();
+        Gson gson = new Gson();
+
+        JsonElement recordJson = jsonParser.parse(gson.toJson(originalRecord));
+
+        JsonElement result = PersistenceHelper.filterRecordDataFields(recordJson, attributes);
+        assertEquals(recordJson, result);
+    }
+
+    @Test
     public void should_combineJsonFromStorageWithRecordFromDataStore_when_generatingStringCopyOfTheRecord() {
         String tagKey = "tagKey";
         String tagValue = "tagValue";
