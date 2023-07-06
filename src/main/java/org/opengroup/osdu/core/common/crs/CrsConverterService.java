@@ -112,7 +112,7 @@ public class CrsConverterService implements ICrsConverterService {
                 return output;
             }
         } catch (SocketTimeoutException e) {
-            throw new AppException(RequestStatus.SOCKET_TIMEOUT, "Socket time out", "One or more properties could not be converted by CRS converter", e);
+            throw new AppException(RequestStatus.SOCKET_TIMEOUT, "Socket time out", "Request cannot be completed in specified time", e);
         } catch (IOException e) {
             throw new AppException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Internal communication failure", "Internal communication failure", e);
         }
