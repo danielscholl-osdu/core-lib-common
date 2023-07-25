@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import org.opengroup.osdu.core.common.SwaggerDoc;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -31,12 +32,19 @@ public class SortQuery {
     @ApiModelProperty(value = SwaggerDoc.SORT_ORDER_DESCRIPTION, dataType = "[Lorg.opengroup.osdu.search.model.SortOrder;")
     private List<SortOrder> order;
 
+    @ApiModelProperty(value = SwaggerDoc.SORT_FIELD_DESCRIPTION, dataType = "[Ljava.lang.String;")
+    private List<String> filter;
+
     public String getFieldByIndex(int index) {
         return field.get(index);
     }
 
     public SortOrder getOrderByIndex(int index) {
         return order.get(index);
+    }
+
+    public String getFilterByIndex(int index) {
+        return Objects.isNull(filter) ? null : filter.get(index);
     }
 }
 
