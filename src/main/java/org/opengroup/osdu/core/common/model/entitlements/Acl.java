@@ -26,12 +26,26 @@ import java.util.Set;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class Acl {
 
     public String[] viewers;
 
     public String[] owners;
+
+    public Acl(String[] viewers, String[] owners) {
+        setViewers(viewers);
+        setOwners(owners);
+    }
+
+    //set unique viewers
+    public void setViewers(String[] viewers) {
+        this.viewers = Arrays.stream(viewers).distinct().toArray(String[]::new);
+    }
+
+    //set unique owners
+    public void setOwners(String[] owners) {
+        this.owners = Arrays.stream(owners).distinct().toArray(String[]::new);
+    }
 
     public static String[] flattenAcl(Acl acl) {
         Set<String> xAcl = new HashSet<>();
