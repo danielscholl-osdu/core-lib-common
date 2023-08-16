@@ -85,6 +85,7 @@ public final class SwaggerDoc {
     public static final String SORT_DESCRIPTION = "The fields and orders to return sorted results.";
     public static final String SORT_FIELD_DESCRIPTION = "The list of fields to sort the results.";
     public static final String SORT_ORDER_DESCRIPTION = "The list of orders to sort the results. The element must be either ASC or DESC.";
+    public static final String HIGHLIGHTED_FIELDS_DESCRIPTION = "The fields where matches should be highlighted.";
     public static final String RETURNED_FIELDS_DESCRIPTION = "The fields on which to project the results.";
     public static final String OFFSET_DESCRIPTION = "The starting offset from which to return results.";
     public static final String CURSOR_DESCRIPTION = "Search context to retrieve next batch of results.";
