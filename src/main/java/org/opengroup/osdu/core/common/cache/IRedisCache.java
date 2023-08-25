@@ -36,7 +36,7 @@ public interface IRedisCache<K, O> extends ICache<K, O> {
     /**
      * Gets the ttl for a key in milliseconds
      */
-    long getTtl(K key);
+    Long getTtl(K key);
 
     /**
      * Gets redis INFO
