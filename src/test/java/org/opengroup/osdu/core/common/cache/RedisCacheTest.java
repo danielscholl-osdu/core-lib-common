@@ -76,7 +76,6 @@ public class RedisCacheTest {
     @Test
     public void should_initialize_redis_cache_and_increment_value_but_return_zero() {
         String key = "key1";
-
         RedisCache<String, Integer> cache = new RedisCache<String, Integer>(HOST, PORT, EXPIRY, 5,
                 null, String.class, Integer.class);
 
