@@ -54,6 +54,9 @@ public abstract class Query {
     @JsonIgnore
     boolean returnHighlightedFields = false;
 
+    @ApiModelProperty(value = SwaggerDoc.HIGHLIGHTED_FIELDS_DESCRIPTION)
+    private List<String> highlightedFields = new ArrayList<>();
+
     @ApiModelProperty(value = SwaggerDoc.RETURNED_FIELDS_DESCRIPTION)
     private List<String> returnedFields = new ArrayList<>();
 
