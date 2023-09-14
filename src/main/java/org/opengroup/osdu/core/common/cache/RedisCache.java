@@ -200,7 +200,7 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
     public boolean updateTtl(K key, long ttl) {
         boolean isUpdate = false;
         try {
-            commands.pexpire(key, ttl);
+            isUpdate = commands.pexpire(key, ttl);
         } catch (RedisException e){
             logErrorMessage(e);
         }
@@ -212,9 +212,9 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
      */
     @Override
     public Long getTtl(K key) {
-        Long ttl = null;
+        Long ttl = -1L;
         try {
-            commands.pttl(key);
+            ttl = commands.pttl(key);
         } catch (RedisException e){
             logErrorMessage(e);
         }
@@ -228,7 +228,7 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
     public String info() {
         String info = null;
         try {
-            commands.info();
+            info = commands.info();
         } catch (RedisException e){
             logErrorMessage(e);
         }
@@ -240,13 +240,7 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
      */
     @Override
     public Long increment(K key) {
-        Long increment = null;
-        try {
-            increment = this.incrementBy(key, 1L);
-        } catch (RedisException e){
-            logErrorMessage(e);
-        }
-        return increment;
+        return this.incrementBy(key, 1L);
     }
 
     /**
@@ -254,7 +248,7 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
      */
     @Override
     public Long incrementBy(K key, long amount) {
-        Long increment = null;
+        Long increment = -2L;
         try {
             increment = commands.incrby(key, amount);
         } catch (RedisException e){
@@ -268,13 +262,7 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
      */
     @Override
     public Long decrement(K key) {
-        Long decrement = null;
-        try {
-            decrement = this.decrementBy(key, 1L);
-        } catch (RedisException e){
-            logErrorMessage(e);
-        }
-        return decrement;
+        return this.decrementBy(key, 1L);
     }
 
     /**
@@ -282,7 +270,7 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
      */
     @Override
     public Long decrementBy(K key, long amount) {
-        Long decrement = null;
+        Long decrement = -2L;
         try {
             decrement = commands.decrby(key, amount);
         } catch (RedisException e){
