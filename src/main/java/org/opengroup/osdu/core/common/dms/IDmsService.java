@@ -33,6 +33,7 @@ public interface IDmsService {
      */
     StorageInstructionsResponse getStorageInstructions();
 
+
     /**
      * Method is used to generate retrieval instructions for datasets.
      * The storage instructions response include the Signed URL / Temporary credentials along with other CSP specific metadata required to identify a Dataset.
@@ -48,4 +49,27 @@ public interface IDmsService {
      * @return Copy operation responses that contain if operation is successful and the location to which the dataset is copied to.
      */
     List<CopyDmsResponse> copyDatasetsToPersistentLocation(List<Record> datasetSources);
+
+    /***
+     * Method is used to generate storage instructions for datasets.
+     * The storage instructions response include the Signed URL / Temporary credentials along with other CSP specific metadata required to identify a Dataset.
+     * @param expiryTime: When the method is called with an expiry time for the storage instructions
+     * @return StorageInstructionsResponse
+     */
+    default StorageInstructionsResponse getStorageInstructions(String expiryTime){
+        return getStorageInstructions();
+    }
+
+    /**
+     * Method is used to generate retrieval instructions for datasets.
+     * The storage instructions response include the Signed URL / Temporary credentials along with other CSP specific metadata required to identify a Dataset.
+     * @param retrievalInstructionsRequest Request containing dataset ids which should be downloaded
+     * @param expiryTime: When the method is called with an expiry time for the storage instructions
+     * @return RetrievalInstructionsResponse
+     */
+    default RetrievalInstructionsResponse getRetrievalInstructions(
+            RetrievalInstructionsRequest retrievalInstructionsRequest, String expiryTime){
+        return getRetrievalInstructions(retrievalInstructionsRequest);
+    }
+
 }
