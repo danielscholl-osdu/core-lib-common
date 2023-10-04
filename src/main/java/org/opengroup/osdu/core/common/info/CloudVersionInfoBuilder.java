@@ -1,6 +1,6 @@
 /*
- * Copyright 2021 Google LLC
- * Copyright 2021 EPAM Systems, Inc
+ * Copyright 2020-2023 Google LLC
+ * Copyright 2020-2023 EPAM Systems, Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,19 @@
 
 package org.opengroup.osdu.core.common.info;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
 import lombok.extern.slf4j.Slf4j;
 import org.opengroup.osdu.core.common.model.info.ConnectedOuterService;
 import org.opengroup.osdu.core.common.model.info.VersionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -37,7 +40,7 @@ public class CloudVersionInfoBuilder implements VersionInfoBuilder {
   private final VersionInfoProperties versionInfoProperties;
 
   @Autowired(required = false)
-  private ConnectedOuterServicesBuilder outerServicesBuilder;
+  private List<ConnectedOuterServicesBuilder> outerServicesBuilder;
 
   public CloudVersionInfoBuilder(VersionInfoProperties versionInfoProperties) {
     this.versionInfoProperties = versionInfoProperties;
@@ -88,7 +91,11 @@ public class CloudVersionInfoBuilder implements VersionInfoBuilder {
    * To define outer services info for OSDU service need to inject ConnectedOuterServicesBuilder.
    */
   private List<ConnectedOuterService> loadConnectedOuterServices() {
-    return outerServicesBuilder == null ? Collections.emptyList()
-        : outerServicesBuilder.buildConnectedOuterServices();
+    return Optional.ofNullable(outerServicesBuilder)
+            .map(builderList -> builderList.stream()
+                    .map(ConnectedOuterServicesBuilder::buildConnectedOuterServices)
+                    .flatMap(List::stream)
+                    .collect(Collectors.toList()))
+            .orElse(Collections.emptyList());
   }
 }
