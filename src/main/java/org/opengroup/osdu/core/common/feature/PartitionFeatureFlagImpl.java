@@ -49,7 +49,14 @@ public class PartitionFeatureFlagImpl implements IFeatureFlag {
             return getFeatureFlagStatus(partitionInfo, featureName);
         } catch (PartitionException e) {
             this.logger.error(String.format("Error getting feature flag status for dataPartitionId: %s, exception http response: %s", headers.getPartitionId(), e.getResponse().toString()));
-            throw new AppException(HttpStatus.SC_INTERNAL_SERVER_ERROR, String.format("Error getting feature flag value for property %s, partition %s ", featureName, headers.getPartitionId()), e.getMessage(), e);
+            //Partition returns 200, when data-partition id is null, so not a valid scenario to return the return code from partition service as is.
+            //So, only handling 404 separately.
+            int errorCode = e.getHttpResponse().getResponseCode() == HttpStatus.SC_NOT_FOUND ? HttpStatus.SC_NOT_FOUND: HttpStatus.SC_INTERNAL_SERVER_ERROR;
+
+            StringBuilder errorMessage = new StringBuilder( String.format("Error from partition Service: %s", e.getMessage()));
+            errorMessage.append(String.format("Response body: %s", e.getResponse().getBody()));
+
+            throw new AppException(errorCode, String.format("Error getting feature flag value for property: %s, partition: %s", featureName, headers.getPartitionId()), errorMessage.toString(), e);
         }
     }
 
