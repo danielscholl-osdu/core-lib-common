@@ -86,11 +86,11 @@ public class Record {
 
 	private String createUser;
 
-	private long createTime;
+	private String createTime;
 
 	private String modifyUser;
 
-	private long modifyTime;
+	private String modifyTime;
 
 
 	private static final java.util.regex.Pattern recordKindPattern = java.util.regex.Pattern.compile(ValidationDoc.KIND_REGEX);
