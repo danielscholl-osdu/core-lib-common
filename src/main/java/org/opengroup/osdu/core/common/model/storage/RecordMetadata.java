@@ -50,7 +50,7 @@ public class RecordMetadata {
 
 	private RecordState status;
 
-	private String createUser;
+	private String user;
 
 	// epoch time
 	private long createTime;
@@ -73,7 +73,7 @@ public class RecordMetadata {
 		this.legal = record.getLegal();
 		this.tags = record.getTags();
 		this.ancestry = record.getAncestry();
-		this.createUser = record.getCreateUser();
+		this.user = record.getCreateUser();
 		this.createTime = record.getCreateTime();
 		this.modifyUser = record.getModifyUser();
 		this.modifyTime = record.getModifyTime();
