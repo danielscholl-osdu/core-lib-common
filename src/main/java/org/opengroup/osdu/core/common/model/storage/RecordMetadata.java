@@ -73,10 +73,6 @@ public class RecordMetadata {
 		this.legal = record.getLegal();
 		this.tags = record.getTags();
 		this.ancestry = record.getAncestry();
-		this.user = record.getCreateUser();
-		this.createTime = record.getCreateTime();
-		this.modifyUser = record.getModifyUser();
-		this.modifyTime = record.getModifyTime();
 	}
 
     public Long getLatestVersion() {
