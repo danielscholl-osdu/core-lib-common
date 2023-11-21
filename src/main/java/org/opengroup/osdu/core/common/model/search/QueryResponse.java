@@ -38,6 +38,7 @@ public class QueryResponse {
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private List<Map<String, Object>> results = new ArrayList<>();
     private List<AggregationResponse> aggregations = new ArrayList<>();
+    private List<String> phraseSuggestions = new ArrayList<>();
     private long totalCount;
 
     @Override
@@ -61,6 +62,6 @@ public class QueryResponse {
     }
 
     public static QueryResponse getEmptyResponse() {
-        return QueryResponse.builder().results(Collections.emptyList()).aggregations(Collections.emptyList()).totalCount(0).build();
+        return QueryResponse.builder().results(Collections.emptyList()).aggregations(Collections.emptyList()).phraseSuggestions(Collections.emptyList()).totalCount(0).build();
     }
 }
