@@ -10,7 +10,7 @@ The following software have components provided under the terms of this license:
 
 - Apache Commons Codec (from http://commons.apache.org/proper/commons-codec/, https://commons.apache.org/proper/commons-codec/)
 - Apache Commons Lang (from https://commons.apache.org/proper/commons-lang/)
-- Apache Commons Logging (from http://commons.apache.org/logging/, http://commons.apache.org/proper/commons-logging/)
+- Apache Commons Logging (from http://commons.apache.org/logging/, http://commons.apache.org/proper/commons-logging/, https://commons.apache.org/proper/commons-logging/)
 - Apache HttpClient (from http://hc.apache.org/httpcomponents-client, http://hc.apache.org/httpcomponents-client-ga)
 - Apache HttpClient Cache (from http://hc.apache.org/httpcomponents-client, http://hc.apache.org/httpcomponents-client-ga)
 - Apache HttpCore (from http://hc.apache.org/httpcomponents-core-ga, http://hc.apache.org/httpcomponents-core-ga/, http://hc.apache.org/httpcomponents-core/)
@@ -36,7 +36,7 @@ The following software have components provided under the terms of this license:
 - Jackson-core (from http://wiki.fasterxml.com/JacksonHome, https://github.com/FasterXML/jackson-core)
 - Jackson-dataformat-YAML (from https://github.com/FasterXML/jackson, https://github.com/FasterXML/jackson-dataformats-text)
 - Jackson-module-parameter-names (from https://repo1.maven.org/maven2/com/fasterxml/jackson/module/jackson-module-parameter-names)
-- Jakarta Bean Validation API (from https://beanvalidation.org)
+- Jakarta Validation API (from https://beanvalidation.org)
 - Java Architecture for XML Binding (from http://jaxb.java.net/, https://repo1.maven.org/maven2/javax/xml/bind/jaxb-api)
 - Javassist (from http://www.javassist.org/)
 - Mockito (from http://mockito.org, http://www.mockito.org, https://github.com/mockito/mockito)
@@ -153,7 +153,7 @@ EPL-1.0
 The following software have components provided under the terms of this license:
 
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Bean Validation API (from https://beanvalidation.org)
+- Jakarta Validation API (from https://beanvalidation.org)
 - Logback Core Module (from http://logback.qos.ch, https://repo1.maven.org/maven2/ch/qos/logback/logback-core)
 
 ========================================================================
@@ -162,7 +162,7 @@ EPL-2.0
 The following software have components provided under the terms of this license:
 
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Bean Validation API (from https://beanvalidation.org)
+- Jakarta Validation API (from https://beanvalidation.org)
 
 ========================================================================
 GPL-2.0-only
@@ -178,7 +178,7 @@ GPL-2.0-with-classpath-exception
 The following software have components provided under the terms of this license:
 
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Bean Validation API (from https://beanvalidation.org)
+- Jakarta Validation API (from https://beanvalidation.org)
 - Java Architecture for XML Binding (from http://jaxb.java.net/, https://repo1.maven.org/maven2/javax/xml/bind/jaxb-api)
 - tomcat-embed-core (from http://tomcat.apache.org/)
 
