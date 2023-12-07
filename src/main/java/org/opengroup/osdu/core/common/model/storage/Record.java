@@ -84,6 +84,14 @@ public class Record {
 
 	private Map<String, String> tags = new HashMap<>();
 
+	private String createUser;
+
+	private String createTime;
+
+	private String modifyUser;
+
+	private String modifyTime;
+
 
 	private static final java.util.regex.Pattern recordKindPattern = java.util.regex.Pattern.compile(ValidationDoc.KIND_REGEX);
 	private static final java.util.regex.Pattern recordIdPattern = java.util.regex.Pattern.compile(ValidationDoc.RECORD_ID_REGEX);
@@ -112,7 +120,7 @@ public class Record {
 	 * @return
 	 */
 	public static boolean isRecordIdValidFormatAndTenant(String recordId, String tenant) {
-		
+
 		Matcher recordIdMatcher = recordIdPattern.matcher(recordId);
 		boolean matchFound = recordIdMatcher.find();
 
@@ -139,7 +147,7 @@ public class Record {
 	 * @return
 	 */
 	public static boolean isRecordIdValid(String recordId, String tenant, String kind) {
-		
+
 		//Check format and tenant
 		if (!Record.isRecordIdValidFormatAndTenant(recordId, tenant))
 			return false;
@@ -151,6 +159,6 @@ public class Record {
 		String[] kindSplitByColon = kind.split(":");
 		String kindSubType = kindSplitByColon[2]; //grab GroupType/IndividualType
 
-		return true;		
+		return true;
 	}
 }
