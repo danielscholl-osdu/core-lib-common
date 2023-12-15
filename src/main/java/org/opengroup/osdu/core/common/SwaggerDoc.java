@@ -82,6 +82,7 @@ public final class SwaggerDoc {
     public static final String SORT_FIELD_ORDER_SIZE_NOT_MATCH = "'sort.field' and 'sort.order' size do not match";
     public static final String LIMIT_DESCRIPTION = "The maximum number of results to return from the given offset. If no limit is provided, then it will return 10 items. Max number of items which can be fetched by the query is 1000. (If you wish to fetch large set of items, please use query_with_cursor API)";
     public static final String QUERY_DESCRIPTION = "The query string in Lucene query string syntax.";
+    public static final String SUGGEST_DESCRIPTION = "Part of the phrase for which search should return completions";
     public static final String SORT_DESCRIPTION = "The fields and orders to return sorted results.";
     public static final String SORT_FIELD_DESCRIPTION = "The list of fields to sort the results.";
     public static final String SORT_ORDER_DESCRIPTION = "The list of orders to sort the results. The element must be either ASC or DESC.";
