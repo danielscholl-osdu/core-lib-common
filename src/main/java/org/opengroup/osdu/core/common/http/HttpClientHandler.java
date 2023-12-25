@@ -42,6 +42,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.SocketTimeoutException;
+import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,7 @@ public class HttpClientHandler implements IHttpClientHandler{
             try (CloseableHttpResponse response = httpclient.execute(request)) {
 
                 StringBuilder responseBuilder = new StringBuilder();
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), StandardCharsets.UTF_8))) {
                     String responsePayloadLine;
                     while ((responsePayloadLine = br.readLine()) != null) {
                         responseBuilder.append(responsePayloadLine);
