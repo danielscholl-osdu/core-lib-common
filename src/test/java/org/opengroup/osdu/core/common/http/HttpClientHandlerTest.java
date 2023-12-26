@@ -42,13 +42,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
-@Ignore
+
 @RunWith(MockitoJUnitRunner.class)
 @PrepareForTest({HttpClients.class})
 public class HttpClientHandlerTest {
@@ -71,6 +72,16 @@ public class HttpClientHandlerTest {
 //        mockStatic(HttpClients.class);
     }
 
+
+    @Test
+    public void should_keepResponseCharsetIntact() throws IOException {
+        String specialChar = "ÆÆ";
+        InputStream stream = new ByteArrayInputStream(specialChar.getBytes(StandardCharsets.UTF_8));
+        String responseBody = this.sut.readResponseBody(stream);
+        assertEquals(specialChar, responseBody);
+    }
+
+    @Ignore
     @Test
     public void should_returnResponseWithHttp200_when_makingValidRequest() throws IOException, URISyntaxException {
 
@@ -111,6 +122,7 @@ public class HttpClientHandlerTest {
         assertEquals(RESPONSE, result.getBody());
     }
 
+    @Ignore
     @Test
     public void should_returnHttp500_when_anIOExceptionOccur() throws Exception {
 
