@@ -357,6 +357,7 @@
         <configuration>
           <useSystemClassLoader>false</useSystemClassLoader>
           <threadCount>1</threadCount>
+          <argLine>-Dfile.encoding=US-ASCII</argLine> <!-- Ensuring code works even if default charset is NOT UTF-8 -->
         </configuration>
       </plugin>
     </plugins>
