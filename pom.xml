@@ -58,11 +58,12 @@
     <system-rules.version>1.18.0</system-rules.version>
     <jaxb-api.version>2.2.12</jaxb-api.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-    <maven-surefire-plugin.version>2.5</maven-surefire-plugin.version>
+    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <spring-webmvc.version>5.3.30</spring-webmvc.version>
     <spring-security-web.version>5.8.8</spring-security-web.version>
     <json.version>20231013</json.version>
     <jna-platform.version>5.13.0</jna-platform.version>
+    <argLine/>
   </properties>
 
   <licenses>
@@ -357,6 +358,7 @@
         <configuration>
           <useSystemClassLoader>false</useSystemClassLoader>
           <threadCount>1</threadCount>
+          <argLine>@{argLine} -Dfile.encoding=US-ASCII</argLine> <!-- Ensuring code works even if default charset is NOT UTF-8 -->
         </configuration>
       </plugin>
     </plugins>
