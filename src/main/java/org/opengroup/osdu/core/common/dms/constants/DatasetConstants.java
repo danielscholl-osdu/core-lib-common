@@ -24,4 +24,5 @@ public final class DatasetConstants {
     // Roles required to perform read and write operations on Datasets.
     public static final String DATASET_VIEWER_ROLE = "service.dataset.viewers";
     public static final String DATASET_EDITOR_ROLE = "service.dataset.editors";
+    public static final String DATASET_ADMIN_ROLE = "service.dataset.admin";
 }

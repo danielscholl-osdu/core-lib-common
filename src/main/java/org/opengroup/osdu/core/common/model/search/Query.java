@@ -51,8 +51,14 @@ public abstract class Query {
     @ApiModelProperty(value = SwaggerDoc.QUERY_DESCRIPTION)
     private String query = "";
 
+    @ApiModelProperty(value = SwaggerDoc.SUGGEST_DESCRIPTION)
+    private String suggestPhrase = "";
+
     @JsonIgnore
     boolean returnHighlightedFields = false;
+
+    @ApiModelProperty(value = SwaggerDoc.HIGHLIGHTED_FIELDS_DESCRIPTION)
+    private List<String> highlightedFields = new ArrayList<>();
 
     @ApiModelProperty(value = SwaggerDoc.RETURNED_FIELDS_DESCRIPTION)
     private List<String> returnedFields = new ArrayList<>();

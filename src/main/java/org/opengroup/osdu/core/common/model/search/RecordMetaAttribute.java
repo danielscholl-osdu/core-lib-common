@@ -51,6 +51,8 @@ public enum RecordMetaAttribute {
 
     MODIFY_TIME("modifyTime"),
 
+    BAG_OF_WORDS("bagOfWords"),
+
     INDEX_STATUS("index");
 
     private final String value;

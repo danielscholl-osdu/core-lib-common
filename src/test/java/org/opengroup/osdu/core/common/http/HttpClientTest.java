@@ -14,26 +14,34 @@
 
 package org.opengroup.osdu.core.common.http;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.http.HttpHeaders;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import lombok.SneakyThrows;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.message.BasicHeader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.util.HashMap;
+import java.util.Map;
+
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @PrepareForTest({HttpURLConnection.class, OutputStream.class})
@@ -54,7 +62,7 @@ public class HttpClientTest {
     public void should_throwAppExceptionWithMsg_when_responseThrowsExceptionDuringConnectionCreation() {
         HttpResponse response = this.sut.send(HttpRequest.post().url("invalidURL").headers(HEADERS).body(BODY).build());
         assertTrue(response.hasException());
-        assertEquals(IllegalArgumentException.class, response.getException().getClass());
+        assertEquals(ClientProtocolException.class, response.getException().getClass());
     }
 
 
@@ -64,7 +72,7 @@ public class HttpClientTest {
                 HttpRequest.get().url("https://www.googleapis.com/customsearch/v1?q=hello").headers(HEADERS).build()
         );
         assertEquals(403, response.getResponseCode());
-        assertEquals("application/json; charset=UTF-8", response.getContentType());
+        assertEquals("application/json", response.getContentType());
         assertTrue(response.toString(), response.getLatency() > 0);
         assertTrue(response.getHeaders().size() > 0);
     }
@@ -253,25 +261,31 @@ public class HttpClientTest {
     }
 
     private void createMockHtppConnection(int returnCode, HttpRequest request) throws IOException {
-        java.net.http.HttpClient client = getHttpClient(returnCode);
-        when(this.sut.buildClient(request)).thenReturn(client);
+        CloseableHttpClient httpClient = getHttpClient(returnCode);
+        when(this.sut.getHttpClient(request)).thenReturn(httpClient);
     }
 
-    @SneakyThrows
-    private java.net.http.HttpClient getHttpClient(int returnCode) throws IOException {
-        java.net.http.HttpClient mock = mock(java.net.http.HttpClient.class);
-        java.net.http.HttpResponse httpResponse = mock(java.net.http.HttpResponse.class);
-        if(returnCode == 411){
-            when(httpResponse.body()).thenReturn("Content-Length is missing");
-        }else {
-            when(httpResponse.body()).thenReturn("{\"name\":\"test data\"}");
+    private CloseableHttpClient getHttpClient(int returnCode) throws IOException {
+        InputStream inputStream;
+        CloseableHttpClient mockClient = mock(CloseableHttpClient.class);
+        CloseableHttpResponse mockResponse = mock(CloseableHttpResponse.class);
+        HttpEntity mockHttpEntity = mock(HttpEntity.class);
+        StatusLine mockStatusLine = mock(StatusLine.class);
+        if (returnCode == 411) {
+            inputStream = new ByteArrayInputStream("Content-Length is missing".getBytes());
+        } else {
+            inputStream = new ByteArrayInputStream("{\"name\":\"test data\"}".getBytes());
         }
-        when(httpResponse.statusCode()).thenReturn(returnCode);
-        HttpHeaders httpHeaders = mock(HttpHeaders.class);
-        when(httpHeaders.firstValue("content-type")).thenReturn(Optional.of("application/json"));
-        when(httpResponse.headers()).thenReturn(httpHeaders);
-        when(mock.send(any(), any())).thenReturn(httpResponse);
-        return mock;
+        BasicHeader basicHeader = new BasicHeader("content-type",
+            ContentType.APPLICATION_JSON.getMimeType());
+        when(mockHttpEntity.getContent()).thenReturn(inputStream);
+        when(mockHttpEntity.getContentType()).thenReturn(basicHeader);
+        when(mockResponse.getAllHeaders()).thenReturn(new Header[]{basicHeader});
+        when(mockResponse.getEntity()).thenReturn(mockHttpEntity);
+        when(mockResponse.getStatusLine()).thenReturn(mockStatusLine);
+        when(mockStatusLine.getStatusCode()).thenReturn(returnCode);
+        when(mockClient.execute(any())).thenReturn(mockResponse);
+        return mockClient;
     }
 
 }
