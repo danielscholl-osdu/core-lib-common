@@ -16,5 +16,6 @@ package org.opengroup.osdu.core.common.logging.audit;
 
 public enum AuditStatus {
     SUCCESS,
+    PARTIAL_SUCCESS,
     FAILURE
 }
