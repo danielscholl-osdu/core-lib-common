@@ -34,7 +34,7 @@ public class RecordStatus {
     }
 
     public String partiallySucceededAuditLogMessage() {
-        return "RecordStatus(id=" + this.id + ", kind=" + this.kind + ", operationType=" + this.operationType + ", status==PARTIAL_SUCCESS" + this.status.toString() + ", message=" + this.getLatestTrace() + ")";
+        return "RecordStatus(id=" + this.id + ", kind=" + this.kind + ", operationType=" + this.operationType + ", status==PARTIAL_SUCCESS" + ", message=" + this.getLatestTrace() + ")";
     }
 
     public String failedAuditLogMessage() {

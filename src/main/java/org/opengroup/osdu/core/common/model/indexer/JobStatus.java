@@ -77,13 +77,13 @@ public class JobStatus {
         if (queryResult.isPresent()) {
             RecordStatus s = queryResult.get();
             IndexProgress indexProgress = s.getIndexProgress();
-            indexProgress.setStatusCode(statusCode);
             indexProgress.setLastUpdateTime(Instant.now().toString());
             if (!Strings.isNullOrEmpty(message)) {
                 indexProgress.getTrace().add(message);
             }
             if (status.isWorseThan(s.getStatus())) {
                 s.setStatus(status);
+                indexProgress.setStatusCode(statusCode);
             }
             s.setIndexProgress(indexProgress);
         } else {
