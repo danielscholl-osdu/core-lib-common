@@ -134,3 +134,8 @@ include:
     - export MAVEN_FOREACH=$(tempfile -m 755 -p fr-ec -s .sh)
     - echo "#!/bin/sh" > $MAVEN_FOREACH
     - echo 'xargs -0rI {} $MAVEN_BUILD {} "$@" < $ALL_MAVEN_BUILD_DIRS_Z' >> $MAVEN_FOREACH
+
+fossa-analyze:
+  image: $CI_REGISTRY/divido/fossa-with-cache:v0.9-jdk17
+fossa-check-notice:
+  image: $CI_REGISTRY/divido/fossa-with-cache:v0.9-jdk17
