@@ -38,8 +38,8 @@ The following software have components provided under the terms of this license:
 - Jackson-module-parameter-names (from https://repo1.maven.org/maven2/com/fasterxml/jackson/module/jackson-module-parameter-names)
 - Jakarta Validation API (from https://beanvalidation.org)
 - Java Architecture for XML Binding (from http://jaxb.java.net/, https://repo1.maven.org/maven2/javax/xml/bind/jaxb-api)
-- Javassist (from http://www.javassist.org/)
-- Mockito (from http://mockito.org, http://www.mockito.org, https://github.com/mockito/mockito)
+- Javassist (from http://www.javassist.org/, https://www.javassist.org/)
+- Mockito (from http://mockito.org, https://github.com/mockito/mockito)
 - Netty/Buffer (from https://repo1.maven.org/maven2/io/netty/netty-buffer)
 - Netty/Codec (from https://repo1.maven.org/maven2/io/netty/netty-codec)
 - Netty/Common (from https://repo1.maven.org/maven2/io/netty/netty-common)
@@ -98,7 +98,6 @@ The following software have components provided under the terms of this license:
 - Hamcrest (from http://hamcrest.org/JavaHamcrest/)
 - Hamcrest Core (from http://hamcrest.org/, http://hamcrest.org/JavaHamcrest/, https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core)
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Mockito (from http://mockito.org, http://www.mockito.org, https://github.com/mockito/mockito)
 - Spring Core (from http://www.springframework.org, https://github.com/spring-projects/spring-framework, https://repo1.maven.org/maven2/org/springframework/spring-core)
 
 ========================================================================
@@ -202,7 +201,7 @@ LGPL-2.1-or-later
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Javassist (from http://www.javassist.org/)
+- Javassist (from http://www.javassist.org/, https://www.javassist.org/)
 
 ========================================================================
 MIT
@@ -216,18 +215,18 @@ The following software have components provided under the terms of this license:
 - JUL to SLF4J bridge (from http://www.slf4j.org)
 - Jackson-core (from http://wiki.fasterxml.com/JacksonHome, https://github.com/FasterXML/jackson-core)
 - Java JWT (from http://www.jwt.io, https://github.com/auth0/java-jwt)
-- Mockito (from http://mockito.org, http://www.mockito.org, https://github.com/mockito/mockito)
+- Mockito (from http://mockito.org, https://github.com/mockito/mockito)
 - Netty/Common (from https://repo1.maven.org/maven2/io/netty/netty-common)
-- PowerMock (from http://www.powermock.org, https://repo1.maven.org/maven2/org/powermock/powermock-api-mockito)
 - Project Lombok (from http://projectlombok.org, https://projectlombok.org)
 - SLF4J API Module (from http://www.slf4j.org)
+- mockito-inline (from http://mockito.org, https://github.com/mockito/mockito)
 
 ========================================================================
 MPL-1.1
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Javassist (from http://www.javassist.org/)
+- Javassist (from http://www.javassist.org/, https://www.javassist.org/)
 
 ========================================================================
 WTFPL
