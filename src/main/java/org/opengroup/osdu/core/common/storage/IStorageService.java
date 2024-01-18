@@ -14,10 +14,12 @@
 
 package org.opengroup.osdu.core.common.storage;
 
-import org.opengroup.osdu.core.common.model.storage.*;
-
 import java.util.Collection;
+import org.opengroup.osdu.core.common.model.storage.MultiRecordInfo;
 import org.opengroup.osdu.core.common.model.storage.Record;
+import org.opengroup.osdu.core.common.model.storage.Schema;
+import org.opengroup.osdu.core.common.model.storage.StorageException;
+import org.opengroup.osdu.core.common.model.storage.UpsertRecords;
 
 public interface IStorageService {
 

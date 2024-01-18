@@ -14,17 +14,20 @@
 
 package org.opengroup.osdu.core.common.storage;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.http.IHttpClient;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyMapper;
 import org.opengroup.osdu.core.common.http.json.HttpResponseBodyParsingException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
-import org.opengroup.osdu.core.common.model.storage.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import org.opengroup.osdu.core.common.model.storage.MultiRecordIds;
+import org.opengroup.osdu.core.common.model.storage.MultiRecordInfo;
 import org.opengroup.osdu.core.common.model.storage.Record;
+import org.opengroup.osdu.core.common.model.storage.Schema;
+import org.opengroup.osdu.core.common.model.storage.StorageException;
+import org.opengroup.osdu.core.common.model.storage.UpsertRecords;
 import org.opengroup.osdu.core.common.util.UrlNormalizationUtil;
 
 public class StorageService implements IStorageService {
