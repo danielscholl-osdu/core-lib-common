@@ -16,15 +16,19 @@ package org.opengroup.osdu.core.common.cache;
 
 import com.lambdaworks.redis.ClientOptions;
 import com.lambdaworks.redis.RedisClient;
+import com.lambdaworks.redis.RedisException;
 import com.lambdaworks.redis.RedisURI;
 import com.lambdaworks.redis.SetArgs;
 import com.lambdaworks.redis.api.StatefulRedisConnection;
 import com.lambdaworks.redis.api.sync.RedisCommands;
 import com.lambdaworks.redis.codec.CompressionCodec;
 import com.lambdaworks.redis.codec.RedisCodec;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
 
     private final StatefulRedisConnection<K, V> connection;
@@ -109,6 +113,10 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
         this(host, port, expTimeSeconds, 0, classOfK, classOfV);
     }
 
+    public RedisCache(String host, int port, int expTimeSeconds, ClientOptions clientOptions, Class<K> classOfK, Class<V> classOfV) {
+        this(host, port, expTimeSeconds, 0, clientOptions, classOfK, classOfV);
+    }
+
     public RedisCache(String host, int port, String password, int expTimeSeconds, Class<K> classOfK, Class<V> classOfV) {
         this(host, port, password, expTimeSeconds, 0, classOfK, classOfV);
     }
@@ -118,11 +126,20 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
         this(host, port, password, expTimeSeconds, 0, withSsl, null, classOfK, classOfV);
     }
 
+    public RedisCache(String host, int port, String password, int expTimeSeconds, boolean withSsl, ClientOptions clientOptions,
+        Class<K> classOfK, Class<V> classOfV) {
+        this(host, port, password, expTimeSeconds, 0, withSsl, clientOptions, classOfK, classOfV);
+    }
+
     @Override
     public void put(K key, V value) {
-        SetArgs args = new SetArgs();
-        args.ex(expireLengthSeconds);
-        commands.set(key, value, args);
+        try {
+            SetArgs args = new SetArgs();
+            args.ex(expireLengthSeconds);
+            commands.set(key, value, args);
+        } catch (RedisException e) {
+            logErrorMessage(e);
+        }
     }
 
     /**
@@ -130,19 +147,33 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
      */
     @Override
     public void put(K key, long ttl, V value) {
-        SetArgs args = new SetArgs();
-        args.px(ttl);
-        commands.set(key, value, args);
+        try {
+            SetArgs args = new SetArgs();
+            args.px(ttl);
+            commands.set(key, value, args);
+        } catch (RedisException e){
+            logErrorMessage(e);
+        }
     }
 
     @Override
     public V get(K key) {
-        return commands.get(key);
+        V value = null;
+        try {
+            value = commands.get(key);
+        } catch (RedisException e){
+            logErrorMessage(e);
+        }
+        return value;
     }
 
     @Override
     public void delete(K key) {
-        commands.del(key);
+        try {
+            commands.del(key);
+        } catch (RedisException e){
+            logErrorMessage(e);
+        }
     }
 
     @Override
@@ -155,7 +186,11 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
 
     @Override
     public void clearAll() {
-        this.commands.flushdb();
+        try {
+            this.commands.flushdb();
+        } catch (RedisException e){
+            logErrorMessage(e);
+        }
     }
 
     /**
@@ -163,15 +198,27 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
      */
     @Override
     public boolean updateTtl(K key, long ttl) {
-        return commands.pexpire(key, ttl);
+        boolean isUpdate = false;
+        try {
+            isUpdate = commands.pexpire(key, ttl);
+        } catch (RedisException e){
+            logErrorMessage(e);
+        }
+        return isUpdate;
     }
 
     /**
      * Gets the ttl for a key in milliseconds
      */
     @Override
-    public long getTtl(K key) {
-        return commands.pttl(key);
+    public Long getTtl(K key) {
+        Long ttl = -1L;
+        try {
+            ttl = commands.pttl(key);
+        } catch (RedisException e){
+            logErrorMessage(e);
+        }
+        return ttl;
     }
 
     /**
@@ -179,7 +226,13 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
      */
     @Override
     public String info() {
-        return commands.info();
+        String info = null;
+        try {
+            info = commands.info();
+        } catch (RedisException e){
+            logErrorMessage(e);
+        }
+        return info;
     }
 
     /**
@@ -195,7 +248,13 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
      */
     @Override
     public Long incrementBy(K key, long amount) {
-        return commands.incrby(key, amount);
+        Long increment = -2L;
+        try {
+            increment = commands.incrby(key, amount);
+        } catch (RedisException e){
+            logErrorMessage(e);
+        }
+        return increment;
     }
 
     /**
@@ -211,11 +270,25 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
      */
     @Override
     public Long decrementBy(K key, long amount) {
-        return commands.decrby(key, amount);
+        Long decrement = -2L;
+        try {
+            decrement = commands.decrby(key, amount);
+        } catch (RedisException e){
+            logErrorMessage(e);
+        }
+        return decrement;
     }
 
     @Override
     public RedisCodec<K, V> getCodec(Class<K> classOfK, Class<V> classOfV) {
         return CompressionCodec.valueCompressor(new JsonCodec<>(classOfK, classOfV), CompressionCodec.CompressionType.GZIP);
+    }
+
+    private void logErrorMessage(Exception e) {
+        StringBuilder errorMessage = new StringBuilder("Redis does not work.");
+        if (StringUtils.isNotBlank(e.getMessage())) {
+            errorMessage.append(" Reason: ").append(e.getMessage());
+        }
+        log.error(errorMessage.toString());
     }
 }

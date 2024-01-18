@@ -40,15 +40,17 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.SocketTimeoutException;
+import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @RequestScope
-public class HttpClientHandler implements IHttpClientHandler{
+public class HttpClientHandler implements IHttpClientHandler {
 
     protected static int RETRY_COUNT = 3;
 
@@ -80,15 +82,7 @@ public class HttpClientHandler implements IHttpClientHandler{
                     .setServiceUnavailableRetryStrategy(getRetryStrategy()).build();
             try (CloseableHttpResponse response = httpclient.execute(request)) {
 
-                StringBuilder responseBuilder = new StringBuilder();
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
-                    String responsePayloadLine;
-                    while ((responsePayloadLine = br.readLine()) != null) {
-                        responseBuilder.append(responsePayloadLine);
-                    }
-                }
-
-                String responseBody = responseBuilder.toString();
+                String responseBody = readResponseBody(response.getEntity().getContent());
 
                 // handle case where upstream server is running out of resources and throwing generic exception
                 checkResponseMediaType(response, responseBody);
@@ -109,6 +103,18 @@ public class HttpClientHandler implements IHttpClientHandler{
             Long latency = System.currentTimeMillis() - curTimeStamp;
             log.info(String.format("method: %s | latency: %s | url: %s | correlation id: %s", request.getMethod(), latency, request.getURI().toString(), requestHeaders.getHeaders().get(DpsHeaders.CORRELATION_ID)));
         }
+    }
+
+    public String readResponseBody(InputStream stream) throws IOException {
+        StringBuilder responseBuilder = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+            String responsePayloadLine;
+            while ((responsePayloadLine = br.readLine()) != null) {
+                responseBuilder.append(responsePayloadLine);
+            }
+        }
+
+        return responseBuilder.toString();
     }
 
     private ServiceUnavailableRetryStrategy getRetryStrategy() {
