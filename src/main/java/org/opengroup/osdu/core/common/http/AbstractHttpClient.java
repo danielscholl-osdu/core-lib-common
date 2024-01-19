@@ -110,8 +110,8 @@ abstract class AbstractHttpClient implements IHttpClient {
         RequestConfig requestConfig = RequestConfig.custom()
             .setConnectTimeout(request.connectionTimeout)
             .setRedirectsEnabled(request.followRedirects)
-            .setConnectionRequestTimeout(request.connectionTimeout)
-            .setSocketTimeout(request.connectionTimeout)
+            .setConnectionRequestTimeout(request.connectionRequestTimeout)
+            .setSocketTimeout(request.socketTimeout)
             .build();
 
         List<Header> httpHeaders = new ArrayList<>();

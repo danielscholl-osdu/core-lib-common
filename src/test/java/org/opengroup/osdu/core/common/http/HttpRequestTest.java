@@ -25,7 +25,9 @@ public class HttpRequestTest {
         HttpRequest sut = HttpRequest.get().url("http://google.com").build();
         assertEquals("http://google.com", sut.getUrl());
         assertEquals("GET", sut.getHttpMethod());
-        assertEquals(5000, sut.getConnectionTimeout());
+        assertEquals(60000, sut.getConnectionTimeout());
+        assertEquals(60000, sut.getConnectionRequestTimeout());
+        assertEquals(60000, sut.getSocketTimeout());
         assertTrue(sut.isFollowRedirects());
     }
 
