@@ -33,6 +33,10 @@ public class RecordStatus {
         return "RecordStatus(id=" + this.id + ", kind=" + this.kind + ", operationType=" + this.operationType + ", status=" + this.status.toString() + ")";
     }
 
+    public String partiallySucceededAuditLogMessage() {
+        return "RecordStatus(id=" + this.id + ", kind=" + this.kind + ", operationType=" + this.operationType + ", status==PARTIAL_SUCCESS" + ", message=" + this.getLatestTrace() + ")";
+    }
+
     public String failedAuditLogMessage() {
         return "RecordStatus(id=" + this.id + ", kind=" + this.kind + ", operationType=" + this.operationType + ", status=" + this.status.toString() + ", message=" + this.getLatestTrace() + ")";
     }
