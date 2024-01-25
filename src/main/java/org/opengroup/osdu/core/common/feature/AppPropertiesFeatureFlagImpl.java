@@ -15,6 +15,6 @@ public class AppPropertiesFeatureFlagImpl implements IFeatureFlag {
 
     @Override
     public boolean isFeatureEnabled(String featureName) {
-        return env.getProperty(featureName).equals("true");
+        return ("true").equals(env.getProperty(featureName));
     }
 }

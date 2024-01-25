@@ -39,7 +39,11 @@ public class HttpRequest {
     @Builder.Default
     Map<String, String> headers = new HashMap<>();
     @Builder.Default
-    int connectionTimeout = 5000;
+    int connectionTimeout = 60000;
+    @Builder.Default
+    int connectionRequestTimeout = 60000;
+    @Builder.Default
+    int socketTimeout = 60000;
     @Builder.Default
     boolean followRedirects = true;
 
