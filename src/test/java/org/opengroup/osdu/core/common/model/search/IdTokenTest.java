@@ -17,7 +17,7 @@ package org.opengroup.osdu.core.common.model.search;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.model.search.IdToken;
 
 @RunWith(MockitoJUnitRunner.class)

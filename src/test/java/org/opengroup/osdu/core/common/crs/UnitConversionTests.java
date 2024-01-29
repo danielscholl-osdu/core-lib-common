@@ -20,9 +20,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.model.crs.ConversionRecord;
 import org.opengroup.osdu.core.common.model.crs.ConvertStatus;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -30,7 +30,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
 
-@RunWith(PowerMockRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class UnitConversionTests {
 
     private UnitConversionImpl unitConversion = new UnitConversionImpl();

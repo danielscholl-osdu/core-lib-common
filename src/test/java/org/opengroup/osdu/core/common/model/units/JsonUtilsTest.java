@@ -14,24 +14,44 @@
 
 package org.opengroup.osdu.core.common.model.units;
 
-import com.google.gson.*;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.opengroup.osdu.core.common.util.JsonUtils;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.opengroup.osdu.core.common.util.JsonUtils.getJsonPropertyValueFromJsonObject;
+import static org.opengroup.osdu.core.common.util.JsonUtils.isJsonPropertyPresentedInJsonObject;
+import static org.opengroup.osdu.core.common.util.JsonUtils.overrideNestedStringPropertyOfJsonObject;
+import static org.opengroup.osdu.core.common.util.JsonUtils.overrideNumberPropertyOfJsonObject;
+import static org.opengroup.osdu.core.common.util.JsonUtils.overrideStringPropertyOfJsonObject;
+import static org.opengroup.osdu.core.common.util.JsonUtils.splitJsonPropertiesByDots;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.opengroup.osdu.core.common.util.JsonUtils;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-import static org.opengroup.osdu.core.common.util.JsonUtils.*;
-
-@RunWith(PowerMockRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 @PrepareForTest({JsonObject.class, JsonArray.class, JsonPrimitive.class, JsonNull.class})
 public class JsonUtilsTest {
 
@@ -218,7 +238,6 @@ public class JsonUtilsTest {
 
         setupJsonArrayMock(1);
         when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
-        when(mockJsonObject.get("value")).thenReturn(mockJsonPrimitive);
 
         List<JsonElement> result = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
 
@@ -496,9 +515,7 @@ public class JsonUtilsTest {
 
         String propertyName = "markers[].value";
 
-        when(mockJsonArray.isJsonArray()).thenReturn(true);
         when(mockJsonObject.getAsJsonArray("markers")).thenReturn(null);
-        when(mockJsonObject.get("value")).thenReturn(null);
 
         List<JsonElement> result = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
 

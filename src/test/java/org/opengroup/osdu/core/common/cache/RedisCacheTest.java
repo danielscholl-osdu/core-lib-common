@@ -19,23 +19,22 @@ import com.lambdaworks.redis.RedisURI;
 import com.lambdaworks.redis.api.StatefulRedisConnection;
 import com.lambdaworks.redis.api.sync.RedisCommands;
 import com.lambdaworks.redis.codec.RedisCodec;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(RedisClient.class)
+@RunWith(MockitoJUnitRunner.class)
 public class RedisCacheTest {
 
     private static final String HOST = "host";
@@ -50,9 +49,11 @@ public class RedisCacheTest {
     @Mock
     private RedisCommands<String, Integer> commands;
 
+    MockedStatic<RedisClient> redisClientMockedStatic;
+
     @Before
     public void init() {
-        PowerMockito.mockStatic(RedisClient.class);
+        redisClientMockedStatic = Mockito.mockStatic(RedisClient.class);
         when(RedisClient.create((RedisURI) Mockito.any())).thenReturn(redisClient);
         when(redisClient.connect((RedisCodec) Mockito.any())).thenReturn(connection);
         when(connection.sync()).thenReturn(commands);
@@ -76,6 +77,7 @@ public class RedisCacheTest {
     @Test
     public void should_initialize_redis_cache_and_increment_value_but_return_zero() {
         String key = "key1";
+
         RedisCache<String, Integer> cache = new RedisCache<String, Integer>(HOST, PORT, EXPIRY, 5,
                 null, String.class, Integer.class);
 
@@ -112,5 +114,10 @@ public class RedisCacheTest {
         verify(redisClient, times(1)).connect((RedisCodec) Mockito.any());
         verify(connection, times(1)).sync();
         verify(commands, times(1)).decrby(key, 1);
+    }
+
+    @After
+    public void dropDown(){
+        redisClientMockedStatic.close();
     }
 }

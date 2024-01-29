@@ -23,7 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import org.opengroup.osdu.core.common.model.storage.RecordQuery;
 
@@ -50,10 +50,6 @@ public class BulkQueryValidatorTest {
 
         ConstraintValidatorContext.ConstraintViolationBuilder builder = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
 
-        when(this.context.buildConstraintViolationWithTemplate(String.format(ValidationDoc.DUPLICATE_RECORD_ID, recordId)))
-                .thenReturn(builder);
-        when(this.context.buildConstraintViolationWithTemplate(String.format(ValidationDoc.INVALID_RECORD_ID_FORMAT, invalidFormatRecord)))
-                .thenReturn(builder);
         when(this.context.buildConstraintViolationWithTemplate(anyString()))
                 .thenReturn(builder);
     }

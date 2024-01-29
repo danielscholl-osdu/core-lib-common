@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.util.LinkedMultiValueMap;
@@ -47,8 +47,6 @@ public class HeadersUtilTest {
     @Before
     public void setup() {
         initMocks(this);
-
-        when(jwt.getClaim("email")).thenReturn(emailClaim);
     }
 
     @Test
