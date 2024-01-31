@@ -19,8 +19,8 @@ import org.opengroup.osdu.core.common.Constants;
 import org.opengroup.osdu.core.common.model.collaboration.validation.CollaborationContextValidationDoc;
 import org.opengroup.osdu.core.common.util.CollaborationContextUtil;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.HashMap;
 import java.util.Map;
 

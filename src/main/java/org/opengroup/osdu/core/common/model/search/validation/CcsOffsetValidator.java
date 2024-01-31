@@ -17,8 +17,8 @@ package org.opengroup.osdu.core.common.model.search.validation;
 import org.opengroup.osdu.core.common.model.search.CcsQueryRequest;
 import org.opengroup.osdu.core.common.model.search.QueryRequest;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 // TODO: Remove this temporary implementation when ECE CCS is utilized
 public class CcsOffsetValidator implements ConstraintValidator<CcsValidOffset, CcsQueryRequest> {

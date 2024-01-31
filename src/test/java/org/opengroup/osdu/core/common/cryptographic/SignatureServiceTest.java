@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 @RunWith(MockitoJUnitRunner.class)
-@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "javax.management.*", "javax.crypto.*"})
+@PowerMockIgnore({"com.sun.org.apache.xerces.*", "jakarta.xml.*", "org.xml.*", "jakarta.management.*", "jakarta.crypto.*"})
 public class SignatureServiceTest {
 
     @InjectMocks

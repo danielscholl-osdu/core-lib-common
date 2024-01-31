@@ -17,8 +17,8 @@ package org.opengroup.osdu.core.common.model.legal.validation;
 import org.opengroup.osdu.core.common.model.legal.Properties;
 import org.opengroup.osdu.core.common.model.legal.validation.rules.Rule;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.List;
 
 //This will hold validation for the Properties model for the properties that rely on other property values for their validation rules

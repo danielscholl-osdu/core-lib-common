@@ -17,8 +17,8 @@ package org.opengroup.osdu.core.common.model.storage.validation;
 import org.opengroup.osdu.core.common.model.storage.RecordAncestry;
 import org.opengroup.osdu.core.common.model.validation.ValidatorUtils;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

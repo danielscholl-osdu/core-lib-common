@@ -22,7 +22,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.model.storage.RecordAncestry;
 import org.opengroup.osdu.core.common.model.storage.RecordQuery;
 
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.ArrayList;
 import java.util.HashSet;

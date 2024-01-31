@@ -15,18 +15,16 @@
 package org.opengroup.osdu.core.common.model.http;
 
 import com.google.common.base.Strings;
-import org.opengroup.osdu.core.common.model.http.DpsHeaders;
-import org.opengroup.osdu.core.common.provider.interfaces.ITenantFactory;
-import org.opengroup.osdu.core.common.model.tenant.TenantInfo;
-import org.opengroup.osdu.core.common.model.legal.ServiceConfig;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.RequestScope;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.opengroup.osdu.core.common.model.legal.ServiceConfig;
+import org.opengroup.osdu.core.common.model.tenant.TenantInfo;
+import org.opengroup.osdu.core.common.provider.interfaces.ITenantFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 @RequestScope
 @Component

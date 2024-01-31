@@ -19,8 +19,8 @@ import org.opengroup.osdu.core.common.model.validation.ValidatorUtils;
 import org.opengroup.osdu.core.common.search.ElasticIndexNameResolver;
 import org.opengroup.osdu.core.common.util.KindParser;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.List;
 
 public class MultiKindValidator implements ConstraintValidator<ValidMultiKind, Object> {

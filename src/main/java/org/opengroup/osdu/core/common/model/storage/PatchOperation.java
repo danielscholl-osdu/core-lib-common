@@ -14,7 +14,7 @@
 
 package org.opengroup.osdu.core.common.model.storage;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 import org.opengroup.osdu.core.common.model.storage.validation.ValidPatchOp;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidPatchPath;

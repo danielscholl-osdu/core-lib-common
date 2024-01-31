@@ -16,8 +16,8 @@ package org.opengroup.osdu.core.common.model.legal.validation;
 
 import com.google.common.base.Strings;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class NameValidator implements ConstraintValidator<ValidName, String> {
 

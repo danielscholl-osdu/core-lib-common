@@ -17,9 +17,9 @@ package org.opengroup.osdu.core.common.model.legal.validation;
 import org.opengroup.osdu.core.common.model.legal.DataTypeValues;
 import org.opengroup.osdu.core.common.model.http.RequestInfo;
 
-import javax.inject.Inject;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.inject.Inject;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class DataTypeValidator implements ConstraintValidator<ValidDataType, String> {
 
