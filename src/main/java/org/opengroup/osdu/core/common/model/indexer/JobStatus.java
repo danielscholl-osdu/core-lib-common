@@ -21,7 +21,7 @@ import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;

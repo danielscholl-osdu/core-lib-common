@@ -14,15 +14,15 @@
 
 package org.opengroup.osdu.core.common.model.storage;
 
+import io.swagger.annotations.ApiModelProperty;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -38,7 +38,6 @@ import org.opengroup.osdu.core.common.model.legal.validation.ValidLegal;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidRecordAncestry;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidationDoc;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -20,8 +20,8 @@ import org.opengroup.osdu.core.common.model.search.Polygon;
 import org.opengroup.osdu.core.common.model.search.SpatialFilter;
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.Arrays;
 import java.util.Collections;

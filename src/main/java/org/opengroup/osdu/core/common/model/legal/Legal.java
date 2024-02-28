@@ -16,7 +16,7 @@ package org.opengroup.osdu.core.common.model.legal;
 
 import java.util.Set;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 import org.opengroup.osdu.core.common.model.storage.validation.ValidNotNullCollection;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidationDoc;

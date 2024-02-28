@@ -14,7 +14,7 @@
 
 package org.opengroup.osdu.core.common.model.entitlements.validation;
 
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidatorContext;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.context.annotation.RequestScope;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 
 @Data

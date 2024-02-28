@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.util.ReflectionUtils;
 
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidatorContext;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;

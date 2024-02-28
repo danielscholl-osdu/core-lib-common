@@ -16,8 +16,8 @@ package org.opengroup.osdu.core.common.model.storage.validation;
 
 import java.lang.annotation.*;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

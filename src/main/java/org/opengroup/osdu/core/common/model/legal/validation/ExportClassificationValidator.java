@@ -17,8 +17,8 @@ package org.opengroup.osdu.core.common.model.legal.validation;
 import com.google.common.base.Strings;
 import org.opengroup.osdu.core.common.model.legal.AllowedLegaltagPropertyValues;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class ExportClassificationValidator implements ConstraintValidator<ValidExportClassification, String> {
 

@@ -23,7 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.Constants;
 import org.opengroup.osdu.core.common.util.CollaborationContextUtil;
 
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.Map;
 import java.util.UUID;

@@ -16,8 +16,8 @@ package org.opengroup.osdu.core.common.model.legal.validation;
 
 import org.opengroup.osdu.core.common.model.legal.AllowedLegaltagPropertyValues;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class PersonalDataValidator implements ConstraintValidator<ValidPersonalData, String> {
     AllowedLegaltagPropertyValues properties = new AllowedLegaltagPropertyValues();

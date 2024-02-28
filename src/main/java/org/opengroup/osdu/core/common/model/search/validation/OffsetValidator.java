@@ -17,8 +17,8 @@ package org.opengroup.osdu.core.common.model.search.validation;
 import org.opengroup.osdu.core.common.model.search.QueryRequest;
 import org.opengroup.osdu.core.common.model.search.QueryUtils;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class OffsetValidator implements ConstraintValidator<ValidOffset, QueryRequest> {
 

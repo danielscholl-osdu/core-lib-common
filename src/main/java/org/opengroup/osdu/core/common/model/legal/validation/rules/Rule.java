@@ -17,7 +17,7 @@ package org.opengroup.osdu.core.common.model.legal.validation.rules;
 import com.google.common.base.Strings;
 import org.opengroup.osdu.core.common.model.legal.Properties;
 
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidatorContext;
 
 public abstract class Rule {
     public abstract boolean shouldCheck(Properties properties);
