@@ -237,6 +237,23 @@ public class PartitionServiceTest {
         assertEquals(ROOT_URL + "/partitions",captor.getValue().getURI().toString());
     }
 
+    @Test
+    public void should_failToCreate_when_rootURLIsInvalid() {
+        DpsHeaders headers = new DpsHeaders();
+        String improperUrl = "://localhost";
+        PartitionAPIConfig config = PartitionAPIConfig.builder().rootUrl(improperUrl).build();
+        assertThrows(RuntimeException.class, () -> new PartitionService(config, headers, cacheHttpClient));
+    }
+
+    @Test
+    public void should_throwPartitionException_when_partitionIsInvalid() {
+        DpsHeaders headers = new DpsHeaders();
+        String properUrl = "http://localhost";
+        PartitionAPIConfig config = PartitionAPIConfig.builder().rootUrl(properUrl).build();
+        PartitionService service = new PartitionService(config, headers, cacheHttpClient);
+        assertThrows(PartitionException.class, () -> service.get("bad partition\n\"identifier"));
+    }
+
     private CloseableHttpResponse getResponse(int status, String body) throws IOException {
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
         HttpEntity entity = mock(HttpEntity.class);

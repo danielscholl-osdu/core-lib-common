@@ -51,7 +51,8 @@ public class PartitionService implements IPartitionProvider {
     public PartitionService(PartitionAPIConfig config,
                             DpsHeaders headers,
                             CloseableHttpClient cacheHttpClient) {
-        this.rootUrl = config.getRootUrl();
+        // Normalize the root URL to verify that the root URL is correct.
+        this.rootUrl = UrlNormalizationUtil.normalizeStringUrl(config.getRootUrl());
         this.headers = headers;
         this.cacheHttpClient = cacheHttpClient;
     }
@@ -173,8 +174,15 @@ public class PartitionService implements IPartitionProvider {
         }
     }
 
-    private String createUrl(String pathAndQuery) {
-        return UrlNormalizationUtil.normalizeStringUrl(this.rootUrl,pathAndQuery);
+    private String createUrl(String pathAndQuery) throws PartitionException {
+        try {
+            return UrlNormalizationUtil.normalizeStringUrl(this.rootUrl, pathAndQuery);
+        } catch (IllegalArgumentException illegalArgumentException) {
+            HttpResponse response = new HttpResponse();
+            response.setBody(illegalArgumentException.getMessage());
+            response.setResponseCode(400);
+            throw new PartitionException(String.format("Invalid partition path: %s", pathAndQuery), response);
+        }
     }
 
     private PartitionException generatePartitionException(HttpResponse result) {
