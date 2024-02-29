@@ -133,10 +133,7 @@ public class Record {
 		String[] recordIdSplitByColon = recordId.split(":");
 
 		//first section of id should be the tenant
-		if (!recordIdSplitByColon[0].equalsIgnoreCase(tenant))
-			return false;
-
-		return true;
+		return (recordIdSplitByColon[0].equalsIgnoreCase(tenant));
 	}
 
 	/**
@@ -149,16 +146,9 @@ public class Record {
 	public static boolean isRecordIdValid(String recordId, String tenant, String kind) {
 
 		//Check format and tenant
-		if (!Record.isRecordIdValidFormatAndTenant(recordId, tenant))
+		if (!Record.isRecordIdValidFormatAndTenant(recordId, tenant) || kind == null)
 			return false;
 
-		//id should be split by colons. ex: tenant:groupType--individualType:uniqueId
-		String[] recordIdSplitByColon = recordId.split(":");
-
-		//make sure groupType/individualType is correct
-		String[] kindSplitByColon = kind.split(":");
-		String kindSubType = kindSplitByColon[2]; //grab GroupType/IndividualType
-
-		return true;
+		return recordKindPattern.matcher(kind).find();
 	}
 }

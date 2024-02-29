@@ -152,8 +152,6 @@ EPL-1.0
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Validation API (from https://beanvalidation.org)
 - Logback Core Module (from http://logback.qos.ch, https://repo1.maven.org/maven2/ch/qos/logback/logback-core)
 
 ========================================================================
@@ -169,7 +167,6 @@ GPL-2.0-only
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
 - tomcat-embed-core (from http://tomcat.apache.org/)
 
 ========================================================================
@@ -181,13 +178,6 @@ The following software have components provided under the terms of this license:
 - Jakarta Validation API (from https://beanvalidation.org)
 - Java Architecture for XML Binding (from http://jaxb.java.net/, https://repo1.maven.org/maven2/javax/xml/bind/jaxb-api)
 - tomcat-embed-core (from http://tomcat.apache.org/)
-
-========================================================================
-GPL-3.0-only
-========================================================================
-The following software have components provided under the terms of this license:
-
-- Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
 
 ========================================================================
 LGPL-2.1-only
@@ -242,6 +232,14 @@ cc-pd
 The following software have components provided under the terms of this license:
 
 - Netty/Codec (from https://repo1.maven.org/maven2/io/netty/netty-codec)
+
+========================================================================
+gpl-2.0-classpath
+========================================================================
+The following software have components provided under the terms of this license:
+
+- Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
+- Jakarta Validation API (from https://beanvalidation.org)
 
 ========================================================================
 unknown
