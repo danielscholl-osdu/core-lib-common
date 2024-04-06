@@ -20,7 +20,7 @@
 
   <groupId>org.opengroup.osdu</groupId>
   <artifactId>os-core-common-spring6</artifactId>
-  <version>0.26.0-SNAPSHOT</version>
+  <version>0.27.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
 
