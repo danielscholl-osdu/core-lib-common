@@ -46,6 +46,7 @@ The following software have components provided under the terms of this license:
 - Netty/Handler (from https://repo1.maven.org/maven2/io/netty/netty-handler)
 - Netty/Resolver (from https://repo1.maven.org/maven2/io/netty/netty-resolver)
 - Netty/Transport (from https://repo1.maven.org/maven2/io/netty/netty-transport)
+- Netty/Transport/Native/Unix/Common (from https://repo1.maven.org/maven2/io/netty/netty-transport-native-unix-common)
 - Objenesis (from https://repo1.maven.org/maven2/org/objenesis/objenesis)
 - OpenCensus (from https://github.com/census-instrumentation/opencensus-java)
 - PowerMock (from http://www.powermock.org, https://repo1.maven.org/maven2/org/powermock/powermock-api-mockito)
