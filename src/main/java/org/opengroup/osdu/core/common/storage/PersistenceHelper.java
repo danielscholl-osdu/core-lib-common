@@ -21,8 +21,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.lang.Collections;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.tomcat.util.json.JSONParser;
-import org.apache.tomcat.util.json.ParseException;
 import org.opengroup.osdu.core.common.model.entitlements.Acl;
 import org.opengroup.osdu.core.common.model.legal.Legal;
 import org.opengroup.osdu.core.common.model.storage.RecordAncestry;
