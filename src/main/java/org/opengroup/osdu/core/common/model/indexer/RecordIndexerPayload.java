@@ -39,6 +39,7 @@ public class RecordIndexerPayload {
     public static class Record {
         private String id;
         private String kind;
+        private String collaborationId;
         private String authority;
         private String namespace;
         private String source;

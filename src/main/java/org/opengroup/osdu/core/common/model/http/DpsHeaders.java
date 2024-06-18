@@ -41,6 +41,7 @@ public class DpsHeaders {
     public static final String USER_ID = "x-user-id";
     public static final String APP_ID = "x-app-id";
     public static final String X_ON_BEHALF_OF = "x-on-behalf-of";
+    public static final String COLLABORATION = "x-collaboration";
 
     private static final HashSet<String> headerKeys = new HashSet<>();
 
@@ -58,6 +59,7 @@ public class DpsHeaders {
         headerKeys.add(USER_ID);
         headerKeys.add(APP_ID);
         headerKeys.add(X_ON_BEHALF_OF);
+        headerKeys.add(COLLABORATION);
     }
 
     private final Map<String, String> headers = new HashMap<>();
@@ -166,6 +168,8 @@ public class DpsHeaders {
         return this.getHeader(APP_ID);
     }
 
+    public String getCollaboration() {return this.getHeader(COLLABORATION);
+    }
     public void put(String key, String value) {
         this.headers.put(key, value);
     }
