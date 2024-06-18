@@ -14,8 +14,12 @@
 
 package org.opengroup.osdu.core.common.util;
 
+import lombok.NonNull;
+import org.opengroup.osdu.core.common.model.http.CollaborationContext;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class CollaborationContextUtil {
 
@@ -28,4 +32,19 @@ public class CollaborationContextUtil {
         }
         return collaborationDirectiveProperties;
     }
+
+    public static String getNamespace(@NonNull Optional<CollaborationContext> collaborationContext) {
+        return collaborationContext.map(CollaborationContext::getId).orElse("");
+    }
+
+    public static String composeIdWithNamespace(String id, @NonNull Optional<CollaborationContext> collaborationContext) {
+        return getNamespace(collaborationContext) + id;
+    }
+
+    public static String getIdWithoutNamespace(String recordId, Optional<CollaborationContext> collaborationContext) {
+        return collaborationContext
+                .map(CollaborationContext::getId).map(String::length).map(recordId::substring)
+                .orElse(recordId);
+    }
+
 }

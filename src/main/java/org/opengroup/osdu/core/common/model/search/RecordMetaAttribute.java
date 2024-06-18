@@ -21,6 +21,8 @@ public enum RecordMetaAttribute {
 
     ID("id"),
 
+    COLLABORATION_ID("collaborationId"),
+
     KIND("kind"),
 
     AUTHORITY("authority"),
