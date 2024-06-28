@@ -67,4 +67,6 @@ public final class Constants {
 
     //headers needed to call storage and get converted data
     public static final String SLB_FRAME_OF_REFERENCE_VALUE = "units=SI;crs=wgs84;elevation=msl;azimuth=true north;dates=utc;";
+
+    public static final String COLLABORATIONS_FEATURE_NAME = "collaborations-enabled";
 }
