@@ -101,7 +101,7 @@ public class HttpClientHandler implements IHttpClientHandler {
             throw new AppException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Internal communication failure", "Internal communication failure", e);
         } finally {
             Long latency = System.currentTimeMillis() - curTimeStamp;
-            log.info(String.format("method: %s | latency: %s | url: %s | correlation id: %s", request.getMethod(), latency, request.getURI().toString(), requestHeaders.getHeaders().get(DpsHeaders.CORRELATION_ID)));
+            log.debug(String.format("method: %s | latency: %s | url: %s | correlation id: %s", request.getMethod(), latency, request.getURI().toString(), requestHeaders.getHeaders().get(DpsHeaders.CORRELATION_ID)));
         }
     }
 
