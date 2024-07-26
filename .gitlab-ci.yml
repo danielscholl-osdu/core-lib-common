@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+variables:
+  STABLE_RELEASE: true
+
 include:
   - project: 'osdu/platform/ci-cd-pipelines'
     ref: 'master'
@@ -36,12 +39,3 @@ include:
   - project: 'osdu/platform/ci-cd-pipelines'
     ref: 'master'
     file: 'publishing/pages.yml'
-
-.maven:
-  image: maven:3.9.3-eclipse-temurin-17
-
-fossa-analyze:
-  image: $CI_REGISTRY/divido/fossa-with-cache:v0.9-jdk17
-
-fossa-check-notice:
-  image: $CI_REGISTRY/divido/fossa-with-cache:v0.9-jdk17

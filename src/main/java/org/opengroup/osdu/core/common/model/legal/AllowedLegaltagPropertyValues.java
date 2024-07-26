@@ -17,7 +17,7 @@ package org.opengroup.osdu.core.common.model.legal;
 import org.opengroup.osdu.core.common.model.http.RequestInfo;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

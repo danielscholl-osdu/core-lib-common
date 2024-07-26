@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 import org.opengroup.osdu.core.common.SwaggerDoc;
 import org.opengroup.osdu.core.common.model.search.validation.ValidOffset;
 
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 
 @Data
 @NoArgsConstructor

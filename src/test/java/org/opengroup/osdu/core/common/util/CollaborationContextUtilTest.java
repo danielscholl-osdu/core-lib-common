@@ -1,5 +1,6 @@
 package org.opengroup.osdu.core.common.util;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengroup.osdu.core.common.model.http.CollaborationContext;
 
@@ -21,7 +22,7 @@ public class CollaborationContextUtilTest {
         // Act
         final String result = CollaborationContextUtil.getNamespace(Optional.of(collaborationContext));
         // Assert
-        assertEquals(collaborationId.toString(), result);
+        Assert.assertEquals(collaborationId.toString(), result);
     }
 
     @Test
@@ -74,6 +75,5 @@ public class CollaborationContextUtilTest {
         // Assert
         assertEquals(recordId, result);
     }
-
 
 }

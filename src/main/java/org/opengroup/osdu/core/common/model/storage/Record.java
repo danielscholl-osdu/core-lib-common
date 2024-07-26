@@ -14,15 +14,15 @@
 
 package org.opengroup.osdu.core.common.model.storage;
 
+import io.swagger.annotations.ApiModelProperty;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -38,7 +38,6 @@ import org.opengroup.osdu.core.common.model.legal.validation.ValidLegal;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidRecordAncestry;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidationDoc;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -133,7 +132,10 @@ public class Record {
 		String[] recordIdSplitByColon = recordId.split(":");
 
 		//first section of id should be the tenant
-		return (recordIdSplitByColon[0].equalsIgnoreCase(tenant));
+		if (!recordIdSplitByColon[0].equalsIgnoreCase(tenant))
+			return false;
+
+		return true;
 	}
 
 	/**
@@ -146,9 +148,16 @@ public class Record {
 	public static boolean isRecordIdValid(String recordId, String tenant, String kind) {
 
 		//Check format and tenant
-		if (!Record.isRecordIdValidFormatAndTenant(recordId, tenant) || kind == null)
+		if (!Record.isRecordIdValidFormatAndTenant(recordId, tenant))
 			return false;
 
-		return recordKindPattern.matcher(kind).find();
+		//id should be split by colons. ex: tenant:groupType--individualType:uniqueId
+		String[] recordIdSplitByColon = recordId.split(":");
+
+		//make sure groupType/individualType is correct
+		String[] kindSplitByColon = kind.split(":");
+		String kindSubType = kindSplitByColon[2]; //grab GroupType/IndividualType
+
+		return true;
 	}
 }

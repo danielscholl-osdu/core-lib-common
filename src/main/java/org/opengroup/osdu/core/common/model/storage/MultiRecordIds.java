@@ -16,8 +16,8 @@ package org.opengroup.osdu.core.common.model.storage;
 
 import java.util.List;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import org.opengroup.osdu.core.common.model.storage.validation.ValidNotNullArray;
 import org.opengroup.osdu.core.common.model.storage.validation.ValidNotNullCollection;

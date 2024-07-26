@@ -168,10 +168,8 @@ public class DpsHeaders {
         return this.getHeader(APP_ID);
     }
 
-    public String getCollaboration() {
-        return this.getHeader(COLLABORATION);
+    public String getCollaboration() {return this.getHeader(COLLABORATION);
     }
-
     public void put(String key, String value) {
         this.headers.put(key, value);
     }

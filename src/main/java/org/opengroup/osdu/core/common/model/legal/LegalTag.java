@@ -21,7 +21,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Data
 public class LegalTag {

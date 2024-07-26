@@ -27,7 +27,7 @@ import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

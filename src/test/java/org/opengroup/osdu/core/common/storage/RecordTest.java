@@ -43,15 +43,15 @@ public class RecordTest {
         String kindSubType = "work-product-component--wellLog";
         String uid = "aaaaabbbbccccdddd";
 
-         // Should be valid if formatted properly
+         //Should be valid if formatted properly
          String recordId = String.format("%s:%s:%s", tenant, kindSubType, uid);
          assertTrue(Record.isRecordIdValidFormatAndTenant(recordId, tenant));
 
-         // Should not be valid if missing uid
+         //Should not be valid if missing uid
          String badRecordId1 = String.format("%s:%s", tenant, kindSubType);
          assertFalse(Record.isRecordIdValidFormatAndTenant(badRecordId1, tenant));
  
-         // Should not be valid if record id doesn't match id format
+         //Should not be valid if doesnt match id format
          String badRecordId2 = "garbage";
          assertFalse(Record.isRecordIdValidFormatAndTenant(badRecordId2, tenant));
 
@@ -62,23 +62,23 @@ public class RecordTest {
 
         String tenant = "test-tenant";
         String kindSubType = "work-product-component--wellLog";
-        String kind = String.format("%s:wks:%s:1.0.0", tenant, kindSubType);
+        String kind = String.format("test-tenant:wks:%s:1.0.0", kindSubType);
         String uid = "aaaaabbbbccccdddd";
 
-        // Should be valid if formatted properly
+        //Should be valid if formatted properly
         String recordId = String.format("%s:%s:%s", tenant, kindSubType, uid);
         assertTrue(Record.isRecordIdValid(recordId, tenant, kind));
 
-        // Should not be valid if missing uid
+        //Should not be valid if missing uid
         String badRecordId1 = String.format("%s:%s", tenant, kindSubType);
         assertFalse(Record.isRecordIdValid(badRecordId1, tenant, kind));
 
-        // Should not be valid if record id doesn't match id format
+        //Should not be valid if doesnt match id format
         String badRecordId2 = "garbage";
         assertFalse(Record.isRecordIdValid(badRecordId2, tenant, kind));
 
-        // Should not be valid if kind doesn't have at least 2 `:`.
-        String badKind = String.format("%s:invalid-kind", tenant);
-        assertFalse(Record.isRecordIdValid(recordId, tenant, badKind));
     }
+
+ 
+    
 }

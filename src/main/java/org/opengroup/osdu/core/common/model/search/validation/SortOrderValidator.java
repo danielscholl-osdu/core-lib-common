@@ -18,8 +18,8 @@ import org.opengroup.osdu.core.common.SwaggerDoc;
 import org.opengroup.osdu.core.common.model.search.SortOrder;
 import org.opengroup.osdu.core.common.model.search.SortQuery;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.List;
 
 public class SortOrderValidator implements ConstraintValidator<ValidSortOrder, SortQuery> {

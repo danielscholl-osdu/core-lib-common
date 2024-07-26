@@ -26,7 +26,7 @@ public class CollaborationContextUtil {
     public static Map<String, String> getCollaborationDirectiveProperties(String collaborationDirectives) {
         Map<String, String> collaborationDirectiveProperties = new HashMap<>();
         String[] directives = collaborationDirectives.split(",");
-        for (String directive : directives) {
+        for(String directive : directives) {
             String[] keyValue = directive.split("=");
             collaborationDirectiveProperties.put(keyValue[0].toLowerCase().trim(), keyValue[1].trim());
         }

@@ -14,8 +14,8 @@
 
 package org.opengroup.osdu.core.common.model.entitlements.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.opengroup.osdu.core.common.model.validation.ValidatorUtils;

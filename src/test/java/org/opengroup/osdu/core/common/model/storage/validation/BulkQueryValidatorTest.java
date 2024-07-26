@@ -17,7 +17,7 @@ package org.opengroup.osdu.core.common.model.storage.validation;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidatorContext;
 
 import org.junit.Before;
 import org.junit.Test;

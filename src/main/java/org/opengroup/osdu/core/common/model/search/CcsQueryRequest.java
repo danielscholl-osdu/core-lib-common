@@ -24,7 +24,7 @@ import org.opengroup.osdu.core.common.model.search.validation.CcsValidOffset;
 import org.opengroup.osdu.core.common.model.search.validation.ValidMultiKind;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 
 @Data
 @Validated
