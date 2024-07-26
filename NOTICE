@@ -141,6 +141,13 @@ The following software have components provided under the terms of this license:
 - Jakarta XML Binding API (from https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api, https://repo1.maven.org/maven2/org/jboss/spec/javax/xml/bind/jboss-jaxb-api_2.3_spec)
 
 ========================================================================
+LGPL-2.1-only
+========================================================================
+The following software have components provided under the terms of this license:
+
+- Javassist (from http://www.javassist.org/, https://www.javassist.org/)
+
+========================================================================
 LGPL-2.1-or-later
 ========================================================================
 The following software have components provided under the terms of this license:
@@ -161,13 +168,6 @@ The following software have components provided under the terms of this license:
 - SLF4J API Module (from http://www.slf4j.org)
 - micrometer-commons (from https://github.com/micrometer-metrics/micrometer)
 - mockito-inline (from http://mockito.org, https://github.com/mockito/mockito)
-
-========================================================================
-MPL-1.1
-========================================================================
-The following software have components provided under the terms of this license:
-
-- Javassist (from http://www.javassist.org/, https://www.javassist.org/)
 
 ========================================================================
 cc-pd
