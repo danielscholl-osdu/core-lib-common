@@ -60,7 +60,7 @@ public class PartitionPropertyResolver implements IPropertyResolver {
     try {
       return Optional.of(getPropertyValue(propertyName, partitionId));
     } catch (AppException e) {
-      log.warn(OPTIONAL_PROPERTY_NOT_RESOLVED, e);
+      log.debug(OPTIONAL_PROPERTY_NOT_RESOLVED, e);
     }
     return Optional.empty();
   }
@@ -118,7 +118,7 @@ public class PartitionPropertyResolver implements IPropertyResolver {
     try {
       return Optional.of(getPropertyValue(partitionProperties, propertyName, partitionId));
     } catch (AppException e) {
-      log.warn(OPTIONAL_PROPERTY_NOT_RESOLVED, e);
+      log.debug(OPTIONAL_PROPERTY_NOT_RESOLVED, e);
     }
     return Optional.empty();
   }
@@ -147,7 +147,7 @@ public class PartitionPropertyResolver implements IPropertyResolver {
       String propertyValue = getPropertyValue(partitionProperties, propertyName, partitionId);
       return Optional.of(objectMapper.readValue(propertyValue, tClass));
     } catch (AppException e) {
-      log.warn(OPTIONAL_PROPERTY_NOT_RESOLVED, e);
+      log.debug(OPTIONAL_PROPERTY_NOT_RESOLVED, e);
     } catch (JsonProcessingException e) {
       log.warn("Optional property misconfigured, please review tenant configuration. Required format: {}", tClass, e);
     }
