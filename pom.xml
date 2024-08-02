@@ -38,7 +38,7 @@
     <lombok.version>1.18.28</lombok.version>
     <java-jwt.version>4.4.0</java-jwt.version>
     <jjwt.version>0.12.5</jjwt.version>
-    <lettuce.version>4.5.0.Final</lettuce.version>
+    <lettuce.version>6.3.2.RELEASE</lettuce.version>
     <guava.version>33.1.0-jre</guava.version>
     <google-http-client.version>1.44.1</google-http-client.version>
     <commons-lang3.version>3.14.0</commons-lang3.version>
@@ -178,8 +178,8 @@
       <version>${jjwt.version}</version>
     </dependency>
     <dependency>
-      <groupId>biz.paluch.redis</groupId>
-      <artifactId>lettuce</artifactId>
+      <groupId>io.lettuce</groupId>
+      <artifactId>lettuce-core</artifactId>
       <version>${lettuce.version}</version>
     </dependency>
 
