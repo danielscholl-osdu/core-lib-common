@@ -14,19 +14,18 @@
 
 package org.opengroup.osdu.core.common.cache;
 
-import com.lambdaworks.redis.ClientOptions;
-import com.lambdaworks.redis.RedisClient;
-import com.lambdaworks.redis.RedisException;
-import com.lambdaworks.redis.RedisURI;
-import com.lambdaworks.redis.SetArgs;
-import com.lambdaworks.redis.api.StatefulRedisConnection;
-import com.lambdaworks.redis.api.sync.RedisCommands;
-import com.lambdaworks.redis.codec.CompressionCodec;
-import com.lambdaworks.redis.codec.RedisCodec;
+import io.lettuce.core.ClientOptions;
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisException;
+import io.lettuce.core.RedisURI;
+import io.lettuce.core.SetArgs;
+import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.codec.CompressionCodec;
+import io.lettuce.core.codec.RedisCodec;
+import java.time.Duration;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
@@ -38,7 +37,7 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
 
     public RedisCache(String host, int port, int expTimeSeconds, int database, ClientOptions clientOptions,
                       Class<K> classOfK, Class<V> classOfV) {
-        RedisURI uri = new RedisURI(host, port, 30, TimeUnit.SECONDS);
+        RedisURI uri = new RedisURI(host, port, Duration.ofSeconds(30));
         uri.setDatabase(database);
         client = RedisClient.create(uri);
         if (clientOptions != null) {
@@ -51,7 +50,14 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
 
     public RedisCache(String host, int port, String password, int expTimeSeconds, int database,
         ClientOptions clientOptions, Class<K> classOfK, Class<V> classOfV) {
-        RedisURI uri = RedisURI.Builder.redis(host, port).withTimeout(expTimeSeconds, TimeUnit.SECONDS).withPassword(password).withDatabase(database).withSsl(true).build();
+        RedisURI uri = RedisURI.Builder
+            .redis(host, port)
+            .withTimeout(Duration.ofSeconds(expTimeSeconds))
+            .withPassword(password.toCharArray())
+            .withDatabase(database)
+            .withSsl(true)
+            .build();
+
         client = RedisClient.create(uri);
         if (clientOptions != null) {
             client.setOptions(clientOptions);
@@ -65,7 +71,14 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
                       ClientOptions clientOptions, Class<K> classOfK, Class<V> classOfV) {
         // Timeout parameter in RedisURL class sets the command timeout for synchronous command execution. A zero timeout value indicates to not time out.
         // https://lettuce.io/core/release/api/io/lettuce/core/RedisURI.html#getTimeout--
-        RedisURI uri = RedisURI.Builder.redis(host, port).withTimeout(commandExecutionTimeout, TimeUnit.SECONDS).withPassword(password).withDatabase(database).withSsl(true).build();
+        RedisURI uri = RedisURI.Builder
+            .redis(host, port)
+            .withTimeout(Duration.ofSeconds(commandExecutionTimeout))
+            .withPassword(password.toCharArray())
+            .withDatabase(database)
+            .withSsl(true)
+            .build();
+
         client = RedisClient.create(uri);
         if (clientOptions != null) {
             client.setOptions(clientOptions);
@@ -79,8 +92,8 @@ public class RedisCache<K, V> implements IRedisCache<K, V>, AutoCloseable {
         ClientOptions clientOptions, Class<K> classOfK, Class<V> classOfV) {
         RedisURI uri = RedisURI.Builder
             .redis(host, port)
-            .withTimeout(expTimeSeconds, TimeUnit.SECONDS)
-            .withPassword(password)
+            .withTimeout(Duration.ofSeconds(expTimeSeconds))
+            .withPassword(password.toCharArray())
             .withDatabase(database)
             .withSsl(withSsl)
             .build();

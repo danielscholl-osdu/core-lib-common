@@ -15,7 +15,8 @@
  */
 package org.opengroup.osdu.core.common.cache;
 
-import com.lambdaworks.redis.codec.RedisCodec;
+
+import io.lettuce.core.codec.RedisCodec;
 
 /**
  * Interface that extends ICache with Redis specific functionalities.

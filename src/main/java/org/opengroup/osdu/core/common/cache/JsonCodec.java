@@ -15,8 +15,7 @@
 package org.opengroup.osdu.core.common.cache;
 
 import com.google.gson.Gson;
-import com.lambdaworks.redis.codec.RedisCodec;
-
+import io.lettuce.core.codec.RedisCodec;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
