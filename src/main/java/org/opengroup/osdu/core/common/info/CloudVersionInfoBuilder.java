@@ -17,12 +17,7 @@
 
 package org.opengroup.osdu.core.common.info;
 
-import lombok.extern.slf4j.Slf4j;
-import org.opengroup.osdu.core.common.model.info.ConnectedOuterService;
-import org.opengroup.osdu.core.common.model.info.VersionInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -30,10 +25,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.opengroup.osdu.core.common.model.info.ConnectedOuterService;
+import org.opengroup.osdu.core.common.model.info.VersionInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 public class CloudVersionInfoBuilder implements VersionInfoBuilder {
+
+  private static final String BUILD_GROUP = "build.group";
+  private static final String BUILD_ARTIFACT = "build.artifact";
+  private static final String BUILD_VERSION = "build.version";
+  private static final String BUILD_TIME = "build.time";
+  private static final String GIT_BRANCH = "git.branch";
+  private static final String GIT_COMMIT_ID = "git.commit.id";
+  private static final String GIT_COMMIT_MESSAGE_SHORT = "git.commit.message.short";
 
   private final Properties buildInfoProperties = new Properties();
   private final Properties gitProperties = new Properties();
@@ -46,43 +54,45 @@ public class CloudVersionInfoBuilder implements VersionInfoBuilder {
     this.versionInfoProperties = versionInfoProperties;
   }
 
-  public VersionInfo buildVersionInfo() throws IOException {
+  @PostConstruct
+  public void init() throws IOException {
     loadBuildInfoProperties();
     loadGitProperties();
+  }
+
+  public VersionInfo buildVersionInfo() throws IOException {
     List<ConnectedOuterService> connectedOuterServices = loadConnectedOuterServices();
     return VersionInfo.builder()
-        .groupId(buildInfoProperties.getProperty("build.group"))
-        .artifactId(buildInfoProperties.getProperty("build.artifact"))
-        .version(buildInfoProperties.getProperty("build.version"))
-        .buildTime(buildInfoProperties.getProperty("build.time"))
-        .branch(gitProperties.getProperty("git.branch"))
-        .commitId(gitProperties.getProperty("git.commit.id"))
-        .commitMessage(gitProperties.getProperty("git.commit.message.short"))
+        .groupId(buildInfoProperties.getProperty(BUILD_GROUP))
+        .artifactId(buildInfoProperties.getProperty(BUILD_ARTIFACT))
+        .version(buildInfoProperties.getProperty(BUILD_VERSION))
+        .buildTime(buildInfoProperties.getProperty(BUILD_TIME))
+        .branch(gitProperties.getProperty(GIT_BRANCH))
+        .commitId(gitProperties.getProperty(GIT_COMMIT_ID))
+        .commitMessage(gitProperties.getProperty(GIT_COMMIT_MESSAGE_SHORT))
         .connectedOuterServices(connectedOuterServices)
         .build();
   }
 
   private void loadBuildInfoProperties() throws IOException {
-    InputStream buildInfoStream =
-        this.getClass().getResourceAsStream(versionInfoProperties.getBuildPropertiesPath());
-    if (buildInfoStream != null) {
-      buildInfoProperties.load(buildInfoStream);
-    } else {
-      log.error(
-          "Build-info properties file not found by path: {}",
-          versionInfoProperties.getBuildPropertiesPath());
+    String buildPropertiesPath = versionInfoProperties.getBuildPropertiesPath();
+    try (InputStream buildInfoStream = this.getClass().getResourceAsStream(buildPropertiesPath)) {
+      if (buildInfoStream != null) {
+        buildInfoProperties.load(buildInfoStream);
+      } else {
+        log.error("Build-info properties file not found by path: {}", buildPropertiesPath);
+      }
     }
   }
 
   private void loadGitProperties() throws IOException {
-    InputStream gitStream =
-        this.getClass().getResourceAsStream(versionInfoProperties.getGitPropertiesPath());
-    if (gitStream != null) {
-      gitProperties.load(gitStream);
-    } else {
-      log.error(
-          "Git properties file not found by path: {}",
-          versionInfoProperties.getGitPropertiesPath());
+    String gitPropertiesPath = versionInfoProperties.getGitPropertiesPath();
+    try (InputStream gitStream = this.getClass().getResourceAsStream(gitPropertiesPath)) {
+      if (gitStream != null) {
+        gitProperties.load(gitStream);
+      } else {
+        log.error("Git properties file not found by path: {}", gitPropertiesPath);
+      }
     }
   }
 
@@ -92,10 +102,12 @@ public class CloudVersionInfoBuilder implements VersionInfoBuilder {
    */
   private List<ConnectedOuterService> loadConnectedOuterServices() {
     return Optional.ofNullable(outerServicesBuilder)
-            .map(builderList -> builderList.stream()
+        .map(
+            builderList ->
+                builderList.stream()
                     .map(ConnectedOuterServicesBuilder::buildConnectedOuterServices)
                     .flatMap(List::stream)
                     .collect(Collectors.toList()))
-            .orElse(Collections.emptyList());
+        .orElse(Collections.emptyList());
   }
 }
