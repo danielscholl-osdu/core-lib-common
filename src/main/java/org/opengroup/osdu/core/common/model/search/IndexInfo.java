@@ -23,6 +23,8 @@ import org.springframework.web.context.annotation.RequestScope;
 @Builder
 @RequestScope
 public class IndexInfo {
+    @SerializedName("health")
+    private String health;
     @SerializedName("index")
     private String name;
     @SerializedName("docs.count")

@@ -17,6 +17,8 @@ package org.opengroup.osdu.core.common.cache;
 import org.junit.Test;
 import org.opengroup.osdu.core.common.cache.enums.CachingStrategy;
 
+import java.util.UUID;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -120,5 +122,12 @@ public class VmCacheTest {
 
         // After 1 second without access, item is no longer available.
         assertNull(sut.get(id));
+    }
+
+    public static void main(String[] args) {
+        String id = "xxx-yyy-zzzzzzz-corporation:work-product-component--WellLog:xxx-yyy-zzzzzzz-corporation:work-product-component--WellLog:CRXdAWD15bqEJ8kNtJe6V3RKXmSQzmohsYZDhe7QdR58iFGHOA0b5Otuc96XDgp34TNCk851FsKB95zHx7QazeBIG0NxT3CVDLyWpEe0nyXGgDMY2k1RR1SXzum4IqMajpscNM6kVjRlBjh2Cx2ZGDt7RW0AKYEemm8IpU1kvWRgjYATXJacoDivlQJqJ07Ghzco4MOu2TYFDq31qfnpVP37E2pktUGvHug1qQoVSHaSoT4zQgOiOF1WXMfZWTPIlaRdnaUSbjN2aXgH9zMlSebOkJ4J0SAU9lMs58QJsSvMoL9bjaBmniVNq2os41oyL3gZrBucz2yI67Yzm72y72fb7swlBoiONveLgyTra2fY8q9btfxjGYDPO71dwA1akgNmJerCDdE";
+        String s = UUID.randomUUID().toString();
+        System.out.println(s.getBytes().length);
+        System.out.println(id.getBytes().length);
     }
 }

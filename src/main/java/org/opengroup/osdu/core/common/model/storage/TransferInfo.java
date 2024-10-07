@@ -36,6 +36,6 @@ public class TransferInfo {
 		this.recordCount = recordCount;
 
 		int randomNumber = new Random().nextInt(1000 - 1 + 1) + 1;
-		this.version = System.currentTimeMillis() * 1000 + randomNumber;
+		this.version = System.nanoTime() * 1000 + randomNumber;
 	}
 }
