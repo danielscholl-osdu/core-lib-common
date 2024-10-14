@@ -20,11 +20,22 @@ package org.opengroup.osdu.core.common.util;
 import java.net.URI;
 import org.apache.commons.lang3.StringUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class UrlNormalizationUtil {
 
-	public static String normalizeStringUrl(String...url){
-		String joinedUrl = StringUtils.join(url).replaceAll("\t|\r|\n|\f|\\s","");
-		return URI.create(joinedUrl).normalize().toString();
+	public static String normalizeStringUrl(String... url) {
+		String normalizedString = null;
+
+		try {
+			String joinedUrl = StringUtils.join(url).replaceAll("\t|\r|\n|\f|\\s", "");
+			normalizedString = URI.create(joinedUrl).normalize().toString();
+		} catch (Exception e) {
+			log.error("maliformed url string found {}", url, e);
+		}
+
+		return normalizedString;
 	}
 
 	private UrlNormalizationUtil() {
