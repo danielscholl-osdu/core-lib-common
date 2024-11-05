@@ -35,7 +35,7 @@
     <netty-bom.version>4.1.109.Final</netty-bom.version>
     <commons-codec.version>1.16.1</commons-codec.version>
     <gson.version>2.10.1</gson.version>
-    <lombok.version>1.18.28</lombok.version>
+    <lombok.version>1.18.34</lombok.version>
     <java-jwt.version>4.4.0</java-jwt.version>
     <jjwt.version>0.12.5</jjwt.version>
     <lettuce.version>6.3.2.RELEASE</lettuce.version>
@@ -48,7 +48,13 @@
     <system-rules.version>1.18.0</system-rules.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-    <argLine>--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED</argLine>
+    <argLine>
+      --add-opens=java.base/java.util=ALL-UNNAMED
+      --add-opens java.base/java.lang=ALL-UNNAMED
+      --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+      --add-opens java.base/java.text=ALL-UNNAMED
+      --add-opens java.base/java.time=ALL-UNNAMED
+    </argLine>
   </properties>
 
   <licenses>
