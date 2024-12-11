@@ -167,6 +167,7 @@ The following software have components provided under the terms of this license:
 - Checker Qual (from https://checkerframework.org)
 - Jackson-core (from http://wiki.fasterxml.com/JacksonHome, https://github.com/FasterXML/jackson-core)
 - Java JWT (from http://www.jwt.io, https://github.com/auth0/java-jwt)
+- Lettuce (from http://github.com/lettuce-io/lettuce-core, http://github.com/mp911de/lettuce/wiki, https://github.com/lettuce-io/lettuce-core/wiki)
 - Mockito (from http://mockito.org, https://github.com/mockito/mockito)
 - Netty/Common (from https://repo1.maven.org/maven2/io/netty/netty-common)
 - Project Lombok (from http://projectlombok.org, https://projectlombok.org)
