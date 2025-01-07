@@ -66,27 +66,27 @@ public class RecordMetadata {
 	*/
 	private Map<String, String> hash;
 
-	public RecordMetadata(Record record) {
-		this.id = record.getId();
-		this.kind = record.getKind();
-		this.acl = record.getAcl();
-		this.legal = record.getLegal();
-		this.tags = record.getTags();
-		this.ancestry = record.getAncestry();
-	}
+  public RecordMetadata(Record record) {
+    this.id = record.getId();
+    this.kind = record.getKind();
+    this.acl = record.getAcl();
+    this.legal = record.getLegal();
+    this.tags = record.getTags();
+    this.ancestry = record.getAncestry();
+  }
 
-    public Long getLatestVersion() {
-        String latestVersionPath = this.gcsVersionPaths.get(this.gcsVersionPaths.size() - 1);
-        String[] versionTokens = latestVersionPath.split("/");
-        return Long.parseLong(versionTokens[versionTokens.length - 1]);
+  public Long getLatestVersion() {
+    if (!hasVersion()) {
+      return null;
     }
 
+    String latestVersionPath = this.gcsVersionPaths.get(this.gcsVersionPaths.size() - 1);
+    String[] versionTokens = latestVersionPath.split("/");
+    return Long.parseLong(versionTokens[versionTokens.length - 1]);
+  }
+
 	public boolean hasVersion() {
-		if (this.getGcsVersionPaths().isEmpty()) {
-			return false;
-		} else {
-			return true;
-		}
+    return !this.getGcsVersionPaths().isEmpty();
 	}
 
 	public void addGcsPath(long version) {
