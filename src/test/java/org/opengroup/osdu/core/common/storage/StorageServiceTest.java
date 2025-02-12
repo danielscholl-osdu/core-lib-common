@@ -17,7 +17,6 @@ package org.opengroup.osdu.core.common.storage;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.opengroup.osdu.core.common.http.HttpClient;
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
@@ -30,8 +29,13 @@ import org.opengroup.osdu.core.common.model.storage.StorageException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 public class StorageServiceTest {
 
@@ -47,7 +51,7 @@ public class StorageServiceTest {
 
     @Before
     public void setup() {
-        config = new StorageAPIConfig("url", "any key");
+        config = new StorageAPIConfig(ROOT_URL, "any key");
         dpsHeaders = new DpsHeaders();
         httpClient = mock(HttpClient.class);
         bodyMapper = mock(HttpResponseBodyMapper.class);
@@ -89,6 +93,132 @@ public class StorageServiceTest {
     }
 
     @Test
+    public void softDeleteRecord_calls_correct_endpoint() throws Exception {
+        HttpResponse httpResponse = mock(HttpResponse.class);
+        StorageService storageService = new StorageService(config, httpClient, dpsHeaders, bodyMapper);
+        when(httpResponse.isSuccessCode()).thenReturn(true);
+        when(bodyMapper.parseBody(httpResponse, String.class)).thenReturn("");
+        when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
+
+        String recordId = "1234";
+        storageService.softDeleteRecord(recordId);
+
+        ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
+        verify(httpClient).send(captor.capture());
+        assertEquals(String.format("%s/records/%s:delete", ROOT_URL, recordId), captor.getValue().getUrl());
+        assertEquals(HttpRequest.POST, captor.getValue().getHttpMethod());
+    }
+
+    @Test
+    public void softDeleteRecords_calls_correct_endpoint() throws Exception {
+        HttpResponse httpResponse = mock(HttpResponse.class);
+        StorageService storageService = new StorageService(config, httpClient, dpsHeaders, bodyMapper);
+        when(httpResponse.isSuccessCode()).thenReturn(true);
+        when(bodyMapper.parseBody(httpResponse, String.class)).thenReturn("");
+        when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
+
+        String recordId = "1234";
+        Collection<String> ids = Arrays.asList(recordId);
+        storageService.softDeleteRecords(ids);
+
+        ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
+        verify(httpClient).send(captor.capture());
+        assertEquals(String.format("%s/records/delete", ROOT_URL), captor.getValue().getUrl());
+        assertEquals(HttpRequest.POST, captor.getValue().getHttpMethod());
+        assertTrue(captor.getValue().getBody().contains(recordId));
+    }
+
+    @Test
+    public void purgeRecordVersions_calls_correct_endpoint_with_ids() throws Exception {
+        HttpResponse httpResponse = mock(HttpResponse.class);
+        StorageService storageService = new StorageService(config, httpClient, dpsHeaders, bodyMapper);
+        when(httpResponse.isSuccessCode()).thenReturn(true);
+        when(bodyMapper.parseBody(httpResponse, String.class)).thenReturn("");
+        when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
+
+        String recordId = "1234";
+        String recordVersion1 = "v1";
+        String recordVersion2 = "v2";
+        Collection<String> versionIds = Arrays.asList(recordVersion1, recordVersion2);
+        storageService.purgeRecordVersions(recordId, versionIds);
+
+        ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
+        verify(httpClient).send(captor.capture());
+        assertEquals(String.format("%s/records/%s/versions", ROOT_URL, recordId), captor.getValue().getUrl());
+        assertEquals(HttpRequest.DELETE, captor.getValue().getHttpMethod());
+        Map<String, String> queryParams = captor.getValue().getQueryParams();
+        assertEquals(1, queryParams.size());
+        assertEquals(String.format("%s,%s", recordVersion1, recordVersion2), queryParams.get("versionIds"));
+    }
+
+    @Test
+    public void purgeRecordVersions_calls_correct_endpoint_with_limit() throws Exception {
+        HttpResponse httpResponse = mock(HttpResponse.class);
+        StorageService storageService = new StorageService(config, httpClient, dpsHeaders, bodyMapper);
+        when(httpResponse.isSuccessCode()).thenReturn(true);
+        when(bodyMapper.parseBody(httpResponse, String.class)).thenReturn("");
+        when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
+
+        String recordId = "1234";
+        Integer limit = 42;
+        Long fromVersion = null;
+        storageService.purgeRecordVersions(recordId, limit, fromVersion);
+
+        ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
+        verify(httpClient).send(captor.capture());
+        assertEquals(String.format("%s/records/%s/versions", ROOT_URL, recordId), captor.getValue().getUrl());
+        assertEquals(HttpRequest.DELETE, captor.getValue().getHttpMethod());
+        Map<String, String> queryParams = captor.getValue().getQueryParams();
+        assertEquals(1, queryParams.size());
+        assertEquals(Integer.toString(limit), queryParams.get("limit"));
+    }
+
+    @Test
+    public void purgeRecordVersions_calls_correct_endpoint_with_fromVersion() throws Exception {
+        HttpResponse httpResponse = mock(HttpResponse.class);
+        StorageService storageService = new StorageService(config, httpClient, dpsHeaders, bodyMapper);
+        when(httpResponse.isSuccessCode()).thenReturn(true);
+        when(bodyMapper.parseBody(httpResponse, String.class)).thenReturn("");
+        when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
+
+        String recordId = "1234";
+        Integer limit = null;
+        Long fromVersion = 4242l;
+        storageService.purgeRecordVersions(recordId, limit, fromVersion);
+
+        ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
+        verify(httpClient).send(captor.capture());
+        assertEquals(String.format("%s/records/%s/versions", ROOT_URL, recordId), captor.getValue().getUrl());
+        assertEquals(HttpRequest.DELETE, captor.getValue().getHttpMethod());
+        Map<String, String> queryParams = captor.getValue().getQueryParams();
+        assertEquals(1, queryParams.size());
+        assertEquals(Long.toString(fromVersion), queryParams.get("fromVersion"));
+    }
+
+    @Test
+    public void purgeRecordVersions_calls_correct_endpoint_with_limit_and_fromVersion() throws Exception {
+        HttpResponse httpResponse = mock(HttpResponse.class);
+        StorageService storageService = new StorageService(config, httpClient, dpsHeaders, bodyMapper);
+        when(httpResponse.isSuccessCode()).thenReturn(true);
+        when(bodyMapper.parseBody(httpResponse, String.class)).thenReturn("");
+        when(httpClient.send(any(HttpRequest.class))).thenReturn(httpResponse);
+
+        String recordId = "1234";
+        Integer limit = 42;
+        Long fromVersion = 4242l;
+        storageService.purgeRecordVersions(recordId, limit, fromVersion);
+
+        ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
+        verify(httpClient).send(captor.capture());
+        assertEquals(String.format("%s/records/%s/versions", ROOT_URL, recordId), captor.getValue().getUrl());
+        assertEquals(HttpRequest.DELETE, captor.getValue().getHttpMethod());
+        Map<String, String> queryParams = captor.getValue().getQueryParams();
+        assertEquals(2, queryParams.size());
+        assertEquals(Integer.toString(limit), queryParams.get("limit"));
+        assertEquals(Long.toString(fromVersion), queryParams.get("fromVersion"));
+    }
+
+    @Test
     public void testUrlNormalization () throws StorageException {
         HttpResponse httpResponse = mock(HttpResponse.class);
         when(httpResponse.isSuccessCode()).thenReturn(true);
@@ -97,9 +227,10 @@ public class StorageServiceTest {
         config = StorageAPIConfig.builder().rootUrl(malformedUrl).build();
         StorageService storageService = new StorageService(config, httpClient, dpsHeaders, bodyMapper);
 
-        storageService.getRecord("any");
+        String recordId = "any";
+        storageService.getRecord(recordId);
         ArgumentCaptor<HttpRequest> captor = ArgumentCaptor.forClass(HttpRequest.class);
-        Mockito.verify(httpClient).send(captor.capture());
-        assertEquals(ROOT_URL + "/records/any",captor.getValue().getUrl());
+        verify(httpClient).send(captor.capture());
+        assertEquals(String.format("%s/records/%s", ROOT_URL, recordId), captor.getValue().getUrl());
     }
 }
