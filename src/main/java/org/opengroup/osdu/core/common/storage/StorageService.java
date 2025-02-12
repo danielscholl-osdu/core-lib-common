@@ -16,6 +16,10 @@ package org.opengroup.osdu.core.common.storage;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.opengroup.osdu.core.common.http.HttpRequest;
 import org.opengroup.osdu.core.common.http.HttpResponse;
 import org.opengroup.osdu.core.common.http.IHttpClient;
@@ -89,6 +93,47 @@ public class StorageService implements IStorageService {
         String url = this.createUrl(String.format("/records/%s", id));
         HttpResponse result = this.httpClient.send(
                 HttpRequest.delete().url(url).headers(this.headers.getHeaders()).build());
+        this.getResult(result, String.class);
+    }
+
+    @Override
+    public void softDeleteRecord(String id) throws StorageException {
+        String url = this.createUrl(String.format("/records/%s:delete", id));
+        HttpResponse result = this.httpClient.send(
+                HttpRequest.post().url(url).headers(this.headers.getHeaders()).build());
+        this.getResult(result, String.class);
+    }
+
+    @Override
+    public void softDeleteRecords(Collection<String> ids) throws StorageException {
+        String url = this.createUrl("/records/delete");
+        HttpResponse result = this.httpClient.send(
+                HttpRequest.post(ids).url(url).headers(this.headers.getHeaders()).build());
+        this.getResult(result, String.class);
+    }
+
+    @Override
+    public void purgeRecordVersions(String id, Collection<String> versionIds) throws StorageException {
+        String url = this.createUrl(String.format("/records/%s/versions", id));
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("versionIds", String.join(",", versionIds));
+        HttpResponse result = this.httpClient.send(
+                HttpRequest.delete().url(url).queryParams(queryParams).headers(this.headers.getHeaders()).build());
+        this.getResult(result, String.class);
+    }
+
+    @Override
+    public void purgeRecordVersions(String id, Integer limit, Long fromVersion) throws StorageException {
+        String url = this.createUrl(String.format("/records/%s/versions", id));
+        Map<String, String> queryParams = new HashMap<>();
+        if (limit != null) {
+            queryParams.put("limit", Integer.toString(limit));
+        }
+        if (fromVersion != null) {
+            queryParams.put("fromVersion", Long.toString(fromVersion));
+        }
+        HttpResponse result = this.httpClient.send(
+                HttpRequest.delete().url(url).queryParams(queryParams).headers(this.headers.getHeaders()).build());
         this.getResult(result, String.class);
     }
 
