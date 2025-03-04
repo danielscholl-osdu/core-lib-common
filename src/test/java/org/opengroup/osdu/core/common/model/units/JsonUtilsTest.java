@@ -175,6 +175,7 @@ public class JsonUtilsTest {
         String propertyName = "markers[].value";
 
         setupJsonArrayMock(3);
+        when(mockJsonObject.isJsonObject()).thenReturn(true);
         when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
         when(mockJsonObject.get("value")).thenReturn(mockJsonPrimitive);
 
@@ -192,6 +193,7 @@ public class JsonUtilsTest {
         String propertyName = "markers[].value";
 
         setupJsonArrayMock(3);
+        when(mockJsonObject.isJsonObject()).thenReturn(true);
         when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
 
         List<JsonElement> result = getJsonPropertyValueFromJsonObject(propertyName, mockJsonObject);
@@ -338,6 +340,7 @@ public class JsonUtilsTest {
 
 
         setupJsonArrayMock(3);
+        when(mockJsonObject.isJsonObject()).thenReturn(true);
         when(mockJsonObject.getAsJsonArray("markers")).thenReturn(mockJsonArray);
 
         overrideNumberPropertyOfJsonObject(propertyName, values, mockJsonObject);
