@@ -88,9 +88,13 @@ public class JsonUtils {
             return result;
         }
         for (int i = 0; i < elementArray.size(); i++) {
-            JsonObject element = elementArray.get(i).getAsJsonObject();
-            JsonElement elementValue = getNestedJsonElement(innerNestedNames, element);
-            result.add(elementValue);
+            JsonElement jsonElement = elementArray.get(i);
+            if (jsonElement.isJsonObject() || jsonElement.isJsonArray()) {
+                JsonElement elementValue = getNestedJsonElement(innerNestedNames, jsonElement.getAsJsonObject());
+                result.add(elementValue);
+            } else {
+                result.add(jsonElement);
+            }
         }
         return result;
     }
@@ -217,12 +221,14 @@ public class JsonUtils {
         String[] innerNestedNames = getInnerNestedPropertyNames(nestedNames);
 
         for (int i = 0; i < elementArray.size(); i++) {
-            JsonObject element = elementArray.get(i).getAsJsonObject();
+            JsonElement jsonElement = elementArray.get(i);
 
-            JsonObject targetJsonObject = buildNewJsonObject(innerNestedNames, element);
-
-            if (targetJsonObject != null) {
-                targetJsonObject.addProperty(innerNestedNames[innerNestedNames.length - 1], values.get(i));
+            if (jsonElement.isJsonObject() || jsonElement.isJsonArray()) {
+                JsonObject element = jsonElement.getAsJsonObject();
+                JsonObject targetJsonObject = buildNewJsonObject(innerNestedNames, element);
+                if (targetJsonObject != null) {
+                    targetJsonObject.addProperty(innerNestedNames[innerNestedNames.length - 1], values.get(i));
+                }
             }
         }
 
