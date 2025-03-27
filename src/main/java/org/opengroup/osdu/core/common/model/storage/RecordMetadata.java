@@ -101,7 +101,8 @@ public class RecordMetadata {
 		}
 
 		throw new AppException(HttpStatus.SC_NOT_FOUND, "Record version not found",
-				"The requested record version was not found");
+				"The requested record version was not found",
+				"Record id:%s;Record version:%s".formatted(this.id, version));
 	}
 
 	public void resetGcsPath(List<String> gcsVersionPathList) {
