@@ -22,6 +22,8 @@ import org.springframework.stereotype.Component;
 @Component
 @ConditionalOnProperty(prefix = "featureFlag", name = "strategy", havingValue = "dataPartition")
 public class PartitionFeatureFlagImpl implements IFeatureFlag {
+
+    public static final String FF_SOURCE_DATA_PARTITION = "dataPartition";
     @Autowired
     private JaxRsDpsLog logger;
     @Autowired
@@ -34,18 +36,28 @@ public class PartitionFeatureFlagImpl implements IFeatureFlag {
 
     @Override
     public boolean isFeatureEnabled(String featureName) {
-        PartitionAPIConfig apiConfig = PartitionAPIConfig.builder()
-                .rootUrl(partitionAPIEndpoint)
-                .build();
-        IPartitionFactory partitionFactory = new PartitionFactory(apiConfig);
-        DpsHeaders partitionHeaders = DpsHeaders.createFromMap(headers.getHeaders());
-        partitionHeaders.put(DpsHeaders.AUTHORIZATION, tokenService.getIdToken(headers.getPartitionId()));
-        IPartitionProvider partitionProvider = partitionFactory.create(partitionHeaders);
+        IPartitionProvider partitionProvider = getPartitionProvider(headers);
+        return fetchFeatureFlag(featureName, headers.getPartitionId(), partitionProvider);
+    }
 
+    @Override
+    public boolean isFeatureEnabled(String featureName, String dataPartitionId) {
+        DpsHeaders dpsHeaders = new DpsHeaders();
+        dpsHeaders.put(DpsHeaders.DATA_PARTITION_ID, dataPartitionId);
+        IPartitionProvider partitionProvider = getPartitionProvider(dpsHeaders);
+        return fetchFeatureFlag(featureName, dataPartitionId, partitionProvider);
+    }
+
+    @Override
+    public String source() {
+        return FF_SOURCE_DATA_PARTITION;
+    }
+
+    private boolean fetchFeatureFlag(String featureName, String dataPartitionId, IPartitionProvider partitionProvider) {
         if (partitionProvider == null)
             return false;
         try {
-            PartitionInfo partitionInfo = partitionProvider.get(headers.getPartitionId());
+            PartitionInfo partitionInfo = partitionProvider.get(dataPartitionId);
             return getFeatureFlagStatus(partitionInfo, featureName);
         } catch (PartitionException e) {
             this.logger.error(String.format("Error getting feature flag status for dataPartitionId: %s, exception http response: %s", headers.getPartitionId(), e.getResponse().toString()));
@@ -56,8 +68,19 @@ public class PartitionFeatureFlagImpl implements IFeatureFlag {
             StringBuilder errorMessage = new StringBuilder( String.format("Error from partition Service: %s", e.getMessage()));
             errorMessage.append(String.format("Response body: %s", e.getResponse().getBody()));
 
-            throw new AppException(errorCode, String.format("Error getting feature flag value for property: %s, partition: %s", featureName, headers.getPartitionId()), errorMessage.toString(), e);
+            throw new AppException(errorCode, String.format("Error getting feature flag value for property: %s, partition: %s",
+                featureName, headers.getPartitionId()), errorMessage.toString(), e);
         }
+    }
+
+    private IPartitionProvider getPartitionProvider(DpsHeaders headers) {
+        PartitionAPIConfig apiConfig = PartitionAPIConfig.builder()
+            .rootUrl(partitionAPIEndpoint)
+            .build();
+        IPartitionFactory partitionFactory = new PartitionFactory(apiConfig);
+        DpsHeaders partitionHeaders = DpsHeaders.createFromMap(headers.getHeaders());
+        partitionHeaders.put(DpsHeaders.AUTHORIZATION, tokenService.getIdToken(headers.getPartitionId()));
+        return partitionFactory.create(partitionHeaders);
     }
 
     private boolean getFeatureFlagStatus(PartitionInfo partitionInfo, String featureName) {

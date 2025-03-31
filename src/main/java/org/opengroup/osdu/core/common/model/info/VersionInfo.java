@@ -20,6 +20,7 @@ package org.opengroup.osdu.core.common.model.info;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
+import org.opengroup.osdu.core.common.model.info.FeatureFlagStateResolver.FeatureFlagState;
 
 @Data
 @Builder
@@ -32,4 +33,5 @@ public class VersionInfo {
   private String commitId;
   private String commitMessage;
   private List<ConnectedOuterService> connectedOuterServices;
+  private List<FeatureFlagState> featureFlagStates;
 }
