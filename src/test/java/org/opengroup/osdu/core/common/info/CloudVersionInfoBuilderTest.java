@@ -16,6 +16,8 @@
  */
 package org.opengroup.osdu.core.common.info;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -28,6 +30,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.model.info.ConnectedOuterService;
+import org.opengroup.osdu.core.common.model.info.FeatureFlagStateResolver.FeatureFlagState;
 import org.opengroup.osdu.core.common.model.info.VersionInfo;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -54,13 +57,13 @@ public class CloudVersionInfoBuilderTest {
   public void buildVersionInfo() throws IOException {
     VersionInfo versionInfo = versionInfoBuilder.buildVersionInfo();
 
-    Assert.assertNotNull(versionInfo.getGroupId());
-    Assert.assertNotNull(versionInfo.getArtifactId());
-    Assert.assertNotNull(versionInfo.getVersion());
-    Assert.assertNotNull(versionInfo.getBuildTime());
-    Assert.assertNotNull(versionInfo.getBranch());
-    Assert.assertNotNull(versionInfo.getCommitId());
-    Assert.assertNotNull(versionInfo.getCommitMessage());
+    assertNotNull(versionInfo.getGroupId());
+    assertNotNull(versionInfo.getArtifactId());
+    assertNotNull(versionInfo.getVersion());
+    assertNotNull(versionInfo.getBuildTime());
+    assertNotNull(versionInfo.getBranch());
+    assertNotNull(versionInfo.getCommitId());
+    assertNotNull(versionInfo.getCommitMessage());
   }
 
   @Test
@@ -68,7 +71,15 @@ public class CloudVersionInfoBuilderTest {
     List<ConnectedOuterService> outerServices =
         versionInfoBuilder.buildVersionInfo().getConnectedOuterServices();
 
-    Assert.assertNotNull(outerServices);
+    assertNotNull(outerServices);
     Assert.assertTrue(outerServices.isEmpty());
+  }
+
+  @Test
+  public void buildVersionInfoShouldHandleEmptyFFResolvers() throws IOException {
+    List<FeatureFlagState> featureFlagStates = versionInfoBuilder.buildVersionInfo().getFeatureFlagStates();
+
+    assertNotNull(featureFlagStates);
+    assertTrue(featureFlagStates.isEmpty());
   }
 }

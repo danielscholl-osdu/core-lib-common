@@ -20,13 +20,17 @@ package org.opengroup.osdu.core.common.info;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.opengroup.osdu.core.common.model.info.ConnectedOuterService;
+import org.opengroup.osdu.core.common.model.info.FeatureFlagStateResolver;
+import org.opengroup.osdu.core.common.model.info.FeatureFlagStateResolver.FeatureFlagState;
 import org.opengroup.osdu.core.common.model.info.VersionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,6 +53,8 @@ public class CloudVersionInfoBuilder implements VersionInfoBuilder {
 
   @Autowired(required = false)
   private List<ConnectedOuterServicesBuilder> outerServicesBuilder;
+  @Autowired(required = false)
+  private List<FeatureFlagStateResolver> featureFlagStateResolvers;
 
   public CloudVersionInfoBuilder(VersionInfoProperties versionInfoProperties) {
     this.versionInfoProperties = versionInfoProperties;
@@ -62,6 +68,9 @@ public class CloudVersionInfoBuilder implements VersionInfoBuilder {
 
   public VersionInfo buildVersionInfo() throws IOException {
     List<ConnectedOuterService> connectedOuterServices = loadConnectedOuterServices();
+
+    List<FeatureFlagState> featureFlagStates = getFeatureFlagStates();
+
     return VersionInfo.builder()
         .groupId(buildInfoProperties.getProperty(BUILD_GROUP))
         .artifactId(buildInfoProperties.getProperty(BUILD_ARTIFACT))
@@ -71,6 +80,7 @@ public class CloudVersionInfoBuilder implements VersionInfoBuilder {
         .commitId(gitProperties.getProperty(GIT_COMMIT_ID))
         .commitMessage(gitProperties.getProperty(GIT_COMMIT_MESSAGE_SHORT))
         .connectedOuterServices(connectedOuterServices)
+        .featureFlagStates(featureFlagStates)
         .build();
   }
 
@@ -97,8 +107,8 @@ public class CloudVersionInfoBuilder implements VersionInfoBuilder {
   }
 
   /**
-   * The method collects service-specific values for all outer services connected to OSDU service.
-   * To define outer services info for OSDU service need to inject ConnectedOuterServicesBuilder.
+   * The method collects service-specific values for all outer services connected to OSDU service. To define outer
+   * services info for OSDU service need to inject ConnectedOuterServicesBuilder.
    */
   private List<ConnectedOuterService> loadConnectedOuterServices() {
     return Optional.ofNullable(outerServicesBuilder)
@@ -108,6 +118,14 @@ public class CloudVersionInfoBuilder implements VersionInfoBuilder {
                     .map(ConnectedOuterServicesBuilder::buildConnectedOuterServices)
                     .flatMap(List::stream)
                     .collect(Collectors.toList()))
+        .orElse(Collections.emptyList());
+  }
+
+  private List<FeatureFlagState> getFeatureFlagStates() {
+    return Optional.ofNullable(featureFlagStateResolvers)
+        .map(list -> list.stream().map(FeatureFlagStateResolver::retrieveStates)
+            .flatMap(Collection::stream)
+            .toList())
         .orElse(Collections.emptyList());
   }
 }
