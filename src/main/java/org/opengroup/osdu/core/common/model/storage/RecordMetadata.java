@@ -15,6 +15,12 @@
 package org.opengroup.osdu.core.common.model.storage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.http.HttpStatus;
@@ -22,14 +28,11 @@ import org.opengroup.osdu.core.common.model.entitlements.Acl;
 import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.legal.Legal;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @Data
+@Builder(toBuilder=true)
 @NoArgsConstructor
-public class RecordMetadata {
+@AllArgsConstructor
+public class RecordMetadata{
 
 	private String id;
 
