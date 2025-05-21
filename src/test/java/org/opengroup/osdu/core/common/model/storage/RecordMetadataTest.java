@@ -114,4 +114,11 @@ public class RecordMetadataTest {
     assertNotNull(metadata.getTags());
     assertNotNull(metadata.getAncestry());
   }
+
+  @Test
+  public void toBuilderShouldCreateShallowCopy(){
+    RecordMetadata metadataCopy = metadata.toBuilder().build();
+    assertNotSame(metadata, metadataCopy);
+    assertEquals(metadata, metadataCopy);
+  }
 }
