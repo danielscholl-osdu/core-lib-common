@@ -18,10 +18,12 @@ import org.apache.http.Header;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.ServiceUnavailableRetryStrategy;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.ConnectionPoolTimeoutException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -42,7 +44,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
@@ -64,7 +69,10 @@ public class HttpClientHandler implements IHttpClientHandler {
             .setSocketTimeout(60000).build();
 
     public HttpResponse sendRequest(HttpRequestBase request, DpsHeaders requestHeaders) {
+        return sendRequest(request, requestHeaders, false);
+    }
 
+    public HttpResponse sendRequest(HttpRequestBase request, DpsHeaders requestHeaders, boolean isIdempotent) {
         Long curTimeStamp = System.currentTimeMillis();
 
         List<Header> httpHeaders = new ArrayList<>();
@@ -79,7 +87,9 @@ public class HttpClientHandler implements IHttpClientHandler {
             CloseableHttpClient httpclient = HttpClients.custom()
                     .setDefaultHeaders(httpHeaders)
                     .setDefaultRequestConfig(REQUEST_CONFIG)
-                    .setServiceUnavailableRetryStrategy(getRetryStrategy()).build();
+                    .setServiceUnavailableRetryStrategy(getRetryStrategy())
+                    .setRetryHandler(getRetryHandler(isIdempotent))   
+                    .build();
             try (CloseableHttpResponse response = httpclient.execute(request)) {
 
                 String responseBody = readResponseBody(response.getEntity().getContent());
@@ -132,6 +142,28 @@ public class HttpClientHandler implements IHttpClientHandler {
             }
         };
     }
+
+    private HttpRequestRetryHandler getRetryHandler(boolean isIdempotent) {
+        return new HttpRequestRetryHandler() {
+            @Override
+            public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
+                if (executionCount > RETRY_COUNT) {
+                    return false;
+                }
+
+                // Retry on timeout or transient I/O exceptions
+                if (exception instanceof ConnectionPoolTimeoutException || exception instanceof ConnectException || exception instanceof UnknownHostException) {
+                    return true;
+                }
+                // Retry socket exceptions if the request is idempotent
+                if(exception instanceof SocketException && isIdempotent){
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
 
     private boolean checkResponseMediaType(CloseableHttpResponse response, String responseBody) {
         try {
