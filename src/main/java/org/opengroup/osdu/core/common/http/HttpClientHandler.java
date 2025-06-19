@@ -36,6 +36,7 @@ import org.opengroup.osdu.core.common.model.http.RequestStatus;
 import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
@@ -88,7 +89,7 @@ public class HttpClientHandler implements IHttpClientHandler {
                     .setDefaultHeaders(httpHeaders)
                     .setDefaultRequestConfig(REQUEST_CONFIG)
                     .setServiceUnavailableRetryStrategy(getRetryStrategy())
-                    .setRetryHandler(getRetryHandler(isIdempotent))   
+                    .setRetryHandler(getRetryHandler(isIdempotent, request.getMethod()))   
                     .build();
             try (CloseableHttpResponse response = httpclient.execute(request)) {
 
@@ -143,7 +144,7 @@ public class HttpClientHandler implements IHttpClientHandler {
         };
     }
 
-    private HttpRequestRetryHandler getRetryHandler(boolean isIdempotent) {
+    private HttpRequestRetryHandler getRetryHandler(boolean isIdempotent, String requestMethod ) {
         return new HttpRequestRetryHandler() {
             @Override
             public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
@@ -155,8 +156,8 @@ public class HttpClientHandler implements IHttpClientHandler {
                 if (exception instanceof ConnectionPoolTimeoutException || exception instanceof ConnectException || exception instanceof UnknownHostException) {
                     return true;
                 }
-                // Retry socket exceptions if the request is idempotent
-                if(exception instanceof SocketException && isIdempotent){
+                // Retry socket exceptions if the request is idempotent or is a GET request
+                if(exception instanceof SocketException && (isIdempotent || HttpMethod.GET.name().equalsIgnoreCase(requestMethod))){
                     return true;
                 }
                 return false;
