@@ -69,10 +69,12 @@ public class HttpClientHandler implements IHttpClientHandler {
             .setConnectionRequestTimeout(60000)
             .setSocketTimeout(60000).build();
 
+    @Override
     public HttpResponse sendRequest(HttpRequestBase request, DpsHeaders requestHeaders) {
         return sendRequest(request, requestHeaders, false);
     }
 
+    @Override
     public HttpResponse sendRequest(HttpRequestBase request, DpsHeaders requestHeaders, boolean isIdempotent) {
         Long curTimeStamp = System.currentTimeMillis();
 
