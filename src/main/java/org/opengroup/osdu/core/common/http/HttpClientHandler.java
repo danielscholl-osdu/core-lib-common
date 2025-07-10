@@ -76,6 +76,7 @@ public class HttpClientHandler implements IHttpClientHandler {
 
     @Override
     public HttpResponse sendRequest(HttpRequestBase request, DpsHeaders requestHeaders, boolean isIdempotent) {
+        log.info(String.format("Using isIdempotent flag: %s", isIdempotent));
         Long curTimeStamp = System.currentTimeMillis();
 
         List<Header> httpHeaders = new ArrayList<>();
@@ -150,6 +151,8 @@ public class HttpClientHandler implements IHttpClientHandler {
         return new HttpRequestRetryHandler() {
             @Override
             public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
+                log.info(String.format("Retry request with method: %s | isIdempotent: %s", requestMethod, isIdempotent));
+
                 if (executionCount > RETRY_COUNT) {
                     return false;
                 }
