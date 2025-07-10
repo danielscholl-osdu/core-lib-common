@@ -146,7 +146,7 @@ public class HttpClientHandler implements IHttpClientHandler {
         };
     }
 
-    private HttpRequestRetryHandler getRetryHandler(boolean isIdempotent, String requestMethod ) {
+    HttpRequestRetryHandler getRetryHandler(boolean isIdempotent, String requestMethod ) {
         return new HttpRequestRetryHandler() {
             @Override
             public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
