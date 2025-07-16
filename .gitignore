@@ -20,3 +20,10 @@ buildNumber.properties
 !/.mvn/wrapper/maven-wrapper.jar
 /.gradle/
 /bin/
+
+# AI files
+.claude/
+CLAUDE.md
+.mcp.json
+.github/copilot-instructions.md
+
