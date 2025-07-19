@@ -1,0 +1,479 @@
+{
+    "nestedArrayWithMissingValue": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "markers": [
+                {
+                    "measuredDepth": 10.0,
+                    "testField": "test"
+                },
+                {
+                    "testField": "test"
+                }
+            ]
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "markers[].measuredDepth"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "nestedArrayWithInvalidValueType": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "markers": [
+                {
+                    "measuredDepth": 10.0,
+                    "testField": "test"
+                },
+                {
+                    "measuredDepth": "string",
+                    "testField": "test"
+                }
+            ]
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "markers[].measuredDepth"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "validNestedArray": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "markers": [
+                {
+                    "measuredDepth": 10.0,
+                    "testField": "test"
+                },
+                {
+                    "measuredDepth": 20.0,
+                    "testField": "test"
+                }
+            ]
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "markers[].measuredDepth"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "dataContainsDepthUnitKey": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "depth": {
+                "inner": {
+                    "unitKey": "ft",
+                    "value": 10.0
+                }
+            }
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "depth.inner.value"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "persistableAsJsonObject": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "MD": 10.0
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": {
+                    "scaleOffset": {
+                        "scale": 0.3048,
+                        "offset": 0
+                    },
+                    "symbol": "ft/s",
+                    "baseMeasurement": {
+                        "type": "UM",
+                        "ancestry": "Velocity"
+                    },
+                    "type": "USO"
+                },
+                "propertyNames": [
+                    "MD"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "nullNestedPropertyValueInData": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "MD": {
+                "value": null
+            }
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "MD.value"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "validNestedDataAndMeta": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "MD": {
+                "value": 10.0
+            }
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "MD.value"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "validDataAndMeta": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "MD": 10.0
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "MD"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "badPropertyValueInData": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "MD": "Bad"
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "MD"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "nullPropertyValueInData": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "MD": null
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "MD"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "propertyMissingInData": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "TVD": 10.0
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "MD"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "propertyNameAreNotArrayInMeta": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "MD": 10.0
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": "MD",
+                "name": "ft"
+            }
+        ]
+    },
+    "metaDataKindIsMissing": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "MD": 10.0
+        },
+        "meta": [
+            {
+                "path": "",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "MD"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "propertyNamesMissingInMeta": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "MD": 10.0
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "name": "ft"
+            }
+        ]
+    },
+    "persistableReferenceInvalid": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "MD": 10.0
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "reference",
+                "propertyNames": [
+                    "MD"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "persistableReferenceMissing": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "MD": 10.0
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "propertyNames": [
+                    "MD"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "unitMissingInMeta": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "acl": {
+            "viewers": [
+                "viewers@unittest.com"
+            ],
+            "owners": [
+                "owners@unittest.com"
+            ]
+        },
+        "legal": {
+            "legaltags": [
+                "unit-test-legal"
+            ],
+            "otherRelevantDataCountries": [
+                "AA"
+            ]
+        },
+        "data": {
+            "msg": "testing record 1",
+            "X": 16.00,
+            "Y": 10.00,
+            "Z": 0
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "CRS",
+                "persistableReference": "reference",
+                "propertyNames": [
+                    "X",
+                    "Y",
+                    "Z"
+                ],
+                "name": "name"
+            }
+        ]
+    },
+    "metaIsMissing": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "acl": {
+            "viewers": [
+                "viewers@unittest.com"
+            ],
+            "owners": [
+                "owners@unittest.com"
+            ]
+        },
+        "legal": {
+            "legaltags": [
+                "unit-test-legal"
+            ],
+            "otherRelevantDataCountries": [
+                "AA"
+            ]
+        },
+        "data": {
+            "msg": "testing record 1",
+            "X": 16.00,
+            "Y": 10.00,
+            "Z": 0
+        }
+    },
+    "inhomogeneousNestedArrayPropertyIsValid": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "markers": [
+                {
+                    "measuredDepth": 10.0,
+                    "testField": "test"
+                },
+                {
+                    "measuredDepth": 20.0,
+                    "testField": "test"
+                }
+            ]
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "markers[1].measuredDepth"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "inhomogeneousNestedArrayPropertyWithInvalidDataType": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "markers": [
+                {
+                    "measuredDepth": 10.0,
+                    "testField": "test"
+                },
+                {
+                    "measuredDepth": 20.0,
+                    "testField": "test"
+                },
+                {
+                    "measuredDepth": "invalidType",
+                    "testField": "test"
+                }
+            ]
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "markers[2].measuredDepth"
+                ],
+                "name": "ft"
+            }
+        ]
+    },
+    "inhomogeneousPropertyIndexOutOfBoundary": {
+        "id": "unit-test-1",
+        "kind": "unit:test:1.0.0",
+        "data": {
+            "markers": [
+                {
+                    "measuredDepth": 10.0,
+                    "testField": "test"
+                },
+                {
+                    "measuredDepth": 20.0,
+                    "testField": "test"
+                }
+            ]
+        },
+        "meta": [
+            {
+                "path": "",
+                "kind": "UNIT",
+                "persistableReference": "{\"abcd\":{\"a\":0.0,\"b\":0.3048,\"c\":1.0,\"d\":0.0},\"symbol\":\"ft\",\"baseMeasurement\":{\"ancestry\":\"L\",\"type\":\"UM\"},\"type\":\"UAD\"}",
+                "propertyNames": [
+                    "markers[2].measuredDepth"
+                ],
+                "name": "ft"
+            }
+        ]
+    }
+}
