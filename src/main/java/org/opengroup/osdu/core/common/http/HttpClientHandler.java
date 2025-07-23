@@ -162,7 +162,7 @@ public class HttpClientHandler implements IHttpClientHandler {
                     return true;
                 }
                 // Retry socket exceptions if the request is idempotent or is a GET request
-                if(exception instanceof SocketException && (isIdempotent || HttpMethod.GET.name().equalsIgnoreCase(requestMethod))){
+                if (exception instanceof SocketException && (isIdempotent || HttpMethod.GET.name().equalsIgnoreCase(requestMethod))) {
                     return true;
                 }
                 return false;

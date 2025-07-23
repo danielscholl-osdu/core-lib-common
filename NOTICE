@@ -16,7 +16,7 @@ The following software have components provided under the terms of this license:
 - Apache HttpCore (from http://hc.apache.org/httpcomponents-core-ga, http://hc.apache.org/httpcomponents-core-ga/, http://hc.apache.org/httpcomponents-core/)
 - Byte Buddy (without dependencies) (from https://repo1.maven.org/maven2/net/bytebuddy/byte-buddy)
 - Byte Buddy Java agent (from https://repo1.maven.org/maven2/net/bytebuddy/byte-buddy-agent)
-- ClassMate (from http://github.com/cowtowncoder/java-classmate)
+- ClassMate (from http://github.com/cowtowncoder/java-classmate, https://github.com/FasterXML/java-classmate)
 - FindBugs-jsr305 (from http://findbugs.sourceforge.net/)
 - Google HTTP Client Library for Java (from https://repo1.maven.org/maven2/com/google/http-client/google-http-client)
 - Gson (from http://code.google.com/p/google-gson/, https://repo1.maven.org/maven2/com/google/code/gson/gson)
@@ -47,7 +47,7 @@ The following software have components provided under the terms of this license:
 - Netty/Transport (from https://repo1.maven.org/maven2/io/netty/netty-transport)
 - Netty/Transport/Native/Unix/Common (from https://repo1.maven.org/maven2/io/netty/netty-transport-native-unix-common)
 - Non-Blocking Reactive Foundation for the JVM (from https://github.com/reactor/reactor, https://github.com/reactor/reactor-core)
-- Objenesis (from https://repo1.maven.org/maven2/org/objenesis/objenesis)
+- Objenesis (from https://repo1.maven.org/maven2/org/objenesis/objenesis, https://repository.cloudera.com/artifactory/cloudera-repos/org/objenesis/objenesis)
 - OpenCensus (from https://github.com/census-instrumentation/opencensus-java)
 - PowerMock (from http://www.powermock.org, https://repo1.maven.org/maven2/org/powermock/powermock-api-mockito)
 - Spring AOP (from http://www.springframework.org, https://github.com/spring-projects/spring-framework, https://repo1.maven.org/maven2/org/springframework/spring-aop)
@@ -164,7 +164,7 @@ MIT
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Checker Qual (from https://checkerframework.org)
+- Checker Qual (from https://checkerframework.org, https://checkerframework.org/)
 - Jackson-core (from http://wiki.fasterxml.com/JacksonHome, https://github.com/FasterXML/jackson-core)
 - Java JWT (from http://www.jwt.io, https://github.com/auth0/java-jwt)
 - Lettuce (from http://github.com/lettuce-io/lettuce-core, http://github.com/mp911de/lettuce/wiki, https://github.com/lettuce-io/lettuce-core/wiki, https://github.com/redis/lettuce)
@@ -174,6 +174,13 @@ The following software have components provided under the terms of this license:
 - SLF4J API Module (from http://www.slf4j.org)
 - micrometer-commons (from https://github.com/micrometer-metrics/micrometer)
 - mockito-inline (from http://mockito.org, https://github.com/mockito/mockito)
+
+========================================================================
+SPL-1.0
+========================================================================
+The following software have components provided under the terms of this license:
+
+- Checker Qual (from https://checkerframework.org, https://checkerframework.org/)
 
 ========================================================================
 cc-pd
@@ -201,4 +208,5 @@ unknown
 ========================================================================
 The following software have components provided under the terms of this license:
 
+- JUnit (from http://junit.org)
 - System Rules (from http://stefanbirkner.github.com/system-rules/, http://stefanbirkner.github.io/system-rules/)
