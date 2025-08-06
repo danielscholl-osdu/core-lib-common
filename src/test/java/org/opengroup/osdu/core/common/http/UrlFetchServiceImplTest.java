@@ -42,7 +42,8 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.*;
-
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -92,7 +93,7 @@ public class UrlFetchServiceImplTest {
         when(httpResponse.getResponseCode()).thenReturn(200);
         when(httpResponse.getBody()).thenReturn(RESPONSE);
 
-        when(httpClientHandler.sendRequest(any(), any())).thenReturn(httpResponse);
+        when(httpClientHandler.sendRequest(any(), any(), anyBoolean())).thenReturn(httpResponse);
 
         FetchServiceHttpRequest request = FetchServiceHttpRequest.builder().httpMethod(GET).url(ADDRESS).headers(HEADERS).build();
         HttpResponse result = this.sut.sendRequest(request);
@@ -104,12 +105,12 @@ public class UrlFetchServiceImplTest {
     public void shouldReturnResponseSuccessfullyWhenRequestIsValid() throws URISyntaxException {
         final FetchServiceHttpRequest httpRequest = FetchServiceHttpRequest.builder().httpMethod(GET).url(ADDRESS).headers(HEADERS).build();
         final HttpResponse expectedHttpResponse = new HttpResponse();
-        when(httpClientHandler.sendRequest(Mockito.any(HttpGet.class), Mockito.eq(HEADERS))).thenReturn(expectedHttpResponse);
+        when(httpClientHandler.sendRequest(Mockito.any(HttpGet.class), Mockito.eq(HEADERS), anyBoolean())).thenReturn(expectedHttpResponse);
 
         final HttpResponse httpResponse = sut.sendRequest(httpRequest);
 
         assertEquals(expectedHttpResponse, httpResponse);
-        verify(httpClientHandler).sendRequest(httpGetArgumentCaptor.capture(), Mockito.eq(HEADERS));
+        verify(httpClientHandler).sendRequest(httpGetArgumentCaptor.capture(), Mockito.eq(HEADERS), anyBoolean());
         assertEquals(httpGetArgumentCaptor.getValue().getURI().toString(), ADDRESS);
     }
 
@@ -148,7 +149,7 @@ public class UrlFetchServiceImplTest {
         when(httpResponse.getResponseCode()).thenReturn(200);
         when(httpResponse.getBody()).thenReturn(RESPONSE);
 
-        when(httpClientHandler.sendRequest(any(), any())).thenReturn(httpResponse);
+        when(httpClientHandler.sendRequest(any(), any(), anyBoolean())).thenReturn(httpResponse);
 
         FetchServiceHttpRequest request = FetchServiceHttpRequest.builder().httpMethod(POST).url(ADDRESS).headers(HEADERS).body(BODY).build();
         HttpResponse result = this.sut.sendRequest(request);
@@ -229,7 +230,7 @@ public class UrlFetchServiceImplTest {
         when(httpResponse.getResponseCode()).thenReturn(200);
         when(httpResponse.getBody()).thenReturn(RESPONSE);
 
-        when(httpClientHandler.sendRequest(any(), any())).thenReturn(httpResponse);
+        when(httpClientHandler.sendRequest(any(), any(), anyBoolean())).thenReturn(httpResponse);
 
         FetchServiceHttpRequest request = FetchServiceHttpRequest.builder().httpMethod(PUT).url(ADDRESS).headers(HEADERS).body(BODY).build();
         HttpResponse result = this.sut.sendRequest(request);

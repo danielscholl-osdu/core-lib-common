@@ -21,4 +21,9 @@ import java.net.URISyntaxException;
 public interface IUrlFetchService {
 
     HttpResponse sendRequest(FetchServiceHttpRequest httpRequest) throws URISyntaxException;
+    
+    default HttpResponse sendRequest(FetchServiceHttpRequest httpRequest, boolean isIdempotent) throws URISyntaxException {
+        // Default implementation delegates to the original method, ignoring isIdempotent
+        return sendRequest(httpRequest);
+    }
 }

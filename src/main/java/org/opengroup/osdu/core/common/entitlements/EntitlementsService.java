@@ -83,7 +83,8 @@ public class EntitlementsService implements IEntitlementsService {
     public GroupInfo createGroup(CreateGroup group) throws EntitlementsException {
         String url = this.createUrl("/groups");
         HttpResponse result = this.httpClient.send(
-                HttpRequest.post(group).url(url).headers(this.headers.getHeaders()).build());
+                HttpRequest.post(group).url(url).headers(this.headers.getHeaders()).build(),
+                false);
         GroupInfo output = this.getResult(result, GroupInfo.class);
         return output;
     }
