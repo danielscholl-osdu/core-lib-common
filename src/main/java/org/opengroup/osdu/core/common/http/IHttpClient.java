@@ -16,4 +16,8 @@ package org.opengroup.osdu.core.common.http;
 
 public interface IHttpClient {
     HttpResponse send(HttpRequest request);
+    default HttpResponse send(HttpRequest request, boolean isIdempotent) {
+        // default behavior: ignore isIdempotent, delegate to existing send
+        return send(request);
+    }
 }

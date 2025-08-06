@@ -41,10 +41,15 @@ public class UrlFetchServiceImpl implements IUrlFetchService {
 
     @Override
     public HttpResponse sendRequest(FetchServiceHttpRequest httpRequest) throws URISyntaxException {
-        return sendRequest(httpRequest.getHttpMethod(), httpRequest.getUrl(), httpRequest.getHeaders(), httpRequest.getQueryParams(), httpRequest.getBody());
+        return sendRequest(httpRequest.getHttpMethod(), httpRequest.getUrl(), httpRequest.getHeaders(), httpRequest.getQueryParams(), httpRequest.getBody(), false);
     }
 
-    private HttpResponse sendRequest(String httpMethod, String address, DpsHeaders headers, Map<String, String> queryParams, String body) throws URISyntaxException {
+    @Override
+    public HttpResponse sendRequest(FetchServiceHttpRequest httpRequest, boolean isIdempotent) throws URISyntaxException {
+        return sendRequest(httpRequest.getHttpMethod(), httpRequest.getUrl(), httpRequest.getHeaders(), httpRequest.getQueryParams(), httpRequest.getBody(), isIdempotent);
+    }
+
+    private HttpResponse sendRequest(String httpMethod, String address, DpsHeaders headers, Map<String, String> queryParams, String body, boolean isIdempotent) throws URISyntaxException {
 
         URIBuilder builder = new URIBuilder(address);
         if (queryParams != null && !queryParams.isEmpty()) {
@@ -57,16 +62,16 @@ public class UrlFetchServiceImpl implements IUrlFetchService {
             case HttpMethods.POST: {
                 HttpPost request = new HttpPost(builder.build());
                 request.setEntity(new StringEntity(body, StandardCharsets.UTF_8));
-                return this.httpClientHandler.sendRequest(request, headers);
+                return this.httpClientHandler.sendRequest(request, headers, isIdempotent);
             }
             case HttpMethods.GET: {
                 HttpGet request = new HttpGet(builder.build());
-                return this.httpClientHandler.sendRequest(request, headers);
+                return this.httpClientHandler.sendRequest(request, headers, isIdempotent);
             }
             case HttpMethods.PUT: {
                 HttpPut request = new HttpPut(builder.build());
                 request.setEntity(new StringEntity(body, StandardCharsets.UTF_8));
-                return this.httpClientHandler.sendRequest(request, headers);
+                return this.httpClientHandler.sendRequest(request, headers, isIdempotent);
             }
             default:
                 throw new AppException(HttpStatus.SC_NOT_FOUND, "Invalid HTTP method", "Invalid HTTP method");

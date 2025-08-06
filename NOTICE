@@ -47,7 +47,7 @@ The following software have components provided under the terms of this license:
 - Netty/Transport (from https://repo1.maven.org/maven2/io/netty/netty-transport)
 - Netty/Transport/Native/Unix/Common (from https://repo1.maven.org/maven2/io/netty/netty-transport-native-unix-common)
 - Non-Blocking Reactive Foundation for the JVM (from https://github.com/reactor/reactor, https://github.com/reactor/reactor-core)
-- Objenesis (from https://repo1.maven.org/maven2/org/objenesis/objenesis, https://repository.cloudera.com/artifactory/cloudera-repos/org/objenesis/objenesis)
+- Objenesis (from https://repo1.maven.org/maven2/org/objenesis/objenesis)
 - OpenCensus (from https://github.com/census-instrumentation/opencensus-java)
 - PowerMock (from http://www.powermock.org, https://repo1.maven.org/maven2/org/powermock/powermock-api-mockito)
 - Spring AOP (from http://www.springframework.org, https://github.com/spring-projects/spring-framework, https://repo1.maven.org/maven2/org/springframework/spring-aop)
