@@ -17,10 +17,12 @@ package org.opengroup.osdu.core.common.http;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.ServiceUnavailableRetryStrategy;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.ConnectionPoolTimeoutException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -32,6 +34,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.http.HttpResponse;
@@ -40,14 +43,21 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
+import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -65,6 +75,9 @@ public class HttpClientHandlerTest {
 
     @Mock
     private static DpsHeaders HEADERS;
+
+    @Mock
+    private JaxRsDpsLog log;
 
     @Before
     public void setup() {
@@ -148,5 +161,57 @@ public class HttpClientHandlerTest {
         } catch (Exception e) {
             fail("Should not get different exception");
         }
+    }
+
+    @Test
+    public void should_retrySocketException_when_requestIsIdempotentOrGet() throws Exception {
+        HttpRequestRetryHandler retryHandler = sut.getRetryHandler(true, "POST");
+        SocketException socketException = new SocketException("Connection failed");
+        boolean shouldRetry = retryHandler.retryRequest(socketException, 1, null);
+        assertTrue("Should retry idempotent request on socket exception", shouldRetry);
+
+        HttpRequestRetryHandler retryHandler2 = sut.getRetryHandler(false, "GET");
+        boolean shouldRetry2 = retryHandler2.retryRequest(socketException, 1, null);
+        assertTrue("Should retry GET request on socket exception", shouldRetry2);
+    }
+
+    @Test
+    public void should_testRetryLogic_with_differentHttpMethods() throws Exception {
+        String[] nonGetMethods = {"POST", "PUT", "DELETE", "PATCH"};
+        for (String method : nonGetMethods) {
+            HttpRequestRetryHandler retryHandler = sut.getRetryHandler(false, method);
+            SocketException socketException = new SocketException("Connection failed");
+            boolean shouldRetry = retryHandler.retryRequest(socketException, 1, null);
+            assertFalse("Should not retry " + method + " request on socket exception when not idempotent", shouldRetry);
+        }
+    }
+
+    @Test
+    public void should_retryBasedOnExceptionType_regardlessofidempotency() throws Exception {
+        HttpRequestRetryHandler retryHandler = sut.getRetryHandler(false, "POST");
+
+        Exception[] retryableExceptions = new Exception[] {
+            new ConnectionPoolTimeoutException("Pool timeout"),
+            new ConnectException("Connection refused"),
+            new UnknownHostException("Unknown host")
+        };
+
+        for (Exception ex : retryableExceptions) {
+            boolean shouldRetry = retryHandler.retryRequest((IOException) ex, 1, null);
+            assertTrue(shouldRetry);
+        }
+
+        IOException genericException = new IOException("Generic IO error");
+        boolean shouldRetry = retryHandler.retryRequest(genericException, 1, null);
+        assertFalse("Should not retry generic IOException", shouldRetry);
+    }
+
+    @Test
+    public void should_notRetry_when_executionCountExceedsRetryLimit() throws Exception {
+        HttpRequestRetryHandler retryHandler = sut.getRetryHandler(true, "GET");
+        SocketException socketException = new SocketException("Connection failed");
+        int executionCountExceedingLimit = HttpClientHandler.RETRY_COUNT + 1;
+        boolean shouldRetry = retryHandler.retryRequest(socketException, executionCountExceedingLimit, null);
+        assertFalse("Should not retry when execution count exceeds retry limit", shouldRetry);
     }
 }
